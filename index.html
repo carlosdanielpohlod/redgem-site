@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RedGem 3D Engine</title>
+<meta name="description" content="A 3D game engine where games are written in Ruby. Model in Blender, script in Ruby, press Play in the editor.">
+<meta property="og:title" content="RedGem 3D Engine">
+<meta property="og:description" content="A 3D game engine where games are written in Ruby.">
+<meta property="og:image" content="assets/shot-street.jpg">
+<link rel="icon" type="image/svg+xml" href="assets/redgem-mark.svg">
+<style>
+  @font-face { font-family: "Inter"; src: url("assets/InterVariable.ttf") format("truetype"); font-weight: 100 900; font-display: swap; }
+  @font-face { font-family: "JetBrains Mono"; src: url("assets/JetBrainsMono-Regular.ttf") format("truetype"); font-display: swap; }
+  :root {
+    --night: #0b0608;
+    --panel: #140a0e;
+    --raised: #1b0e13;
+    --line: #2c181e;
+    --paper: #f7f3f4;
+    --muted: #a8979d;
+    --rose: #ff8fa0;
+    --ruby: #f0375c;
+    --blood: #b40f39;
+    --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--night);
+    color: var(--paper);
+    font-family: "Inter", "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size: 17px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--rose); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+
+  header.top { display: flex; align-items: center; justify-content: space-between; padding: 22px 0; }
+  header.top img { height: 34px; display: block; }
+  header.top nav { display: flex; gap: 26px; font-size: 15px; }
+  header.top nav a { color: var(--muted); }
+  header.top nav a:hover { color: var(--paper); text-decoration: none; }
+
+  .hero { padding: 72px 0 40px; text-align: center; }
+  .hero h1 {
+    margin: 0 auto;
+    max-width: 16ch;
+    font-size: clamp(42px, 7.2vw, 84px);
+    font-weight: 900;
+    line-height: 1.02;
+    letter-spacing: -0.045em;
+    text-wrap: balance;
+  }
+  .hero h1 em { font-style: normal; color: var(--ruby); }
+  .hero p { margin: 26px auto 0; max-width: 46ch; color: var(--muted); font-size: 20px; text-wrap: balance; }
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 34px; }
+  .button {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 13px 22px; border-radius: 12px; border: 1px solid var(--line);
+    color: var(--paper); font-weight: 600; font-size: 16px; background: var(--raised);
+  }
+  .button:hover { text-decoration: none; border-color: #4a2731; }
+  .button.primary { border: 0; background: linear-gradient(135deg, #f0375c, #b40f39); box-shadow: 0 10px 30px rgba(240, 55, 92, 0.3); }
+  .button.primary:hover { filter: brightness(1.08); }
+
+  .film {
+    position: relative; margin: 56px auto 0; border-radius: 18px; overflow: hidden; border: 1px solid var(--line);
+    box-shadow: 0 40px 120px rgba(240, 55, 92, 0.18), 0 10px 40px rgba(0, 0, 0, 0.6); background: #000;
+  }
+  .film video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; }
+
+  section { padding: 88px 0 0; }
+  .eyebrow { margin: 0 0 10px; color: var(--ruby); font-size: 13px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; }
+  h2 { margin: 0; font-size: clamp(30px, 4.2vw, 46px); font-weight: 800; line-height: 1.1; letter-spacing: -0.035em; text-wrap: balance; }
+  .lead { margin: 16px 0 0; max-width: 60ch; color: var(--muted); }
+
+  .split { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 40px; align-items: center; }
+  pre {
+    margin: 0; padding: 22px 24px; overflow-x: auto; border-radius: 16px; border: 1px solid var(--line);
+    background: var(--panel); font-family: var(--mono); font-size: 14.5px; line-height: 1.65; color: #e9dfe2;
+  }
+  pre .k { color: #ff6b84; }
+  pre .c { color: #ffb86b; }
+  pre .s { color: #8fd6a4; }
+  pre .n { color: #7fc4ff; }
+  pre .m { color: #7d6c72; }
+  ul.points { margin: 22px 0 0; padding: 0; list-style: none; }
+  ul.points li { position: relative; margin: 10px 0; padding-left: 26px; color: var(--muted); }
+  ul.points li::before { content: ""; position: absolute; left: 2px; top: 0.62em; width: 9px; height: 9px; background: var(--ruby); transform: rotate(45deg); }
+  ul.points b { color: var(--paper); font-weight: 600; }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; margin-top: 36px; }
+  .card { padding: 24px; border-radius: 16px; border: 1px solid var(--line); background: var(--panel); }
+  .card h3 { margin: 0 0 8px; font-size: 18px; letter-spacing: -0.01em; }
+  .card p { margin: 0; color: var(--muted); font-size: 15.5px; }
+
+  .shots { display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); gap: 16px; margin-top: 36px; }
+  .shots figure { margin: 0; border-radius: 14px; overflow: hidden; border: 1px solid var(--line); background: var(--panel); }
+  .shots img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; }
+  .shots figcaption { padding: 10px 14px; color: var(--muted); font-size: 14px; }
+
+  .steps { counter-reset: step; display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; margin-top: 36px; }
+  .steps div { counter-increment: step; padding: 24px; border-radius: 16px; border: 1px solid var(--line); background: var(--panel); }
+  .steps div::before { content: "0" counter(step); display: block; margin-bottom: 10px; color: var(--ruby); font-family: var(--mono); font-size: 14px; }
+  .steps h3 { margin: 0 0 6px; font-size: 18px; }
+  .steps p { margin: 0; color: var(--muted); font-size: 15.5px; }
+
+  table { width: 100%; margin-top: 30px; border-collapse: collapse; font-size: 15.5px; }
+  th, td { padding: 12px 14px; text-align: left; border-bottom: 1px solid var(--line); }
+  th { color: var(--muted); font-size: 12.5px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; }
+  td:last-child { color: var(--muted); white-space: nowrap; }
+  .scroll { overflow-x: auto; }
+
+  .start { margin-top: 30px; }
+  footer { margin-top: 100px; padding: 34px 0 60px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
+  footer .wrap { display: flex; flex-wrap: wrap; gap: 14px 30px; justify-content: space-between; align-items: center; }
+  footer img { height: 26px; opacity: 0.9; }
+
+  @media (max-width: 820px) {
+    .split { grid-template-columns: minmax(0, 1fr); }
+    header.top nav { display: none; }
+    section { padding-top: 64px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a href="#"><img src="assets/redgem-logo.svg" alt="RedGem 3D Engine"></a>
+    <nav>
+      <a href="#ruby">Ruby</a>
+      <a href="#editor">Editor</a>
+      <a href="#features">Features</a>
+      <a href="#credits">Built with</a>
+      <a href="#start">Get started</a>
+    </nav>
+  </header>
+
+  <div class="hero">
+    <h1>Make 3D games in <em>Ruby</em>.</h1>
+    <p>RedGem is a 3D engine with its own editor. Model in Blender, write behaviours in Ruby, press Play.</p>
+    <div class="actions">
+      <a class="button primary" href="#demo">Watch the demo</a>
+      <a class="button" href="#start">Get started</a>
+    </div>
+    <div class="film" id="demo">
+      <video controls preload="metadata" poster="assets/poster.jpg" src="assets/demo.mp4"></video>
+    </div>
+  </div>
+
+  <section id="ruby">
+    <div class="split">
+      <div>
+        <p class="eyebrow">Scripting</p>
+        <h2>A behaviour is a Ruby class.</h2>
+        <p class="lead">No bindings to write, no build step. Save the file, press Play, and it runs on every object it is attached to.</p>
+        <ul class="points">
+          <li><b>Lifecycle you already know:</b> <code>start</code>, <code>update</code>, <code>fixed_update</code>, triggers and collisions.</li>
+          <li><b>Scenes set up in Ruby:</b> one file says who drives, who walks and what spawns.</li>
+          <li><b>No <code>require</code>:</b> a class loads the first time you use its name.</li>
+          <li><b>Errors don't crash the game:</b> the failing behaviour is switched off and the backtrace goes to the console.</li>
+        </ul>
+      </div>
+<pre><span class="m"># scripts/coin.rb</span>
+<span class="k">class</span> <span class="c">Coin</span> &lt; <span class="c">Behaviour</span>
+  <span class="c">SPIN</span> = <span class="n">180.0</span>  <span class="m"># degrees per second</span>
+
+  <span class="k">def</span> update(dt)
+    transform.rotate(<span class="c">Vector3</span>.new(<span class="n">0</span>, <span class="c">SPIN</span> * dt, <span class="n">0</span>))
+  <span class="k">end</span>
+
+  <span class="k">def</span> on_trigger_enter(other)
+    <span class="k">return unless</span> other.get_component(<span class="c">Player</span>)
+
+    <span class="c">Audio</span>.play(<span class="s">:coin</span>)
+    destroy
+  <span class="k">end</span>
+<span class="k">end</span></pre>
+    </div>
+  </section>
+
+  <section>
+    <div class="split">
+<pre><span class="m"># scripts/main_scene.rb</span>
+<span class="k">class</span> <span class="c">MainScene</span> &lt; <span class="c">SceneScript</span>
+  <span class="c">TRAFFIC</span> = { <span class="s">"TrafficBlue"</span> =&gt; <span class="n">10.0</span>, <span class="s">"TrafficGrey"</span> =&gt; <span class="n">7.0</span> }
+
+  <span class="k">def</span> setup
+    car = find!(<span class="s">"Sedan"</span>)
+    car.add_component(<span class="c">ArcadeCar</span>, max_x: <span class="n">3.4</span>)
+    <span class="c">Camera</span>.main.add_component(<span class="c">ChaseCamera</span>, target: car)
+
+    <span class="c">TRAFFIC</span>.each <span class="k">do</span> |name, speed|
+      find!(name).add_component(<span class="c">TrafficCar</span>, speed: speed)
+    <span class="k">end</span>
+    find_all(<span class="s">"walker"</span>).each { |w| w.add_component(<span class="c">Pedestrian</span>) }
+  <span class="k">end</span>
+<span class="k">end</span></pre>
+      <div>
+        <p class="eyebrow">Scenes</p>
+        <h2>Blender says what is there. Ruby says what it does.</h2>
+        <p class="lead">Scenes are plain glTF files exported from Blender. A scene script attaches behaviours, sets their parameters and spawns copies, so game logic stays in one language.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="editor">
+    <p class="eyebrow">Editor</p>
+    <h2>Build, script and play in one window.</h2>
+    <p class="lead">Scene view with gizmos, hierarchy, inspector, Ruby tabs that split side by side, a console with backtraces, and a Play button that runs the game right where you are editing.</p>
+    <div class="shots">
+      <figure><img src="assets/shot-editor.jpg" alt="The RedGem editor with a street scene and a Ruby script open" loading="lazy"><figcaption>The editor: scene, inspector and Ruby side by side</figcaption></figure>
+      <figure><img src="assets/shot-street.jpg" alt="A street at dusk rendered by RedGem" loading="lazy"><figcaption>The showcase street, running in real time</figcaption></figure>
+      <figure><img src="assets/shot-drive.jpg" alt="Driving a red car through traffic" loading="lazy"><figcaption>Traffic, parked cars and a crowd, all scripted in Ruby</figcaption></figure>
+      <figure><img src="assets/shot-crowd.jpg" alt="People walking on a sidewalk past shop fronts" loading="lazy"><figcaption>Animated characters, shop fronts, falling leaves</figcaption></figure>
+    </div>
+  </section>
+
+  <section id="features">
+    <p class="eyebrow">Features</p>
+    <h2>What is in the box.</h2>
+    <div class="grid">
+      <div class="card"><h3>Rendering</h3><p>PBR materials, sun shadows, reflections, ambient occlusion, bloom, fog and tone mapping.</p></div>
+      <div class="card"><h3>Physics</h3><p>Rigid bodies, character controllers, vehicles with wheels, triggers and raycasts.</p></div>
+      <div class="card"><h3>Animation</h3><p>Skeletal animation from glTF, GPU skinning, crowds of copies out of step with each other.</p></div>
+      <div class="card"><h3>Blender pipeline</h3><p>Model and lay out levels in Blender; custom properties carry gameplay data into the game.</p></div>
+      <div class="card"><h3>Testable games</h3><p>System tests are Ruby scripts that play the game frame by frame and take screenshots.</p></div>
+      <div class="card"><h3>One-click build</h3><p>Export a standalone copy of your game with the runtime and a launcher.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <p class="eyebrow">Workflow</p>
+    <h2>From a model to a game.</h2>
+    <div class="steps">
+      <div><h3>Model</h3><p>Build the level in Blender and export it as glTF, or drop models into the editor.</p></div>
+      <div><h3>Script</h3><p>Write behaviours in Ruby in the editor's tabs, or in your own editor.</p></div>
+      <div><h3>Play</h3><p>Press Play: the game runs in the scene view with your latest edits.</p></div>
+      <div><h3>Ship</h3><p>Build a standalone folder you can zip and share.</p></div>
+    </div>
+  </section>
+
+  <section id="credits">
+    <p class="eyebrow">Built with</p>
+    <h2>Standing on open source.</h2>
+    <p class="lead">RedGem is written in C++17 and would not exist without these projects. Thank you to the people behind them.</p>
+    <div class="scroll">
+    <table>
+      <thead><tr><th>Project</th><th>Used for</th><th>License</th></tr></thead>
+      <tbody>
+        <tr><td><a href="https://www.blender.org">Blender</a></td><td>Modeling, level building and the scene exporter</td><td>GPL</td></tr>
+        <tr><td><a href="https://github.com/jrouwe/JoltPhysics">Jolt Physics</a></td><td>Rigid bodies, characters, vehicles, raycasts</td><td>MIT</td></tr>
+        <tr><td><a href="https://mruby.org">mruby</a></td><td>The Ruby interpreter that runs game scripts</td><td>MIT</td></tr>
+        <tr><td><a href="https://www.raylib.com">raylib</a></td><td>Window, input, OpenGL rendering, audio</td><td>zlib</td></tr>
+        <tr><td><a href="https://github.com/jkuhlmann/cgltf">cgltf</a></td><td>Loading glTF scenes</td><td>MIT</td></tr>
+        <tr><td><a href="https://github.com/ocornut/imgui">Dear ImGui</a></td><td>The editor's interface</td><td>MIT</td></tr>
+        <tr><td><a href="https://github.com/raylib-extras/rlImGui">rlImGui</a></td><td>Dear ImGui on raylib</td><td>zlib</td></tr>
+        <tr><td><a href="https://github.com/CedricGuillemet/ImGuizmo">ImGuizmo</a></td><td>Move, rotate and scale gizmos</td><td>MIT</td></tr>
+        <tr><td><a href="https://github.com/nlohmann/json">nlohmann/json</a></td><td>glTF JSON and settings</td><td>MIT</td></tr>
+        <tr><td><a href="https://github.com/doctest/doctest">doctest</a></td><td>C++ tests</td><td>MIT</td></tr>
+        <tr><td><a href="https://rsms.me/inter/">Inter</a>, <a href="https://www.jetbrains.com/lp/mono/">JetBrains Mono</a>, <a href="https://fontawesome.com">Font Awesome Free</a></td><td>Fonts and icons</td><td>OFL</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="lead">Demo assets: <a href="https://kenney.nl">Kenney</a>, <a href="https://polyhaven.com">Poly Haven</a> and <a href="https://ambientcg.com">ambientCG</a> (CC0); the showcase car and scanned people come from <a href="https://www.blenderkit.com">BlenderKit</a>.</p>
+  </section>
+
+  <section id="start">
+    <p class="eyebrow">Get started</p>
+    <h2>Try it.</h2>
+    <p class="lead">Linux, with Docker or a C++17 toolchain. Every library is downloaded by CMake at a pinned version.</p>
+<pre class="start"><span class="m"># with Docker</span>
+docker compose run --rm test                           <span class="m"># build and run every test</span>
+xhost +local:docker &amp;&amp; docker compose run --rm editor  <span class="m"># open the editor</span>
+
+<span class="m"># natively</span>
+cmake -S . -B build -G Ninja &amp;&amp; cmake --build build
+./build/src/redgem                                     <span class="m"># project hub</span>
+./build/src/redgem new games/my_game --template platformer</pre>
+  </section>
+</div>
+
+<footer>
+  <div class="wrap">
+    <img src="assets/redgem-logo.svg" alt="RedGem 3D Engine">
+    <span>Model in Blender. Script in Ruby. Press Play.</span>
+  </div>
+</footer>
+</body>
+</html>
