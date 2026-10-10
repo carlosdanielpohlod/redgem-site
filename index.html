@@ -7,7 +7,7 @@
 <meta name="description" content="Make 3D games with Ruby, the most human-friendly language. Model in Blender, script in Ruby, press Play in the editor.">
 <meta property="og:title" content="RedGem 3D Engine">
 <meta property="og:description" content="Make 3D games with Ruby, the most human-friendly language.">
-<meta property="og:image" content="assets/shot-street.jpg">
+<meta property="og:image" content="assets/shot-editor.jpg">
 <link rel="icon" type="image/svg+xml" href="assets/redgem-mark.svg">
 <style>
   @font-face { font-family: "Inter"; src: url("assets/InterVariable.ttf") format("truetype"); font-weight: 100 900; font-display: swap; }
@@ -110,7 +110,8 @@
   .shots { display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); gap: 16px; margin-top: 36px; }
   .shots figure { margin: 0; border-radius: 14px; overflow: hidden; border: 1px solid var(--line); background: var(--panel); }
   .shots img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; }
-  .shots figcaption { padding: 10px 14px; color: var(--muted); font-size: 14px; }
+  .shots figcaption { padding: 12px 16px 14px; color: var(--muted); font-size: 14.5px; line-height: 1.5; }
+  .shots figcaption b { color: var(--paper); }
 
   .steps { counter-reset: step; display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; margin-top: 36px; }
   .steps div { counter-increment: step; padding: 24px; border-radius: 16px; border: 1px solid var(--line); background: var(--panel); }
@@ -142,6 +143,7 @@
     <a href="#"><img src="assets/redgem-logo.svg" alt="RedGem 3D Engine"></a>
     <nav>
       <a href="#ruby">Ruby</a>
+      <a href="#demos">Demos</a>
       <a href="#editor">Editor</a>
       <a href="#features">Features</a>
       <a href="#credits">Built with</a>
@@ -150,9 +152,9 @@
   </header>
 
   <div class="hero">
-    <h1>Make 3D games in <em>Ruby</em>.</h1>
+    <h1>Build 3D games in <em>Ruby</em>.</h1>
     <p class="claim">With Ruby, <b>the most human-friendly language</b>.</p>
-    <p>RedGem is a 3D engine with its own editor. Model in Blender, write behaviours in Ruby, press Play.</p>
+    <p>RedGem is a game engine with its own editor. Build your levels, write the gameplay in Ruby, press Play, ship a standalone game.</p>
     <div class="actions">
       <a class="button primary" href="#demo">Watch the demo</a>
       <a class="button" href="#start">Get started</a>
@@ -166,28 +168,34 @@
     <div class="split">
       <div>
         <p class="eyebrow">Scripting</p>
-        <h2>A behaviour is a Ruby class.</h2>
-        <p class="lead">No bindings to write, no build step. Save the file, press Play, and it runs on every object it is attached to.</p>
+        <h2>Your game is Ruby classes.</h2>
+        <p class="lead">Players, enemies, pickups, rules, HUD: each one is a behaviour you attach to objects. No bindings to write, no build step. Save the file and press Play.</p>
         <ul class="points">
-          <li><b>Lifecycle you already know:</b> <code>start</code>, <code>update</code>, <code>fixed_update</code>, triggers and collisions.</li>
+          <li><b>Everything gameplay needs:</b> input, physics, triggers and collisions, sound, on-screen text, loading levels, spawning objects.</li>
           <li><b>Scenes set up in Ruby:</b> one file says who drives, who walks and what spawns.</li>
           <li><b>No <code>require</code>:</b> a class loads the first time you use its name.</li>
           <li><b>Errors don't crash the game:</b> the failing behaviour is switched off and the backtrace goes to the console.</li>
         </ul>
       </div>
-<pre><span class="m"># scripts/coin.rb</span>
-<span class="k">class</span> <span class="c">Coin</span> &lt; <span class="c">Behaviour</span>
-  <span class="c">SPIN</span> = <span class="n">180.0</span>  <span class="m"># degrees per second</span>
+<pre><span class="m"># scripts/player.rb</span>
+<span class="k">class</span> <span class="c">Player</span> &lt; <span class="c">Behaviour</span>
+  <span class="c">SPEED</span> = <span class="n">6.0</span>
+  <span class="c">JUMP</span> = <span class="n">9.0</span>
 
   <span class="k">def</span> update(dt)
-    transform.rotate(<span class="c">Vector3</span>.new(<span class="n">0</span>, <span class="c">SPIN</span> * dt, <span class="n">0</span>))
+    move = <span class="c">Vector3</span>.new(<span class="c">Input</span>.axis(<span class="s">:horizontal</span>), <span class="n">0</span>,
+                       -<span class="c">Input</span>.axis(<span class="s">:vertical</span>))
+    character.move(move.normalized * <span class="c">SPEED</span>)
+    character.jump(<span class="c">JUMP</span>) <span class="k">if</span> <span class="c">Input</span>.action_pressed?(<span class="s">:jump</span>) &amp;&amp;
+                            character.grounded?
   <span class="k">end</span>
 
   <span class="k">def</span> on_trigger_enter(other)
-    <span class="k">return unless</span> other.get_component(<span class="c">Player</span>)
+    <span class="k">return unless</span> other.tag?(<span class="s">:coin</span>)
 
     <span class="c">Audio</span>.play(<span class="s">:coin</span>)
-    destroy
+    <span class="c">GameManager</span>.instance.collect_coin
+    other.destroy
   <span class="k">end</span>
 <span class="k">end</span></pre>
     </div>
@@ -197,24 +205,36 @@
     <div class="split">
 <pre><span class="m"># scripts/main_scene.rb</span>
 <span class="k">class</span> <span class="c">MainScene</span> &lt; <span class="c">SceneScript</span>
-  <span class="c">TRAFFIC</span> = { <span class="s">"TrafficBlue"</span> =&gt; <span class="n">10.0</span>, <span class="s">"TrafficGrey"</span> =&gt; <span class="n">7.0</span> }
+  <span class="c">SPEEDS</span> = { <span class="s">"Slime"</span> =&gt; <span class="n">1.5</span>, <span class="s">"Bat"</span> =&gt; <span class="n">4.0</span> }
 
   <span class="k">def</span> setup
-    car = find!(<span class="s">"Sedan"</span>)
-    car.add_component(<span class="c">ArcadeCar</span>, max_x: <span class="n">3.4</span>)
-    <span class="c">Camera</span>.main.add_component(<span class="c">ChaseCamera</span>, target: car)
+    find!(<span class="s">"Hero"</span>).add_component(<span class="c">Player</span>)
+    <span class="c">Camera</span>.main.add_component(<span class="c">CameraFollow</span>)
 
-    <span class="c">TRAFFIC</span>.each <span class="k">do</span> |name, speed|
-      find!(name).add_component(<span class="c">TrafficCar</span>, speed: speed)
+    <span class="c">SPEEDS</span>.each <span class="k">do</span> |name, speed|
+      enemy = find!(name)
+      enemy.add_component(<span class="c">Patrol</span>, speed: speed)
     <span class="k">end</span>
-    find_all(<span class="s">"walker"</span>).each { |w| w.add_component(<span class="c">Pedestrian</span>) }
+    find_all(<span class="s">:coin</span>).each { |c| c.add_component(<span class="c">Spin</span>) }
   <span class="k">end</span>
 <span class="k">end</span></pre>
       <div>
         <p class="eyebrow">Scenes</p>
-        <h2>Blender says what is there. Ruby says what it does.</h2>
-        <p class="lead">Scenes are plain glTF files exported from Blender. A scene script attaches behaviours, sets their parameters and spawns copies, so game logic stays in one language.</p>
+        <h2>The level says what is there. Ruby says what it does.</h2>
+        <p class="lead">Levels are plain glTF files, built in the editor or exported from Blender. A scene script attaches behaviours, sets their parameters and spawns copies, so the whole game stays in one language.</p>
       </div>
+    </div>
+  </section>
+
+  <section id="demos">
+    <p class="eyebrow">Made with RedGem</p>
+    <h2>One engine, different games.</h2>
+    <p class="lead">These demos ship with the engine, scripts and tests included. Each is a small game or scene built to exercise a different part of it.</p>
+    <div class="shots">
+      <figure><img src="assets/shot-platformer.jpg" alt="A third-person platformer with coins and floating platforms" loading="lazy"><figcaption><b>Platformer.</b> Run, jump, push crates, ride moving platforms, collect every coin and reach the flag.</figcaption></figure>
+      <figure><img src="assets/shot-racing.jpg" alt="A car on a track with a lap timer" loading="lazy"><figcaption><b>Time trial.</b> A car with real wheel physics, checkpoints in order, lap and best times.</figcaption></figure>
+      <figure><img src="assets/shot-city.jpg" alt="A low-poly crossroad with traffic" loading="lazy"><figcaption><b>City crossroad.</b> Cars that obey traffic lights and brake for each other.</figcaption></figure>
+      <figure><img src="assets/shot-drive.jpg" alt="Driving a red car through traffic on a detailed street" loading="lazy"><figcaption><b>Street at dusk.</b> A stress test for the renderer: drive through traffic, a crowd and falling leaves.</figcaption></figure>
     </div>
   </section>
 
@@ -223,10 +243,8 @@
     <h2>Build, script and play in one window.</h2>
     <p class="lead">Scene view with gizmos, hierarchy, inspector, Ruby tabs that split side by side, a console with backtraces, and a Play button that runs the game right where you are editing.</p>
     <div class="shots">
-      <figure><img src="assets/shot-editor.jpg" alt="The RedGem editor with a street scene and a Ruby script open" loading="lazy"><figcaption>The editor: scene, inspector and Ruby side by side</figcaption></figure>
-      <figure><img src="assets/shot-street.jpg" alt="A street at dusk rendered by RedGem" loading="lazy"><figcaption>The showcase street, running in real time</figcaption></figure>
-      <figure><img src="assets/shot-drive.jpg" alt="Driving a red car through traffic" loading="lazy"><figcaption>Traffic, parked cars and a crowd, all scripted in Ruby</figcaption></figure>
-      <figure><img src="assets/shot-crowd.jpg" alt="People walking on a sidewalk past shop fronts" loading="lazy"><figcaption>Animated characters, shop fronts, falling leaves</figcaption></figure>
+      <figure><img src="assets/shot-editor.jpg" alt="The RedGem editor with a scene and a Ruby script open" loading="lazy"><figcaption>Scene, inspector and Ruby side by side</figcaption></figure>
+      <figure><img src="assets/shot-play.jpg" alt="The game running inside the editor next to its code" loading="lazy"><figcaption>Press Play: the game runs where you edit it</figcaption></figure>
     </div>
   </section>
 
@@ -234,6 +252,7 @@
     <p class="eyebrow">Features</p>
     <h2>What is in the box.</h2>
     <div class="grid">
+      <div class="card"><h3>Gameplay</h3><p>Keyboard axes and actions, triggers and collisions, on-screen text, sound and music, level loading, spawning from templates.</p></div>
       <div class="card"><h3>Rendering</h3><p>PBR materials, sun shadows, reflections, ambient occlusion, bloom, fog and tone mapping.</p></div>
       <div class="card"><h3>Physics</h3><p>Rigid bodies, character controllers, vehicles with wheels, triggers and raycasts.</p></div>
       <div class="card"><h3>Animation</h3><p>Skeletal animation from glTF, GPU skinning, crowds of copies out of step with each other.</p></div>
