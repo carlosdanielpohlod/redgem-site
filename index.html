@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>RedGem 3D Engine</title>
-<meta name="description" content="A 3D game engine where games are written in Ruby. Model in Blender, script in Ruby, press Play in the editor.">
+<meta name="description" content="Make 3D games with Ruby, the most human-friendly language. Model in Blender, script in Ruby, press Play in the editor.">
 <meta property="og:title" content="RedGem 3D Engine">
-<meta property="og:description" content="A 3D game engine where games are written in Ruby.">
+<meta property="og:description" content="Make 3D games with Ruby, the most human-friendly language.">
 <meta property="og:image" content="assets/shot-street.jpg">
 <link rel="icon" type="image/svg+xml" href="assets/redgem-mark.svg">
 <style>
@@ -56,6 +56,15 @@
     text-wrap: balance;
   }
   .hero h1 em { font-style: normal; color: var(--ruby); }
+  .hero p.claim {
+    display: inline-block; margin: 30px auto 0; max-width: none; padding: 12px 26px; border-radius: 999px;
+    border: 1px solid rgba(240, 55, 92, 0.55); background: rgba(240, 55, 92, 0.12);
+    box-shadow: 0 0 40px rgba(240, 55, 92, 0.22); color: var(--paper);
+    font-size: clamp(20px, 2.9vw, 32px); font-weight: 600; letter-spacing: -0.02em; line-height: 1.25;
+  }
+  .hero p.claim b { font-weight: 800; background: linear-gradient(135deg, #ffd0d7, #ff8fa0 45%, #f0375c);
+                    -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .hero p.claim + p { display: block; }
   .hero p { margin: 26px auto 0; max-width: 46ch; color: var(--muted); font-size: 20px; text-wrap: balance; }
   .actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 34px; }
   .button {
@@ -142,6 +151,7 @@
 
   <div class="hero">
     <h1>Make 3D games in <em>Ruby</em>.</h1>
+    <p class="claim">With Ruby, <b>the most human-friendly language</b>.</p>
     <p>RedGem is a 3D engine with its own editor. Model in Blender, write behaviours in Ruby, press Play.</p>
     <div class="actions">
       <a class="button primary" href="#demo">Watch the demo</a>
@@ -287,7 +297,7 @@ cmake -S . -B build -G Ninja &amp;&amp; cmake --build build
 <footer>
   <div class="wrap">
     <img src="assets/redgem-logo.svg" alt="RedGem 3D Engine">
-    <span>Model in Blender. Script in Ruby. Press Play.</span>
+    <span>Made with Ruby, the most human-friendly language.</span>
   </div>
 </footer>
 </body>
