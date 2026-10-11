@@ -950,10 +950,10 @@ and cafe tables, a crowd on the sidewalks, potholes and falling leaves, made to 
 that happens in it is set up in <code>games/showcase/scripts/main_scene.rb</code>:</p>
 <div class="highlight"><pre><span></span><code>python3<span class="w"> </span>-I<span class="w"> </span>tools/assets/fetch_showcase.py<span class="w">      </span><span class="c1"># street: Poly Haven and ambientCG (CC0)</span>
 python3<span class="w"> </span>-I<span class="w"> </span>tools/assets/fetch_ad_assets.py<span class="w">     </span><span class="c1"># car and people: BlenderKit (see showcase/CREDITS.md)</span>
-<span class="nv">SHOWCASE_RENDER</span><span class="o">=</span><span class="m">0</span><span class="w"> </span><span class="nv">BLENDER_MEMORY_MAX</span><span class="o">=</span>6500M<span class="w"> </span>tools/blender/run.sh<span class="w"> </span>build_showcase.py<span class="w"> </span>showcase
+<span class="nv">SHOWCASE_RENDER</span><span class="o">=</span><span class="m">0</span><span class="w"> </span><span class="nv">BLENDER_MEMORY_MAX</span><span class="o">=</span>8500M<span class="w"> </span>tools/blender/run.sh<span class="w"> </span>build_showcase.py<span class="w"> </span>showcase
 ./build/src/redgem<span class="w"> </span>games/showcase<span class="w">           </span><span class="c1"># then Play: WASD drives, Space brakes</span>
 </code></pre></div>
-<p>The export needs about 4.5 GB of memory (close the editor first); without <code>SHOWCASE_RENDER=0</code> it
+<p>The export needs about 7 GB of memory (close the editor first); without <code>SHOWCASE_RENDER=0</code> it
 also renders <code>showcase/renders/ad.png</code> with Cycles, which needs an NVIDIA RTX card.
 <code>games/city</code> is rebuilt
 with <code>tools/assets/fetch_kenney.sh</code> and <code>tools/blender/run.sh build_city.py games/city</code>.</p>

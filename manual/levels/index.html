@@ -1030,7 +1030,9 @@ card it got. To choose: Edit &gt; Graphics Card in the editor (saved in
 variable, or <code>--gpu auto|dedicated|integrated</code> for one run. The command line wins over the
 environment, which wins over the saved setting.</p>
 <p><strong>Performance.</strong> Objects outside the view, and parts too small to see from where the camera is, are
-not drawn.</p>
+not drawn. What costs most is the number of separate objects on screen, more than their triangles:
+join the parts of a model that share a material, and give heavy models lighter versions for far
+away with <code>visible_from</code> and <code>visible_to</code>.</p>
 <h2 id="editing-the-level-in-blender">Editing the level in Blender<a class="headerlink" href="#editing-the-level-in-blender" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code>blender<span class="w"> </span>games/platformer/platformer.blend<span class="w">           </span><span class="c1"># edit, save</span>
 blender<span class="w"> </span>-b<span class="w"> </span>games/platformer/platformer.blend<span class="w"> </span><span class="se">\</span>
@@ -1092,6 +1094,11 @@ regenerates a whole level from code; <code>tools/blender/scene_kit.py</code> has
 <td><code>prefab</code></td>
 <td><code>true</code></td>
 <td>A template: hidden and inert in the game, copied by <code>Scene.spawn</code></td>
+</tr>
+<tr>
+<td><code>visible_from</code>, <code>visible_to</code></td>
+<td>meters</td>
+<td>The object is drawn only while that far from the camera: give a model a detailed version up close and a light one far away</td>
 </tr>
 <tr>
 <td><code>tint</code></td>
