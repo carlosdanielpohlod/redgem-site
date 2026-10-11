@@ -813,10 +813,11 @@
 <p><strong>Build</strong> in the editor's toolbar, or from a terminal:</p>
 <div class="highlight"><pre><span></span><code>./build/src/redgem<span class="w"> </span>build<span class="w"> </span>my_game<span class="w"> </span>dist/my_game
 </code></pre></div>
-<p>This makes a folder with the engine, your game and a <code>run.sh</code>. Whoever receives it runs
-<code>./run.sh</code>: they do not need RedGem, Ruby or Blender installed.</p>
+<p>This makes a folder with an executable named after your game (<code>dist/my_game/my_game</code>) and a
+<code>game/</code> folder with its files. Whoever receives the folder runs the executable: they do not need
+RedGem, Ruby or Blender installed.</p>
 <ul>
-<li>The build runs on Linux, like the engine.</li>
+<li>The executable runs on Linux, like the engine. It needs the <code>game/</code> folder next to it.</li>
 <li><code>game.json</code> sets the window title and size:</li>
 </ul>
 <div class="highlight"><pre><span></span><code><span class="p">{</span><span class="w"> </span><span class="nt">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"My Game"</span><span class="p">,</span><span class="w"> </span><span class="nt">"window_width"</span><span class="p">:</span><span class="w"> </span><span class="mi">1280</span><span class="p">,</span><span class="w"> </span><span class="nt">"window_height"</span><span class="p">:</span><span class="w"> </span><span class="mi">720</span><span class="w"> </span><span class="p">}</span>
