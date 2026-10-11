@@ -691,6 +691,24 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Building and sharing
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -707,6 +725,36 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#for-windows" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        For Windows
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -794,6 +842,25 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#for-windows" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        For Windows
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -816,8 +883,19 @@
 <p>This makes a folder with an executable named after your game (<code>dist/my_game/my_game</code>) and a
 <code>game/</code> folder with its files. Whoever receives the folder runs the executable: they do not need
 RedGem, Ruby or Blender installed.</p>
+<h2 id="for-windows">For Windows<a class="headerlink" href="#for-windows" title="Permanent link">&para;</a></h2>
+<p>RedGem runs on Linux, and builds games for Linux and for Windows. In the editor, <strong>Build</strong> asks
+which one; from a terminal:</p>
+<div class="highlight"><pre><span></span><code>tools/windows/build_runtime.sh<span class="w">                                   </span><span class="c1"># once: builds the engine for Windows</span>
+./build/src/redgem<span class="w"> </span>build<span class="w"> </span>my_game<span class="w"> </span>dist/my_game_win<span class="w"> </span>--target<span class="w"> </span>windows
+</code></pre></div>
+<p>The first command downloads a Windows compiler into the project (no administrator rights
+needed) and builds <code>redgem.exe</code>; it takes a few minutes and is only needed once, or again after
+updating RedGem. The build then makes <code>dist/my_game_win/my_game.exe</code> next to its <code>game/</code> folder.
+It needs 64-bit Windows 10 or later and a graphics card with OpenGL 3.3; nothing has to be
+installed with it.</p>
 <ul>
-<li>The executable runs on Linux, like the engine. It needs the <code>game/</code> folder next to it.</li>
+<li>The executable needs the <code>game/</code> folder next to it.</li>
 <li><code>game.json</code> sets the window title and size:</li>
 </ul>
 <div class="highlight"><pre><span></span><code><span class="p">{</span><span class="w"> </span><span class="nt">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"My Game"</span><span class="p">,</span><span class="w"> </span><span class="nt">"window_width"</span><span class="p">:</span><span class="w"> </span><span class="mi">1280</span><span class="p">,</span><span class="w"> </span><span class="nt">"window_height"</span><span class="p">:</span><span class="w"> </span><span class="mi">720</span><span class="w"> </span><span class="p">}</span>
