@@ -1,0 +1,1216 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="The manual of RedGem, a 3D game engine where games are written in Ruby.">
+      
+      
+      
+      
+        <link rel="prev" href="../editor/">
+      
+      
+        <link rel="next" href="../scripting/behaviours/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/redgem-mark.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Levels, lighting and Blender - RedGem 3D Engine</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+    
+    
+      <link rel="stylesheet" href="../assets/manual.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#levels-lighting-and-blender" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="RedGem 3D Engine" class="md-header__button md-logo" aria-label="RedGem 3D Engine" data-md-component="logo">
+      
+  <img src="../assets/redgem-mark.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            RedGem 3D Engine
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Levels, lighting and Blender
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="RedGem 3D Engine" class="md-nav__button md-logo" aria-label="RedGem 3D Engine" data-md-component="logo">
+      
+  <img src="../assets/redgem-mark.svg" alt="logo">
+
+    </a>
+    RedGem 3D Engine
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../install/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Install
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../first-game/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Your first game
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Using the editor
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Using the editor
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../editor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The editor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Levels, lighting and Blender
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Levels, lighting and Blender
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#how-a-scene-is-made" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How a scene is made
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#look-of-a-scene-environment-lights-and-effects" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Look of a scene: environment, lights and effects
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#editing-the-level-in-blender" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Editing the level in Blender
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Editing the level in Blender">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#custom-properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Custom properties
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scripting in Ruby
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Scripting in Ruby
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripting/behaviours/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Behaviours
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripting/gameplay/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Gameplay recipes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripting/api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Finishing a game
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Finishing a game
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../testing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing your game
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../shipping/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Building and sharing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Limits and troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Working on the engine
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#how-a-scene-is-made" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How a scene is made
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#look-of-a-scene-environment-lights-and-effects" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Look of a scene: environment, lights and effects
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#editing-the-level-in-blender" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Editing the level in Blender
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Editing the level in Blender">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#custom-properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Custom properties
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="levels-lighting-and-blender">Levels, lighting and Blender<a class="headerlink" href="#levels-lighting-and-blender" title="Permanent link">&para;</a></h1>
+<h2 id="how-a-scene-is-made">How a scene is made<a class="headerlink" href="#how-a-scene-is-made" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Model the level in Blender. Gameplay is configured with <strong>custom properties</strong>
+   (<em>Object Properties → Custom Properties</em>), e.g. <code>script = "coin.rb"</code>, <code>trigger = true</code>.</li>
+<li>Export to <code>scene.glb</code> (glTF binary). The exporter writes custom properties to each node's <code>extras</code>.</li>
+<li>The runtime loads the <code>.glb</code> with cgltf, reads the extras, builds physics bodies and instantiates
+   the Ruby class named after each script (<code>camera_follow.rb</code> → <code>CameraFollow</code>).</li>
+</ol>
+<p>A game is just a folder:</p>
+<div class="highlight"><pre><span></span><code>games/platformer/
+  scene.glb          # exported from Blender
+  platformer.blend   # the editable source
+  scripts/*.rb       # behaviours
+</code></pre></div>
+<h2 id="look-of-a-scene-environment-lights-and-effects">Look of a scene: environment, lights and effects<a class="headerlink" href="#look-of-a-scene-environment-lights-and-effects" title="Permanent link">&para;</a></h2>
+<p>Scenes are drawn in HDR and finished with bloom (bright things glow), filmic tone mapping, a
+vignette and anti-aliasing. One object with the property <code>environment = true</code> (GameObject &gt;
+Environment in the editor, or a Blender empty) sets the mood through its properties:</p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sky_top</code>, <code>sky_horizon</code>, <code>ground_color</code></td>
+<td>colors of the sky gradient, as <code>#rrggbb</code>; they also light the scene</td>
+</tr>
+<tr>
+<td><code>fog_color</code>, <code>fog_density</code></td>
+<td>distance fog (it follows the horizon color unless given its own)</td>
+</tr>
+<tr>
+<td><code>ambient</code>, <code>exposure</code></td>
+<td>strength of the sky's light, overall brightness</td>
+</tr>
+<tr>
+<td><code>bloom</code>, <code>vignette</code>, <code>sun_glow</code></td>
+<td>glow around bright things, dark corners, the sun's disc and halo (0 turns each off)</td>
+</tr>
+<tr>
+<td><code>wind</code></td>
+<td>how much foliage sways</td>
+</tr>
+<tr>
+<td><code>shadows</code></td>
+<td>darkness of the sun's shadows (0 = none, 1 = full)</td>
+</tr>
+<tr>
+<td><code>ambient_occlusion</code></td>
+<td>darkening of creases and contact areas (0 = none, 1 = full)</td>
+</tr>
+</tbody>
+</table>
+<p>Without one, scenes get a clear day. Other things worth knowing: the 16 point lights nearest to the
+camera are used each frame (so a street can have dozens of lamps); the sun casts soft shadows
+around the camera; materials use their glTF normal, roughness/metallic, occlusion and emission
+textures; and textured materials with transparency are cut out by their alpha and sway with the
+wind (leaves, fences).</p>
+<p>Glossy surfaces reflect their surroundings: the engine keeps capturing the scene around the camera
+(one cube face per frame) and uses it for reflections and ambient light.</p>
+<p><strong>Animated characters.</strong> glTF skeletons and animations are supported: skinned meshes are deformed on
+the GPU (up to 64 bones per skeleton, 4 per vertex) and every animation in the scene plays in a
+loop. The editor keeps skeletons and animations when saving, reordering or importing models.
+<code>tools/blender/walk_rig.py</code> gives a scanned standing person leg bones and a walk cycle.</p>
+<p><strong>Per-object color.</strong> The property <code>tint = "#rrggbb"</code> multiplies the colors of an object's mesh, so
+copies sharing one mesh (cars, crates) can each have their own color.</p>
+<p><strong>Graphics card.</strong> On laptops with two cards the engine asks for the dedicated one and logs which
+card it got. To choose: Edit &gt; Graphics Card in the editor (saved in
+<code>~/.config/redgem/settings.json</code>, used from the next start), the <code>REDGEM_GPU</code> environment
+variable, or <code>--gpu auto|dedicated|integrated</code> for one run. The command line wins over the
+environment, which wins over the saved setting.</p>
+<p><strong>Performance.</strong> Objects outside the view, and parts too small to see from where the camera is, are
+not drawn.</p>
+<h2 id="editing-the-level-in-blender">Editing the level in Blender<a class="headerlink" href="#editing-the-level-in-blender" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>blender<span class="w"> </span>games/platformer/platformer.blend<span class="w">           </span><span class="c1"># edit, save</span>
+blender<span class="w"> </span>-b<span class="w"> </span>games/platformer/platformer.blend<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--python<span class="w"> </span>tools/blender/export_scene.py<span class="w"> </span>--<span class="w"> </span>games/platformer/scene.glb
+</code></pre></div>
+<p><code>tools/blender/run.sh build_platformer.py games/platformer</code> (or <code>build_driving.py games/driving</code>)
+regenerates a whole level from code; <code>tools/blender/scene_kit.py</code> has helpers to build levels with <code>bpy</code>.</p>
+<h3 id="custom-properties">Custom properties<a class="headerlink" href="#custom-properties" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Values</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>script</code></td>
+<td><code>"player.rb"</code> or <code>"a.rb, b.rb"</code></td>
+<td>Behaviours to attach, loaded from <code>scripts/</code></td>
+</tr>
+<tr>
+<td><code>body</code></td>
+<td><code>static</code>, <code>dynamic</code>, <code>kinematic</code>, <code>character</code>, <code>vehicle</code></td>
+<td>Physics body (characters use Jolt's <code>CharacterVirtual</code>, vehicles its <code>VehicleConstraint</code>)</td>
+</tr>
+<tr>
+<td><code>wheel</code></td>
+<td><code>true</code></td>
+<td>On a child of a <code>vehicle</code>: it becomes a wheel (model it with its axle along X)</td>
+</tr>
+<tr>
+<td><code>collider</code></td>
+<td><code>box</code>, <code>sphere</code>, <code>capsule</code>, <code>mesh</code></td>
+<td>Shape, sized from the mesh bounds × object scale. <code>collider</code> alone = static body</td>
+</tr>
+<tr>
+<td><code>trigger</code></td>
+<td><code>true</code></td>
+<td>Trigger volume: fires <code>on_trigger_enter/exit</code>, does not collide</td>
+</tr>
+<tr>
+<td><code>mass</code></td>
+<td>number</td>
+<td>Mass of dynamic bodies</td>
+</tr>
+<tr>
+<td><code>tag</code></td>
+<td>string</td>
+<td>Used by <code>Scene.find_all(tag)</code> and <code>game_object.tag?</code></td>
+</tr>
+<tr>
+<td><code>visible</code></td>
+<td><code>false</code></td>
+<td>Hide the mesh (the object still exists)</td>
+</tr>
+<tr>
+<td><code>prefab</code></td>
+<td><code>true</code></td>
+<td>A template: hidden and inert in the game, copied by <code>Scene.spawn</code></td>
+</tr>
+<tr>
+<td><code>tint</code></td>
+<td><code>"#rrggbb"</code></td>
+<td>Multiplies the colors of this object's mesh (copies sharing a mesh can differ)</td>
+</tr>
+<tr>
+<td><code>environment</code></td>
+<td><code>true</code></td>
+<td>This object's properties set the sky, fog and effects (see "Look of a scene")</td>
+</tr>
+<tr>
+<td>anything</td>
+<td>number / string / bool</td>
+<td>Available in Ruby as <code>props[:name]</code> / <code>prop(:name, default)</code></td>
+</tr>
+</tbody>
+</table>
+<p>Cameras and lights (sun, point) are taken from the Blender scene. Spot lights are loaded but lit
+like point lights (in every direction). Parenting is preserved.</p>
+<p><strong>Vehicles.</strong> Give the chassis <code>body = "vehicle"</code> and parent the wheel meshes to it with <code>wheel = true</code>.
+Wheels in front of the center (Blender <code>+Y</code>) steer, the rear ones get the hand brake, and every axle
+is driven. Wheel radius and width come from the wheel mesh. See <code>tools/blender/build_driving.py</code>.
+Blender is Z-up; the engine is Y-up like glTF: Blender <code>(x, y, z)</code> is engine <code>(x, z, -y)</code>
+(<code>Vector3.blender(x, y, z)</code> does the conversion). Forward is <code>-Z</code> (Blender <code>+Y</code>).</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../editor/" class="md-footer__link md-footer__link--prev" aria-label="Previous: The editor">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                The editor
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../scripting/behaviours/" class="md-footer__link md-footer__link--next" aria-label="Next: Behaviours">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Behaviours
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.footer", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

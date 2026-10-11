@@ -1,0 +1,1100 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="The manual of RedGem, a 3D game engine where games are written in Ruby.">
+      
+      
+      
+      
+        <link rel="prev" href="../troubleshooting/">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/redgem-mark.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Working on the engine - RedGem 3D Engine</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+    
+    
+      <link rel="stylesheet" href="../assets/manual.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#working-on-the-engine" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="RedGem 3D Engine" class="md-header__button md-logo" aria-label="RedGem 3D Engine" data-md-component="logo">
+      
+  <img src="../assets/redgem-mark.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            RedGem 3D Engine
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Working on the engine
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="RedGem 3D Engine" class="md-nav__button md-logo" aria-label="RedGem 3D Engine" data-md-component="logo">
+      
+  <img src="../assets/redgem-mark.svg" alt="logo">
+
+    </a>
+    RedGem 3D Engine
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../install/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Install
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../first-game/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Your first game
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Using the editor
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Using the editor
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../editor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The editor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../levels/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Levels, lighting and Blender
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scripting in Ruby
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Scripting in Ruby
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripting/behaviours/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Behaviours
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripting/gameplay/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Gameplay recipes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripting/api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Finishing a game
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Finishing a game
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../testing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing your game
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../shipping/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Building and sharing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Limits and troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Working on the engine
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Working on the engine
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#demos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demos
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tests
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#layout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Layout
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#not-there-yet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Not there yet
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#demos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Demos
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tests
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#layout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Layout
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#not-there-yet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Not there yet
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="working-on-the-engine">Working on the engine<a class="headerlink" href="#working-on-the-engine" title="Permanent link">&para;</a></h1>
+<p>For people changing RedGem itself. To make games with it, the rest of this manual is enough.</p>
+<h2 id="demos">Demos<a class="headerlink" href="#demos" title="Permanent link">&para;</a></h2>
+<p>Demos: <code>games/city</code> (a crossroad with Ruby-driven traffic: lights, braking, spinning wheels; Kenney
+CC0 models), <code>games/platformer</code> (WASD/arrows, Space jumps: grab 5 coins, reach the flag) and
+<code>games/driving</code> (W/S throttle, A/D steer, Space hand brake, R reset: drive laps).</p>
+<p><strong>Showcase</strong> (<code>games/showcase</code>, not committed: it is built from downloaded assets). A street at
+dusk with a drivable car, traffic that keeps its distance and overtakes, parked cars, shop fronts
+and cafe tables, a crowd on the sidewalks, potholes and falling leaves, made to push the renderer. Blender only builds the scene; everything
+that happens in it is set up in <code>games/showcase/scripts/main_scene.rb</code>:</p>
+<div class="highlight"><pre><span></span><code>python3<span class="w"> </span>-I<span class="w"> </span>tools/assets/fetch_showcase.py<span class="w">      </span><span class="c1"># street: Poly Haven and ambientCG (CC0)</span>
+python3<span class="w"> </span>-I<span class="w"> </span>tools/assets/fetch_ad_assets.py<span class="w">     </span><span class="c1"># car and people: BlenderKit (see showcase/CREDITS.md)</span>
+<span class="nv">SHOWCASE_RENDER</span><span class="o">=</span><span class="m">0</span><span class="w"> </span><span class="nv">BLENDER_MEMORY_MAX</span><span class="o">=</span>6500M<span class="w"> </span>tools/blender/run.sh<span class="w"> </span>build_showcase.py<span class="w"> </span>showcase
+./build/src/redgem<span class="w"> </span>games/showcase<span class="w">           </span><span class="c1"># then Play: WASD drives, Space brakes</span>
+</code></pre></div>
+<p>The export needs about 4.5 GB of memory (close the editor first); without <code>SHOWCASE_RENDER=0</code> it
+also renders <code>showcase/renders/ad.png</code> with Cycles, which needs an NVIDIA RTX card.
+<code>games/city</code> is rebuilt
+with <code>tools/assets/fetch_kenney.sh</code> and <code>tools/blender/run.sh build_city.py games/city</code>.</p>
+<h2 id="tests">Tests<a class="headerlink" href="#tests" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>build<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>ctest<span class="w"> </span>--output-on-failure<span class="w">        </span><span class="c1"># everything</span>
+ctest<span class="w"> </span>-L<span class="w"> </span>system<span class="w">                              </span><span class="c1"># only the system tests</span>
+</code></pre></div>
+<p>A system test is a Ruby file run against a game:
+<code>redgem &lt;game_dir&gt; --test &lt;file.rb&gt; [--screenshots &lt;dir&gt;] [--headless]</code> (<code>--headless</code> runs
+without a window; <code>redgem --help</code> lists every option).</p>
+<ul>
+<li><strong>C++ unit + integration</strong> (doctest): math, extras parser, glTF loading from Blender fixtures,
+  scene hierarchy, physics world, Ruby VM, and a headless engine running the <code>sandbox</code> fixture game.</li>
+<li><strong>Ruby tests</strong> run inside the engine's mruby: <code>redgem --ruby-test tests/ruby/vector3_test.rb</code>.</li>
+<li><strong>Editor system test</strong> (<code>tests/editor_system/</code>) opens the editor window on a copy of the platformer,
+  picks, edits, plays, stops, undoes and saves.</li>
+<li><strong>System tests</strong> (<code>tests/system/&lt;game&gt;/*_test.rb</code>, run against <code>games/&lt;game&gt;</code>) open the real game
+  window and drive it frame by frame with simulated input:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="no">SystemTest</span><span class="o">.</span><span class="n">define</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="o">|</span><span class="n">t</span><span class="o">|</span>
+<span class="w">  </span><span class="n">t</span><span class="o">.</span><span class="n">hold</span><span class="p">(</span><span class="ss">:w</span><span class="p">,</span><span class="w"> </span><span class="ss">frames</span><span class="p">:</span><span class="w"> </span><span class="mi">60</span><span class="p">)</span>
+<span class="w">  </span><span class="n">t</span><span class="o">.</span><span class="n">wait_until</span><span class="p">(</span><span class="ss">frames</span><span class="p">:</span><span class="w"> </span><span class="mi">30</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="no">Scene</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"Coin1"</span><span class="p">)</span><span class="o">.</span><span class="n">nil?</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span><span class="n">t</span><span class="o">.</span><span class="n">assert</span><span class="p">(</span><span class="s2">"score counts the coin"</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="no">GameManager</span><span class="o">.</span><span class="n">instance</span><span class="o">.</span><span class="n">coins</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span><span class="n">t</span><span class="o">.</span><span class="n">screenshot</span><span class="p">(</span><span class="s2">"collect_coin_after"</span><span class="p">)</span><span class="w">        </span><span class="c1"># saved to build/screenshots/&lt;game&gt;/</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>Test fixtures are regenerated with
+<code>tools/blender/run.sh build_test_fixtures.py tests/fixtures</code>.</p>
+<h2 id="layout">Layout<a class="headerlink" href="#layout" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>src/core      constants (config.hpp), math, logging, fixed timestep clock
+src/scene     glTF loader (meshes, skeletons, animations), Blender extras parser, scene graph,
+              animation playback
+src/physics   PhysicsWorld interface + Jolt implementation
+src/input     keys, axes/actions, keyboard and scripted input sources
+src/audio     sound effects and music (raylib, or a recorder for tests)
+src/script    mruby VM, behaviour host, native bindings
+src/render    renderer (HDR, shadows, reflections, post-processing), shaders, environment,
+              culling, graphics card choice, mesh conversion
+src/editor    editor: scene document (undo, save, import), session (play mode), camera, picking,
+              project hub, script tabs, ImGui panels and theme (src/editor/ui)
+src/app       engine loop, game projects (templates, build, recent games), user settings and
+              command line
+ruby/engine   Ruby prelude embedded in the binary (Behaviour, Vector3, test DSLs)
+templates     scripts of the new-game templates (embedded in the binary)
+assets/editor fonts of the editor (Inter, JetBrains Mono; SIL Open Font License, see the license files)
+games         demo games: scene.glb, scripts and the .blend each scene was built from
+showcase      renders of the showcase scene and the credits of its assets
+tools/blender scene builders (run with tools/blender/run.sh), walk_rig.py
+tools/assets  downloaders of the free assets the demos use
+tests         unit, integration, Ruby and system tests, with their fixtures
+cmake         dependencies (pinned versions) and file embedding
+</code></pre></div>
+<h2 id="not-there-yet">Not there yet<a class="headerlink" href="#not-there-yet" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Choosing which animation plays: every animation in a scene loops at once (fine for one clip per
+  character). Characters copied with Duplicate in the editor keep the pose they were copied in.</li>
+<li>Spot light cones, and camera clip planes from the scene (the engine uses fixed ones).</li>
+<li>Reusing data when the same model is imported twice, and dropping the data of deleted imports
+  from <code>scene.glb</code> (each import appends its meshes and textures).</li>
+<li>Mirrored objects (negative scale) are drawn inside out.</li>
+<li>More vehicle options from Blender properties (drive layout, engine torque); hot reload of
+  scripts while playing.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../troubleshooting/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Limits and troubleshooting">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Limits and troubleshooting
+              </div>
+            </div>
+          </a>
+        
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.footer", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,1312 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="The manual of RedGem, a 3D game engine where games are written in Ruby.">
+      
+      
+      
+      
+        <link rel="prev" href="../behaviours/">
+      
+      
+        <link rel="next" href="../api/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/redgem-mark.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Gameplay recipes - RedGem 3D Engine</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/manual.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#gameplay-recipes" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="RedGem 3D Engine" class="md-header__button md-logo" aria-label="RedGem 3D Engine" data-md-component="logo">
+      
+  <img src="../../assets/redgem-mark.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            RedGem 3D Engine
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Gameplay recipes
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="RedGem 3D Engine" class="md-nav__button md-logo" aria-label="RedGem 3D Engine" data-md-component="logo">
+      
+  <img src="../../assets/redgem-mark.svg" alt="logo">
+
+    </a>
+    RedGem 3D Engine
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../install/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Install
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../first-game/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Your first game
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Using the editor
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Using the editor
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../editor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The editor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../levels/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Levels, lighting and Blender
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scripting in Ruby
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Scripting in Ruby
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../behaviours/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Behaviours
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Gameplay recipes
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Gameplay recipes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#read-the-keyboard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Read the keyboard
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#move-a-character" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Move a character
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#push-things-around" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Push things around
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#drive-a-car" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Drive a car
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pickups-and-zones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pickups and zones
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#spawn-objects" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Spawn objects
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#look-ahead-with-a-ray" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Look ahead with a ray
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#show-text-on-screen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Show text on screen
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#play-sounds-and-music" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Play sounds and music
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#change-level" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Change level
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#keep-score-across-objects" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Keep score across objects
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#time" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Time
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Finishing a game
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Finishing a game
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../testing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing your game
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../shipping/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Building and sharing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Limits and troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Working on the engine
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#read-the-keyboard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Read the keyboard
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#move-a-character" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Move a character
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#push-things-around" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Push things around
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#drive-a-car" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Drive a car
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pickups-and-zones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pickups and zones
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#spawn-objects" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Spawn objects
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#look-ahead-with-a-ray" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Look ahead with a ray
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#show-text-on-screen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Show text on screen
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#play-sounds-and-music" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Play sounds and music
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#change-level" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Change level
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#keep-score-across-objects" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Keep score across objects
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#time" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Time
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="gameplay-recipes">Gameplay recipes<a class="headerlink" href="#gameplay-recipes" title="Permanent link">&para;</a></h1>
+<p>Short answers to "how do I...". Each snippet goes inside a behaviour.</p>
+<h2 id="read-the-keyboard">Read the keyboard<a class="headerlink" href="#read-the-keyboard" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="no">Input</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="ss">:horizontal</span><span class="p">)</span><span class="w">        </span><span class="c1"># -1..1: A/D or left/right arrows</span>
+<span class="no">Input</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="ss">:vertical</span><span class="p">)</span><span class="w">          </span><span class="c1"># -1..1: S/W or down/up arrows</span>
+<span class="no">Input</span><span class="o">.</span><span class="n">action_pressed?</span><span class="p">(</span><span class="ss">:jump</span><span class="p">)</span><span class="w">   </span><span class="c1"># true on the frame Space goes down</span>
+<span class="no">Input</span><span class="o">.</span><span class="n">action?</span><span class="p">(</span><span class="ss">:run</span><span class="p">)</span><span class="w">            </span><span class="c1"># true while Left Shift is held</span>
+<span class="no">Input</span><span class="o">.</span><span class="n">down?</span><span class="p">(</span><span class="ss">:e</span><span class="p">)</span><span class="w">                </span><span class="c1"># any key: held</span>
+<span class="no">Input</span><span class="o">.</span><span class="n">pressed?</span><span class="p">(</span><span class="ss">:e</span><span class="p">)</span><span class="w">             </span><span class="c1"># any key: went down this frame</span>
+</code></pre></div>
+<p>Built-in actions: <code>:jump</code> (Space), <code>:fire</code> (Left Ctrl or Enter), <code>:run</code> (Left Shift).</p>
+<h2 id="move-a-character">Move a character<a class="headerlink" href="#move-a-character" title="Permanent link">&para;</a></h2>
+<p>Give the object a <strong>character</strong> body: set <em>Body</em> in the Inspector's <strong>Physics</strong> card (objects made
+in the editor already have one), or use <em>Add Component &gt; Physics body</em> on an object without
+physics. A character walks on floors, climbs slopes and is stopped by walls.</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="n">_dt</span><span class="p">)</span>
+<span class="w">  </span><span class="n">direction</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">Vector3</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="no">Input</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="ss">:horizontal</span><span class="p">),</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="no">Input</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="ss">:vertical</span><span class="p">))</span><span class="o">.</span><span class="n">normalized</span>
+<span class="w">  </span><span class="n">character</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">direction</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">6</span><span class="o">.</span><span class="mi">0</span><span class="p">)</span><span class="w">                                    </span><span class="c1"># meters per second</span>
+<span class="w">  </span><span class="n">character</span><span class="o">.</span><span class="n">jump</span><span class="p">(</span><span class="mi">9</span><span class="o">.</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="no">Input</span><span class="o">.</span><span class="n">action_pressed?</span><span class="p">(</span><span class="ss">:jump</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">character</span><span class="o">.</span><span class="n">grounded?</span>
+<span class="k">end</span>
+</code></pre></div>
+<h2 id="push-things-around">Push things around<a class="headerlink" href="#push-things-around" title="Permanent link">&para;</a></h2>
+<p>A <strong>dynamic</strong> body falls, rolls and gets pushed. From a script:</p>
+<div class="highlight"><pre><span></span><code><span class="n">rigidbody</span><span class="o">.</span><span class="n">add_impulse</span><span class="p">(</span><span class="no">Vector3</span><span class="o">.</span><span class="n">up</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">5</span><span class="o">.</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">rigidbody</span><span class="o">.</span><span class="n">velocity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">Vector3</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">10</span><span class="p">)</span>
+</code></pre></div>
+<p>A <strong>kinematic</strong> body is moved by your script (set <code>transform.position</code>) and carries what stands
+on it: platforms, lifts, doors.</p>
+<h2 id="drive-a-car">Drive a car<a class="headerlink" href="#drive-a-car" title="Permanent link">&para;</a></h2>
+<p>Give the chassis a <strong>vehicle</strong> body and mark its wheel children with <code>wheel = true</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">fixed_update</span><span class="p">(</span><span class="n">_dt</span><span class="p">)</span>
+<span class="w">  </span><span class="n">vehicle</span><span class="o">.</span><span class="n">drive</span><span class="p">(</span><span class="ss">throttle</span><span class="p">:</span><span class="w"> </span><span class="no">Input</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="ss">:vertical</span><span class="p">),</span><span class="w"> </span><span class="ss">steering</span><span class="p">:</span><span class="w"> </span><span class="no">Input</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="ss">:horizontal</span><span class="p">),</span>
+<span class="w">                </span><span class="ss">handbrake</span><span class="p">:</span><span class="w"> </span><span class="no">Input</span><span class="o">.</span><span class="n">down?</span><span class="p">(</span><span class="ss">:space</span><span class="p">)</span><span class="w"> </span><span class="p">?</span><span class="w"> </span><span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="o">.</span><span class="mi">0</span><span class="p">)</span>
+<span class="k">end</span>
+</code></pre></div>
+<p><code>vehicle.speed</code> is in meters per second, negative in reverse.</p>
+<h2 id="pickups-and-zones">Pickups and zones<a class="headerlink" href="#pickups-and-zones" title="Permanent link">&para;</a></h2>
+<p>Tick <strong>Trigger</strong> in the object's Physics card (it stops being solid) and react when something
+enters:</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Coin</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="no">Behaviour</span>
+<span class="w">  </span><span class="k">def</span><span class="w"> </span><span class="nf">on_trigger_enter</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="k">unless</span><span class="w"> </span><span class="n">other</span><span class="o">.</span><span class="n">get_component</span><span class="p">(</span><span class="no">Player</span><span class="p">)</span>
+
+<span class="w">    </span><span class="no">Audio</span><span class="o">.</span><span class="n">play</span><span class="p">(</span><span class="ss">:coin</span><span class="p">)</span>
+<span class="w">    </span><span class="n">destroy</span>
+<span class="w">  </span><span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>Only moving things (characters, dynamic and kinematic bodies) set triggers off.</p>
+<h2 id="spawn-objects">Spawn objects<a class="headerlink" href="#spawn-objects" title="Permanent link">&para;</a></h2>
+<p>Mark an object as a <strong>Template</strong> in the Inspector (<code>prefab = true</code>). It disappears from the game
+and becomes something to copy:</p>
+<div class="highlight"><pre><span></span><code><span class="n">bullet</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">Scene</span><span class="o">.</span><span class="n">spawn</span><span class="p">(</span><span class="s2">"Bullet"</span><span class="p">,</span><span class="w"> </span><span class="ss">position</span><span class="p">:</span><span class="w"> </span><span class="n">transform</span><span class="o">.</span><span class="n">position</span><span class="p">,</span><span class="w"> </span><span class="ss">rotation</span><span class="p">:</span><span class="w"> </span><span class="n">transform</span><span class="o">.</span><span class="n">rotation</span><span class="p">)</span>
+<span class="n">bullet</span><span class="o">.</span><span class="n">add_component</span><span class="p">(</span><span class="no">Bullet</span><span class="p">,</span><span class="w"> </span><span class="ss">speed</span><span class="p">:</span><span class="w"> </span><span class="mi">30</span><span class="o">.</span><span class="mi">0</span><span class="p">)</span>
+</code></pre></div>
+<p>The copy comes with the template's physics and scripts.</p>
+<h2 id="look-ahead-with-a-ray">Look ahead with a ray<a class="headerlink" href="#look-ahead-with-a-ray" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="n">hit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">Physics</span><span class="o">.</span><span class="n">raycast</span><span class="p">(</span><span class="n">transform</span><span class="o">.</span><span class="n">position</span><span class="p">,</span><span class="w"> </span><span class="n">transform</span><span class="o">.</span><span class="n">forward</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="o">.</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">game_object</span><span class="p">)</span>
+<span class="no">Debug</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">"I see </span><span class="si">#{</span><span class="n">hit</span><span class="o">[</span><span class="ss">:object</span><span class="o">].</span><span class="n">name</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="n">hit</span><span class="o">[</span><span class="ss">:distance</span><span class="o">]</span><span class="si">}</span><span class="s2"> m away"</span><span class="p">)</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">hit</span>
+</code></pre></div>
+<p>The last argument is an object the ray ignores (usually the one casting it).</p>
+<h2 id="show-text-on-screen">Show text on screen<a class="headerlink" href="#show-text-on-screen" title="Permanent link">&para;</a></h2>
+<p>Call it every frame from <code>update</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="no">UI</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="s2">"Coins </span><span class="si">#{</span><span class="vi">@coins</span><span class="si">}</span><span class="s2">/</span><span class="si">#{</span><span class="vi">@total</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span><span class="w"> </span><span class="ss">x</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="ss">y</span><span class="p">:</span><span class="w"> </span><span class="mi">40</span><span class="p">,</span><span class="w"> </span><span class="ss">size</span><span class="p">:</span><span class="w"> </span><span class="mi">28</span><span class="p">,</span><span class="w"> </span><span class="ss">color</span><span class="p">:</span><span class="w"> </span><span class="ss">:gold</span><span class="p">)</span>
+</code></pre></div>
+<p>Colors: <code>:white</code>, <code>:black</code>, <code>:red</code>, <code>:green</code>, <code>:blue</code>, <code>:yellow</code>, <code>:gold</code>, <code>:orange</code>, <code>:gray</code>, or
+<code>[r, g, b]</code>.</p>
+<h2 id="play-sounds-and-music">Play sounds and music<a class="headerlink" href="#play-sounds-and-music" title="Permanent link">&para;</a></h2>
+<p>Files go in the game's <code>sounds/</code> folder.</p>
+<div class="highlight"><pre><span></span><code><span class="no">Audio</span><span class="o">.</span><span class="n">play</span><span class="p">(</span><span class="ss">:jump</span><span class="p">)</span><span class="w">                      </span><span class="c1"># sounds/jump.wav (or .ogg, .mp3, .flac)</span>
+<span class="no">Audio</span><span class="o">.</span><span class="n">play</span><span class="p">(</span><span class="ss">:hit</span><span class="p">,</span><span class="w"> </span><span class="ss">volume</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="o">.</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="ss">pitch</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="o">.</span><span class="mi">2</span><span class="p">)</span>
+<span class="no">Audio</span><span class="o">.</span><span class="n">music</span><span class="p">(</span><span class="ss">:theme</span><span class="p">,</span><span class="w"> </span><span class="kp">loop</span><span class="p">:</span><span class="w"> </span><span class="kp">true</span><span class="p">)</span>
+<span class="no">Audio</span><span class="o">.</span><span class="n">stop_music</span>
+</code></pre></div>
+<h2 id="change-level">Change level<a class="headerlink" href="#change-level" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="no">Game</span><span class="o">.</span><span class="n">load_scene</span><span class="p">(</span><span class="s2">"level2"</span><span class="p">)</span><span class="w">   </span><span class="c1"># scenes/level2.glb; "main" is scene.glb</span>
+</code></pre></div>
+<p>The switch happens at the end of the frame. Ruby global variables survive it, which is the simple
+way to carry a score or lives from one level to the next.</p>
+<h2 id="keep-score-across-objects">Keep score across objects<a class="headerlink" href="#keep-score-across-objects" title="Permanent link">&para;</a></h2>
+<p>Put a manager behaviour on one object and let the others find it:</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">GameManager</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="no">Behaviour</span>
+<span class="w">  </span><span class="kp">attr_reader</span><span class="w"> </span><span class="ss">:coins</span>
+
+<span class="w">  </span><span class="k">def</span><span class="w"> </span><span class="nc">self</span><span class="o">.</span><span class="nf">instance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">Scene</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"GameManager"</span><span class="p">)</span><span class="o">&amp;.</span><span class="n">get_component</span><span class="p">(</span><span class="no">GameManager</span><span class="p">)</span>
+
+<span class="w">  </span><span class="k">def</span><span class="w"> </span><span class="nf">start</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="vi">@coins</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">  </span><span class="k">def</span><span class="w"> </span><span class="nf">collect_coin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="vi">@coins</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">1</span>
+<span class="k">end</span>
+
+<span class="c1"># anywhere else</span>
+<span class="no">GameManager</span><span class="o">.</span><span class="n">instance</span><span class="o">.</span><span class="n">collect_coin</span>
+</code></pre></div>
+<h2 id="time">Time<a class="headerlink" href="#time" title="Permanent link">&para;</a></h2>
+<p><code>Time.elapsed</code> is seconds since the game started, <code>Time.delta</code> the length of the last frame.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../behaviours/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Behaviours">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Behaviours
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../api/" class="md-footer__link md-footer__link--next" aria-label="Next: API reference">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                API reference
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.footer", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

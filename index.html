@@ -148,6 +148,7 @@
       <a href="#features">Features</a>
       <a href="#credits">Built with</a>
       <a href="#start">Get started</a>
+      <a href="manual/">Manual</a>
     </nav>
   </header>
 
@@ -158,6 +159,7 @@
     <div class="actions">
       <a class="button primary" href="#demo">Watch the demo</a>
       <a class="button" href="#start">Get started</a>
+      <a class="button" href="manual/">Read the manual</a>
     </div>
     <div class="film" id="demo">
       <video controls preload="metadata" poster="assets/poster.jpg" src="assets/demo.mp4"></video>
@@ -303,13 +305,13 @@
     <h2>Try it.</h2>
     <p class="lead">Linux, with Docker or a C++17 toolchain. Every library is downloaded by CMake at a pinned version.</p>
 <pre class="start"><span class="m"># with Docker</span>
-docker compose run --rm test                           <span class="m"># build and run every test</span>
-xhost +local:docker &amp;&amp; docker compose run --rm editor  <span class="m"># open the editor</span>
+tools/docker/editor.sh                    <span class="m"># builds the image the first time, then opens the editor</span>
+tools/docker/editor.sh games/platformer   <span class="m"># open a demo</span>
 
-<span class="m"># natively</span>
+<span class="m"># from source</span>
 cmake -S . -B build -G Ninja &amp;&amp; cmake --build build
-./build/src/redgem                                     <span class="m"># project hub</span>
-./build/src/redgem new games/my_game --template platformer</pre>
+./build/src/redgem                        <span class="m"># project hub</span>
+./build/src/redgem new my_game --template platformer</pre>
   </section>
 </div>
 
