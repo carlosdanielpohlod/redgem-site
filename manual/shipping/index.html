@@ -780,6 +780,28 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#for-android" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        For Android
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Notes
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -887,6 +909,28 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#for-android" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        For Android
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Notes
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -912,8 +956,8 @@
 <code>game/</code> folder with its files. Whoever receives the folder runs the executable: they do not need
 RedGem, Ruby or Blender installed.</p>
 <h2 id="for-windows">For Windows<a class="headerlink" href="#for-windows" title="Permanent link">&para;</a></h2>
-<p>RedGem runs on Linux, and builds games for Linux and for Windows. In the editor, <strong>Build</strong> asks
-which one; from a terminal:</p>
+<p>RedGem runs on Linux, and builds games for Linux, Windows and Android. In the editor, <strong>Build</strong>
+asks which one; from a terminal:</p>
 <div class="highlight"><pre><span></span><code>tools/windows/build_runtime.sh<span class="w">                                   </span><span class="c1"># once: builds the engine for Windows</span>
 ./build/src/redgem<span class="w"> </span>build<span class="w"> </span>my_game<span class="w"> </span>dist/my_game_win<span class="w"> </span>--target<span class="w"> </span>windows
 </code></pre></div>
@@ -922,6 +966,35 @@ needed) and builds <code>redgem.exe</code>; it takes a few minutes and is only n
 updating RedGem. The build then makes <code>dist/my_game_win/my_game.exe</code> next to its <code>game/</code> folder.
 It needs 64-bit Windows 10 or later and a graphics card with OpenGL 3.3; nothing has to be
 installed with it.</p>
+<h2 id="for-android">For Android<a class="headerlink" href="#for-android" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>tools/android/build_runtime.sh<span class="w">                                   </span><span class="c1"># once: builds the engine for Android</span>
+./build/src/redgem<span class="w"> </span>build<span class="w"> </span>my_game<span class="w"> </span>dist/my_game_android<span class="w"> </span>--target<span class="w"> </span>android
+</code></pre></div>
+<p>The result is <code>dist/my_game_android/my_game.apk</code>, with the game's files inside it. Install it on
+a phone with <code>adb install</code>, or copy the file to the phone and open it.
+<code>tools/android/run_on_device.sh my_game</code> builds, installs, starts the game on the phone or
+emulator that <code>adb</code> sees, and shows its log.</p>
+<p>What it needs on your machine:</p>
+<ul>
+<li>The <strong>Android SDK</strong> with its build-tools and one platform (<code>sdkmanager "build-tools;35.0.0"
+  "platforms;android-35"</code>), and <code>ANDROID_HOME</code> pointing at it.</li>
+<li><strong>Java</strong> (the SDK's signing tool runs on it).</li>
+<li>The first command downloads the Android compiler (NDK) into the project and builds the engine
+  for phones (arm64) and for emulators (x86_64); it takes several minutes, once.</li>
+</ul>
+<p>What changes on a phone:</p>
+<ul>
+<li>The game fills the screen: it keeps the height from <code>game.json</code> and gets the width that fits.</li>
+<li><strong>Touch controls</strong> appear by themselves and act as a gamepad: a stick under the left thumb,
+  A and B under the right, Start in the corner. A game that plays with a gamepad plays on a phone
+  as it is; taps also work as mouse clicks, so <code>UI.button</code> menus work.</li>
+<li>There is no on-screen keyboard yet, so text fields cannot be typed in.</li>
+<li>Phones are slower than computers: keep levels light (few lights, modest textures) and test on
+  a real device. It needs Android 8 or later with OpenGL ES 3.</li>
+<li>The APK is signed with a key made on your machine, good for your own devices and for sharing the
+  file. Publishing on a store needs your own key and its packaging rules.</li>
+</ul>
+<h2 id="notes">Notes<a class="headerlink" href="#notes" title="Permanent link">&para;</a></h2>
 <ul>
 <li>The executable needs the <code>game/</code> folder next to it.</li>
 <li><code>game.json</code> sets the window title and size:</li>
