@@ -987,7 +987,9 @@ emulator that <code>adb</code> sees, and shows its log.</p>
 <li>The game fills the screen: it keeps the height from <code>game.json</code> and gets the width that fits.</li>
 <li><strong>Touch controls</strong> appear by themselves and act as a gamepad: a stick under the left thumb,
   A and B under the right, Start in the corner. A game that plays with a gamepad plays on a phone
-  as it is; taps also work as mouse clicks, so <code>UI.button</code> menus work.</li>
+  as it is; taps also work as mouse clicks, so <code>UI.button</code> menus work. A game with a touch
+  interface of its own hides them with <code>Input.touch_controls = false</code>.</li>
+<li>Characters may have up to 48 bones on a phone (64 on a computer).</li>
 <li>There is no on-screen keyboard yet, so text fields cannot be typed in.</li>
 <li>Phones are slower than computers: keep levels light (few lights, modest textures) and test on
   a real device. It needs Android 8 or later with OpenGL ES 3.</li>

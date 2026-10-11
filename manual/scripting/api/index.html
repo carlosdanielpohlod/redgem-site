@@ -878,7 +878,7 @@ and <a href="../gameplay/">Gameplay recipes</a>.</p>
 </tr>
 <tr>
 <td><code>Input</code></td>
-<td><code>axis(:horizontal / :vertical)</code>, <code>down?(:space)</code>, <code>pressed?</code>, <code>released?</code>, <code>action?(:jump)</code>, <code>action_pressed?</code>; mouse: <code>mouse_x</code>, <code>mouse_y</code>, <code>mouse_dx</code>, <code>mouse_dy</code>, <code>mouse_wheel</code>, <code>mouse_down?(:left)</code>, <code>mouse_pressed?</code>, <code>mouse_released?</code>, <code>mouse_locked=</code>; gamepad: <code>gamepad?</code>, <code>gamepad_axis(:left_x)</code>, <code>gamepad_down?(:a)</code>, <code>gamepad_pressed?</code>, <code>gamepad_released?</code>; <code>text</code> (typed this frame)</td>
+<td><code>axis(:horizontal / :vertical)</code>, <code>down?(:space)</code>, <code>pressed?</code>, <code>released?</code>, <code>action?(:jump)</code>, <code>action_pressed?</code>; mouse: <code>mouse_x</code>, <code>mouse_y</code>, <code>mouse_dx</code>, <code>mouse_dy</code>, <code>mouse_wheel</code>, <code>mouse_down?(:left)</code>, <code>mouse_pressed?</code>, <code>mouse_released?</code>, <code>mouse_locked=</code>; gamepad: <code>gamepad?</code>, <code>gamepad_axis(:left_x)</code>, <code>gamepad_down?(:a)</code>, <code>gamepad_pressed?</code>, <code>gamepad_released?</code>; <code>text</code> (typed this frame); <code>touch_controls=</code> (the on-screen stick and buttons of a phone)</td>
 </tr>
 <tr>
 <td><code>Time</code></td>
@@ -910,7 +910,7 @@ and <a href="../gameplay/">Gameplay recipes</a>.</p>
 </tr>
 <tr>
 <td><code>Network</code></td>
-<td><code>host(port: 7777)</code>, <code>join(address, port: 7777)</code>, <code>leave</code>, <code>online?</code>, <code>connecting?</code>, <code>host?</code>, <code>id</code>, <code>peers</code>, <code>port</code>, <code>emit(name, data = nil, to: :all / :host / id)</code>, <code>on(name) { \|data, from\| }</code>, <code>on_connect</code>, <code>on_fail</code>, <code>on_disconnect</code>, <code>on_join { \|peer\| }</code>, <code>on_leave { \|peer\| }</code>, <code>spawn(template, owner: Network.id, position:, rotation:)</code>, <code>allow_spawn(*templates)</code> (see <a href="../multiplayer/">Multiplayer</a>)</td>
+<td><code>host(port: 7777, name:, visible: true, room: false)</code>, <code>join(address, port: 7777)</code> / <code>join(room: "K7QM3P")</code>, <code>relay=</code>, <code>room</code>, <code>search</code>, <code>searching?</code>, <code>stop_search</code>, <code>games</code>, <code>discovery_port=</code>, <code>leave</code>, <code>online?</code>, <code>connecting?</code>, <code>host?</code>, <code>id</code>, <code>peers</code>, <code>port</code>, <code>emit(name, data = nil, to: :all / :host / id)</code>, <code>on(name) { \|data, from\| }</code>, <code>on_connect</code>, <code>on_fail</code>, <code>on_disconnect</code>, <code>on_join { \|peer\| }</code>, <code>on_leave { \|peer\| }</code>, <code>spawn(template, owner: Network.id, position:, rotation:)</code>, <code>allow_spawn(*templates)</code> (see <a href="../multiplayer/">Multiplayer</a>)</td>
 </tr>
 <tr>
 <td><code>NetworkSync</code></td>

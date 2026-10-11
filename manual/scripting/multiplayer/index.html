@@ -638,6 +638,39 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#games-on-the-same-network" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Games on the same network
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#over-the-internet-rooms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Over the internet: rooms
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#by-the-hosts-address" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        By the host's address
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#messages" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -943,6 +976,39 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#games-on-the-same-network" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Games on the same network
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#over-the-internet-rooms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Over the internet: rooms
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#by-the-hosts-address" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        By the host's address
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#messages" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1018,6 +1084,33 @@
 <p>Games can be played together over a local network or the internet. One machine <strong>hosts</strong> the game
 and the others <strong>join</strong> it; every machine has an id (the host is 1, then 2, 3... as players arrive).
 Up to 16 machines play together.</p>
+<p>There are three ways for the others to get to the host, from the easiest:</p>
+<table>
+<thead>
+<tr>
+<th>Where the players are</th>
+<th>How they join</th>
+<th>What it takes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>On the same network (same Wi-Fi)</td>
+<td>The game is found by itself</td>
+<td>Nothing</td>
+</tr>
+<tr>
+<td>Anywhere</td>
+<td>A room code like <code>K7QM3P</code></td>
+<td>A relay running somewhere on the internet</td>
+</tr>
+<tr>
+<td>Anywhere</td>
+<td>The host's address</td>
+<td>The host's router forwarding a port</td>
+</tr>
+</tbody>
+</table>
 <h2 id="host-and-join">Host and join<a class="headerlink" href="#host-and-join" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><span class="no">Network</span><span class="o">.</span><span class="n">host</span><span class="w">                           </span><span class="c1"># on one machine (port 7777; port: 9000 picks another)</span>
 <span class="no">Network</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">"192.168.0.12"</span><span class="p">)</span><span class="w">           </span><span class="c1"># on the others: the host's address</span>
@@ -1030,8 +1123,43 @@ Up to 16 machines play together.</p>
 </code></pre></div>
 <p><code>Network.online?</code>, <code>Network.host?</code>, <code>Network.id</code> and <code>Network.peers</code> (everyone else's ids) tell
 where things stand. <code>Network.leave</code> leaves the game; when the host leaves, it ends for everyone.</p>
-<p>To play over the internet, the host's router has to forward the port (TCP) to the host's machine,
-and the others join the host's public address.</p>
+<h2 id="games-on-the-same-network">Games on the same network<a class="headerlink" href="#games-on-the-same-network" title="Permanent link">&para;</a></h2>
+<p>A hosted game answers the machines around it, so nobody types an address:</p>
+<div class="highlight"><pre><span></span><code><span class="no">Network</span><span class="o">.</span><span class="n">host</span><span class="p">(</span><span class="nb">name</span><span class="p">:</span><span class="w"> </span><span class="s2">"Ana's game"</span><span class="p">)</span><span class="w">       </span><span class="c1"># name: the game's title unless said; visible: false hides it</span>
+
+<span class="no">Network</span><span class="o">.</span><span class="n">search</span><span class="w">                         </span><span class="c1"># on the others: start looking</span>
+<span class="no">Network</span><span class="o">.</span><span class="n">games</span><span class="w">                          </span><span class="c1"># =&gt; [{ name: "Ana's game", address: "192.168.0.12", port: 7777, players: 1 }]</span>
+<span class="n">game</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">Network</span><span class="o">.</span><span class="n">games</span><span class="o">.</span><span class="n">first</span>
+<span class="no">Network</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">game</span><span class="o">[</span><span class="ss">:address</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="ss">port</span><span class="p">:</span><span class="w"> </span><span class="n">game</span><span class="o">[</span><span class="ss">:port</span><span class="o">]</span><span class="p">)</span>
+<span class="no">Network</span><span class="o">.</span><span class="n">stop_search</span>
+</code></pre></div>
+<p><code>Network.games</code> changes as games come and go, so a menu draws a button for each one every frame.
+Every RedGem game looks on the same port, so games see each other's; a game that wants to see
+only its own picks another with <code>Network.discovery_port = 7790</code> (the same on every copy).</p>
+<h2 id="over-the-internet-rooms">Over the internet: rooms<a class="headerlink" href="#over-the-internet-rooms" title="Permanent link">&para;</a></h2>
+<p>Home routers let connections out, not in, so two players at home cannot reach each other
+directly. They can both reach a <strong>relay</strong>: a small program on a machine with a public address.
+One player opens a room and gets a short code; the others join with the code:</p>
+<div class="highlight"><pre><span></span><code><span class="no">Network</span><span class="o">.</span><span class="n">relay</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"relay.example.com"</span><span class="w">    </span><span class="c1"># where the relay runs ("host:port" for another port)</span>
+
+<span class="no">Network</span><span class="o">.</span><span class="n">host</span><span class="p">(</span><span class="ss">room</span><span class="p">:</span><span class="w"> </span><span class="kp">true</span><span class="p">)</span><span class="w">               </span><span class="c1"># then, once on_connect fired:</span>
+<span class="no">Network</span><span class="o">.</span><span class="n">room</span><span class="w">                           </span><span class="c1"># =&gt; "K7QM3P": tell it to the others</span>
+
+<span class="no">Network</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="ss">room</span><span class="p">:</span><span class="w"> </span><span class="s2">"K7QM3P"</span><span class="p">)</span><span class="w">             </span><span class="c1"># on the others</span>
+</code></pre></div>
+<p>Everything else is the same in a room: messages, <code>NetworkSync</code>, <code>Network.spawn</code>. Whoever opened
+the room is the host; when they leave, the room closes.</p>
+<p>The relay comes with the engine. On any machine the players can reach (a small rented server is
+enough, it only passes messages on):</p>
+<div class="highlight"><pre><span></span><code>./build/src/redgem<span class="w"> </span>relay<span class="w">               </span><span class="c1"># listens on port 7778; --port picks another</span>
+docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>relay<span class="w">                </span><span class="c1"># or with Docker</span>
+</code></pre></div>
+<p>The relay expects strangers: one address can only open a few rooms and hold a few connections,
+guessing room codes gets it kept out for a while, and a machine that goes silent is let go.</p>
+<h2 id="by-the-hosts-address">By the host's address<a class="headerlink" href="#by-the-hosts-address" title="Permanent link">&para;</a></h2>
+<p>Without a relay, players anywhere can still join the host's public address
+(<code>Network.join("203.0.113.7")</code>) if the host's router forwards the game's port (7777, TCP) to the
+host's machine.</p>
 <h2 id="messages">Messages<a class="headerlink" href="#messages" title="Permanent link">&para;</a></h2>
 <p>Machines talk in named messages:</p>
 <div class="highlight"><pre><span></span><code><span class="no">Network</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="ss">:hit</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="o">|</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">from</span><span class="o">|</span><span class="w"> </span><span class="vi">@health</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="n">data</span><span class="o">[</span><span class="ss">:damage</span><span class="o">]</span><span class="w"> </span><span class="p">}</span>
@@ -1093,8 +1221,9 @@ machine:</p>
 script (<code>tests/system_pairs/</code>). For a quick try on one machine, open the game twice, host in one
 and join <code>127.0.0.1</code> in the other.</p>
 <h2 id="what-it-does-not-do">What it does not do<a class="headerlink" href="#what-it-does-not-do" title="Permanent link">&para;</a></h2>
-<p>There is no matchmaking, lobby list or relay server: players need the host's address. The host
-passes every message on, so there is no prediction or lag compensation: fine for co-op and casual
+<p>There is no matchmaking or public list of games: players are on the same network, share a room
+code, or know the host's address. No relay is run for you. Every message passes through the host
+(or the relay), so there is no prediction or lag compensation: fine for co-op and casual
 games, not for competitive shooters. Messages are not encrypted, and players are not
 authenticated: play with people you trust.</p>
 
