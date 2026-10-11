@@ -900,12 +900,12 @@
 <h2 id="what-redgem-does-not-do-yet">What RedGem does not do yet<a class="headerlink" href="#what-redgem-does-not-do-yet" title="Permanent link">&para;</a></h2>
 <p>Knowing this up front saves time:</p>
 <ul>
-<li><strong>Input</strong> is keyboard and mouse. There is no gamepad input.</li>
+<li><strong>Input</strong> is keyboard, mouse and one gamepad. Keys and buttons cannot be rebound by the player.</li>
 <li><strong>In-game interface</strong> is texts, rectangles, images and buttons you draw each frame. There are no
   text fields, sliders or layout containers.</li>
-<li><strong>Saving progress</strong> has no API.</li>
-<li><strong>Particles</strong> do not exist; small effects are objects moved by a script.</li>
-<li><strong>Animation:</strong> every animation in a level loops all the time. You cannot pick which one plays.</li>
+<li><strong>Particles</strong> are plain dots let out in bursts. They have no textures and do not collide.</li>
+<li><strong>Animation:</strong> clips are played, paused and stopped by name, for the whole level. Two clips on the
+  same character are not blended, and each copy of a character cannot play a different clip.</li>
 <li><strong>Platforms:</strong> the editor runs on Linux. Games are built for Linux and for Windows.</li>
 <li>Scripts are loaded when you press Play; they are not reloaded while the game runs.</li>
 </ul>

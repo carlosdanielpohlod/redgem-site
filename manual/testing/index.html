@@ -920,6 +920,14 @@ automated check. Add <code>--headless</code> to run without opening a window (no
 <td>Moves the mouse; clicks there with the left button</td>
 </tr>
 <tr>
+<td><code>t.tilt(:left_y, -1.0, frames: 60)</code></td>
+<td>Pushes a gamepad stick (or pulls a trigger) for that long</td>
+</tr>
+<tr>
+<td><code>t.press_button(:a)</code>, <code>t.hold_button(:a, frames: 30)</code></td>
+<td>Taps or holds gamepad buttons</td>
+</tr>
+<tr>
 <td><code>t.hold_until(:w, frames: 300) { ... }</code></td>
 <td>Holds keys until the block is true</td>
 </tr>
@@ -938,7 +946,8 @@ automated check. Add <code>--headless</code> to run without opening a window (no
 </tbody>
 </table>
 <p>Inside the blocks you have the whole scripting API, so a test can also move objects or read any
-behaviour's state.</p>
+behaviour's state. What the game saves with <code>Save</code> goes to a file of the test's own, which starts
+empty: a test never sees or changes your real progress.</p>
 
 
 

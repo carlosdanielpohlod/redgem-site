@@ -822,7 +822,7 @@ and <a href="../gameplay/">Gameplay recipes</a>.</p>
 <tbody>
 <tr>
 <td><code>Behaviour</code></td>
-<td><code>start</code>, <code>update(dt)</code>, <code>fixed_update(dt)</code>, <code>on_trigger_enter/exit(other)</code>, <code>on_collision_enter/exit(other)</code>, <code>on_destroy</code>; helpers <code>game_object</code>, <code>name</code>, <code>transform</code>, <code>character</code>, <code>rigidbody</code>, <code>vehicle</code>, <code>props</code>, <code>prop</code>, <code>find</code>, <code>find_all</code>, <code>destroy</code>, <code>get_component</code></td>
+<td><code>start</code>, <code>update(dt)</code>, <code>fixed_update(dt)</code>, <code>on_trigger_enter/exit(other)</code>, <code>on_collision_enter/exit(other)</code>, <code>on_destroy</code>; helpers <code>game_object</code>, <code>name</code>, <code>transform</code>, <code>character</code>, <code>rigidbody</code>, <code>vehicle</code>, <code>props</code>, <code>prop</code>, <code>find</code>, <code>find_all</code>, <code>destroy</code>, <code>get_component</code>; timers <code>after(seconds) { }</code>, <code>every(seconds) { }</code>, <code>tween(seconds, ease: :smooth) { |t| }</code>, <code>cancel_timers</code></td>
 </tr>
 <tr>
 <td><code>GameObject</code></td>
@@ -850,7 +850,7 @@ and <a href="../gameplay/">Gameplay recipes</a>.</p>
 </tr>
 <tr>
 <td><code>Input</code></td>
-<td><code>axis(:horizontal / :vertical)</code>, <code>down?(:space)</code>, <code>pressed?</code>, <code>released?</code>, <code>action?(:jump)</code>, <code>action_pressed?</code>; mouse: <code>mouse_x</code>, <code>mouse_y</code>, <code>mouse_dx</code>, <code>mouse_dy</code>, <code>mouse_wheel</code>, <code>mouse_down?(:left)</code>, <code>mouse_pressed?</code>, <code>mouse_released?</code>, <code>mouse_locked=</code></td>
+<td><code>axis(:horizontal / :vertical)</code>, <code>down?(:space)</code>, <code>pressed?</code>, <code>released?</code>, <code>action?(:jump)</code>, <code>action_pressed?</code>; mouse: <code>mouse_x</code>, <code>mouse_y</code>, <code>mouse_dx</code>, <code>mouse_dy</code>, <code>mouse_wheel</code>, <code>mouse_down?(:left)</code>, <code>mouse_pressed?</code>, <code>mouse_released?</code>, <code>mouse_locked=</code>; gamepad: <code>gamepad?</code>, <code>gamepad_axis(:left_x)</code>, <code>gamepad_down?(:a)</code>, <code>gamepad_pressed?</code>, <code>gamepad_released?</code></td>
 </tr>
 <tr>
 <td><code>Time</code></td>
@@ -869,6 +869,18 @@ and <a href="../gameplay/">Gameplay recipes</a>.</p>
 <td><code>Scene.spawn("Bullet", position: v, rotation: euler)</code> copies a <code>prefab = true</code> template (hidden and inert in the game) with its physics and scripts; copies of animated characters move like the original</td>
 </tr>
 <tr>
+<td><code>Particles</code></td>
+<td><code>Particles.burst(position, count:, color:, alpha:, glow:, direction:, spread:, speed:, life:, size:, gravity:)</code> → how many were added, <code>Particles.count</code>, <code>Particles.clear</code></td>
+</tr>
+<tr>
+<td><code>Animation</code></td>
+<td><code>Animation.names</code>, <code>play(name, loop: true, speed: 1.0, restart: false)</code>, <code>pause(name)</code>, <code>stop(name)</code>, <code>playing?(name)</code>, <code>time(name)</code>, <code>duration(name)</code>, <code>seek(name, seconds)</code></td>
+</tr>
+<tr>
+<td><code>Save</code></td>
+<td><code>Save.get(key, default = nil)</code>, <code>Save[key]</code>, <code>Save[key] = value</code> (numbers, texts, true/false), <code>Save.delete(key)</code>, <code>Save.clear</code>, <code>Save.keys</code></td>
+</tr>
+<tr>
 <td><code>Audio</code></td>
 <td><code>Audio.play(:jump, volume:, pitch:)</code>, <code>Audio.music(:theme, loop: true, volume: 0.7)</code>, <code>Audio.stop_music</code>, <code>Audio.music_pitch = 1.2</code>, <code>Audio.music_volume = 0.5</code> (change them every frame for an engine's drone), <code>Audio.volume = 0.8</code> (files in <code>sounds/</code>)</td>
 </tr>
@@ -878,7 +890,7 @@ and <a href="../gameplay/">Gameplay recipes</a>.</p>
 </tr>
 <tr>
 <td><code>Vector3</code></td>
-<td><code>Vector3.new(x, y, z)</code>, <code>Vector3.zero</code>, <code>one</code>, <code>up</code>, <code>down</code>, <code>left</code>, <code>right</code>, <code>forward</code>, <code>back</code>; arithmetic, <code>dot</code>, <code>cross</code>, <code>length</code>, <code>normalized</code>, <code>lerp</code>, <code>flat</code>, <code>with(y: 0)</code>, <code>distance_to</code>, <code>approx?</code>, <code>to_a</code></td>
+<td><code>Vector3.new(x, y, z)</code>, <code>Vector3.zero</code>, <code>one</code>, <code>up</code>, <code>down</code>, <code>left</code>, <code>right</code>, <code>forward</code>, <code>back</code>; arithmetic, <code>dot</code>, <code>cross</code>, <code>length</code>, <code>normalized</code>, <code>clamped(max_length = 1.0)</code>, <code>lerp</code>, <code>flat</code>, <code>with(y: 0)</code>, <code>distance_to</code>, <code>approx?</code>, <code>to_a</code></td>
 </tr>
 </tbody>
 </table>

@@ -1050,7 +1050,7 @@ wind (leaves, fences).</p>
 (one cube face per frame) and uses it for reflections and ambient light.</p>
 <p><strong>Animated characters.</strong> glTF skeletons and animations are supported: skinned meshes are deformed on
 the GPU (up to 64 bones per skeleton, 4 per vertex) and every animation in the scene plays in a
-loop. The editor keeps skeletons and animations when saving, reordering or importing models.
+loop until a script says otherwise (see <a href="../scripting/gameplay/#control-animations">Control animations</a>). The editor keeps skeletons and animations when saving, reordering or importing models.
 <code>tools/blender/walk_rig.py</code> gives a scanned standing person leg bones and a walk cycle.</p>
 <p><strong>Per-object color.</strong> The property <code>tint = "#rrggbb"</code> multiplies the colors of an object's mesh, so
 copies sharing one mesh (cars, crates) can each have their own color.</p>
