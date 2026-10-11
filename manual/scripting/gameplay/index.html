@@ -731,6 +731,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#a-sense-of-speed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A sense of speed
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#change-level" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1135,6 +1146,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#a-sense-of-speed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A sense of speed
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#change-level" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1306,6 +1328,12 @@ menu on Esc or P, and an end screen. Copy it into your game and call
 <span class="no">Audio</span><span class="o">.</span><span class="n">play</span><span class="p">(</span><span class="ss">:hit</span><span class="p">,</span><span class="w"> </span><span class="ss">volume</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="o">.</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="ss">pitch</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="o">.</span><span class="mi">2</span><span class="p">)</span>
 <span class="no">Audio</span><span class="o">.</span><span class="n">music</span><span class="p">(</span><span class="ss">:theme</span><span class="p">,</span><span class="w"> </span><span class="kp">loop</span><span class="p">:</span><span class="w"> </span><span class="kp">true</span><span class="p">)</span>
 <span class="no">Audio</span><span class="o">.</span><span class="n">stop_music</span>
+</code></pre></div>
+<h2 id="a-sense-of-speed">A sense of speed<a class="headerlink" href="#a-sense-of-speed" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="n">rush</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">speed</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="no">TOP_SPEED</span><span class="p">)</span><span class="o">.</span><span class="n">clamp</span><span class="p">(</span><span class="mi">0</span><span class="o">.</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="p">)</span>
+<span class="no">Camera</span><span class="o">.</span><span class="n">fov</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">52</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">rush</span><span class="w">          </span><span class="c1"># the view widens</span>
+<span class="no">Camera</span><span class="o">.</span><span class="n">motion_blur</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="o">.</span><span class="mi">7</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">rush</span><span class="w">      </span><span class="c1"># the edges of the picture streak</span>
+<span class="no">Audio</span><span class="o">.</span><span class="n">music_pitch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="o">.</span><span class="mi">8</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">0</span><span class="o">.</span><span class="mi">7</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">rush</span><span class="w"> </span><span class="c1"># the engine's note climbs (Audio.music(:engine) is looping)</span>
 </code></pre></div>
 <h2 id="change-level">Change level<a class="headerlink" href="#change-level" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><span class="no">Game</span><span class="o">.</span><span class="n">load_scene</span><span class="p">(</span><span class="s2">"level2"</span><span class="p">)</span><span class="w">   </span><span class="c1"># scenes/level2.glb; "main" is scene.glb</span>

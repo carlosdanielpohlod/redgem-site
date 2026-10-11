@@ -858,7 +858,7 @@ and <a href="../gameplay/">Gameplay recipes</a>.</p>
 </tr>
 <tr>
 <td><code>Scene</code> / <code>Camera</code></td>
-<td><code>Scene.find(name)</code>, <code>Scene.find_all(tag)</code>, <code>Scene.objects</code>, <code>Camera.main</code>, <code>Camera.screen_ray(x, y)</code> → <code>[origin, direction]</code></td>
+<td><code>Scene.find(name)</code>, <code>Scene.find_all(tag)</code>, <code>Scene.objects</code>, <code>Camera.main</code>, <code>Camera.screen_ray(x, y)</code> → <code>[origin, direction]</code>, <code>Camera.fov(=)</code> (degrees), <code>Camera.motion_blur(=)</code> (0..1: the picture streaks away from its center, as when moving fast)</td>
 </tr>
 <tr>
 <td><code>SceneScript</code></td>
@@ -870,7 +870,7 @@ and <a href="../gameplay/">Gameplay recipes</a>.</p>
 </tr>
 <tr>
 <td><code>Audio</code></td>
-<td><code>Audio.play(:jump, volume:, pitch:)</code>, <code>Audio.music(:theme, loop: true, volume: 0.7)</code>, <code>Audio.stop_music</code>, <code>Audio.volume = 0.8</code> (files in <code>sounds/</code>)</td>
+<td><code>Audio.play(:jump, volume:, pitch:)</code>, <code>Audio.music(:theme, loop: true, volume: 0.7)</code>, <code>Audio.stop_music</code>, <code>Audio.music_pitch = 1.2</code>, <code>Audio.music_volume = 0.5</code> (change them every frame for an engine's drone), <code>Audio.volume = 0.8</code> (files in <code>sounds/</code>)</td>
 </tr>
 <tr>
 <td><code>UI</code> / <code>Debug</code> / <code>Game</code></td>
