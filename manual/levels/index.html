@@ -506,6 +506,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#terrain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Terrain
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#editing-the-level-in-blender" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -910,6 +921,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#terrain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Terrain
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#editing-the-level-in-blender" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1033,6 +1055,44 @@ environment, which wins over the saved setting.</p>
 not drawn. What costs most is the number of separate objects on screen, more than their triangles:
 join the parts of a model that share a material, and give heavy models lighter versions for far
 away with <code>visible_from</code> and <code>visible_to</code>.</p>
+<h2 id="terrain">Terrain<a class="headerlink" href="#terrain" title="Permanent link">&para;</a></h2>
+<p><strong>GameObject &gt; Terrain</strong> adds a square of ground, 100 m across, that you shape with a brush.</p>
+<ol>
+<li>Select the terrain. In the Inspector's <strong>Terrain</strong> card, tick <strong>Sculpt</strong>.</li>
+<li>Drag the left mouse button over the ground in the Scene view. A ring shows the brush.</li>
+<li>Pick what the brush does:</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>Brush</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Raise</td>
+<td>Piles ground up under the brush (hold Shift to dig instead)</td>
+</tr>
+<tr>
+<td>Lower</td>
+<td>Digs (hold Shift to pile up)</td>
+</tr>
+<tr>
+<td>Smooth</td>
+<td>Softens bumps and edges</td>
+</tr>
+<tr>
+<td>Flatten</td>
+<td>Levels the ground to the height at the brush's center: plateaus, roads</td>
+</tr>
+</tbody>
+</table>
+<p><em>Radius</em> is the size of the brush in meters, <em>Strength</em> how fast it works. Each stroke is one
+undo step. Untick Sculpt to select and move objects again.</p>
+<p>The terrain's collider follows its shape, so characters walk and things roll on the hills you
+make. Its color and roughness are in the Mesh card, like any object's. A terrain is made and
+shaped in the editor; one re-exported from Blender is an ordinary mesh.</p>
 <h2 id="editing-the-level-in-blender">Editing the level in Blender<a class="headerlink" href="#editing-the-level-in-blender" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code>blender<span class="w"> </span>games/platformer/platformer.blend<span class="w">           </span><span class="c1"># edit, save</span>
 blender<span class="w"> </span>-b<span class="w"> </span>games/platformer/platformer.blend<span class="w"> </span><span class="se">\</span>

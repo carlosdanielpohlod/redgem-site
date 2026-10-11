@@ -610,6 +610,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#read-the-mouse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Read the mouse
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#move-a-character" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -680,6 +691,28 @@
     <span class="md-ellipsis">
       
         Show text on screen
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#menus-buttons-and-images" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Menus, buttons and images
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pause-and-the-flow-between-screens" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pause, and the flow between screens
       
     </span>
   </a>
@@ -981,6 +1014,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#read-the-mouse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Read the mouse
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#move-a-character" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1051,6 +1095,28 @@
     <span class="md-ellipsis">
       
         Show text on screen
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#menus-buttons-and-images" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Menus, buttons and images
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pause-and-the-flow-between-screens" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pause, and the flow between screens
       
     </span>
   </a>
@@ -1129,6 +1195,29 @@
 <span class="no">Input</span><span class="o">.</span><span class="n">pressed?</span><span class="p">(</span><span class="ss">:e</span><span class="p">)</span><span class="w">             </span><span class="c1"># any key: went down this frame</span>
 </code></pre></div>
 <p>Built-in actions: <code>:jump</code> (Space), <code>:fire</code> (Left Ctrl or Enter), <code>:run</code> (Left Shift).</p>
+<h2 id="read-the-mouse">Read the mouse<a class="headerlink" href="#read-the-mouse" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="no">Input</span><span class="o">.</span><span class="n">mouse_x</span><span class="p">,</span><span class="w"> </span><span class="no">Input</span><span class="o">.</span><span class="n">mouse_y</span><span class="w">        </span><span class="c1"># pixels from the top-left corner</span>
+<span class="no">Input</span><span class="o">.</span><span class="n">mouse_dx</span><span class="p">,</span><span class="w"> </span><span class="no">Input</span><span class="o">.</span><span class="n">mouse_dy</span><span class="w">      </span><span class="c1"># how far it moved since the last frame</span>
+<span class="no">Input</span><span class="o">.</span><span class="n">mouse_down?</span><span class="p">(</span><span class="ss">:left</span><span class="p">)</span><span class="w">            </span><span class="c1"># :left, :right or :middle, held</span>
+<span class="no">Input</span><span class="o">.</span><span class="n">mouse_pressed?</span><span class="p">(</span><span class="ss">:left</span><span class="p">)</span><span class="w">         </span><span class="c1"># went down this frame</span>
+<span class="no">Input</span><span class="o">.</span><span class="n">mouse_released?</span><span class="p">(</span><span class="ss">:left</span><span class="p">)</span><span class="w">        </span><span class="c1"># went up this frame</span>
+<span class="no">Input</span><span class="o">.</span><span class="n">mouse_wheel</span><span class="w">                   </span><span class="c1"># notches turned this frame</span>
+</code></pre></div>
+<p>To turn a first-person camera with the mouse, hide the pointer and keep it in the window, then
+use how far it moved:</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">start</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">Input</span><span class="o">.</span><span class="n">mouse_locked</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kp">true</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="n">_dt</span><span class="p">)</span>
+<span class="w">  </span><span class="n">transform</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="no">Vector3</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="no">Input</span><span class="o">.</span><span class="n">mouse_dx</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">0</span><span class="o">.</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">))</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>To click on things in the world, cast a ray from the camera through the pointer:</p>
+<div class="highlight"><pre><span></span><code><span class="k">if</span><span class="w"> </span><span class="no">Input</span><span class="o">.</span><span class="n">mouse_pressed?</span><span class="p">(</span><span class="ss">:left</span><span class="p">)</span>
+<span class="w">  </span><span class="n">origin</span><span class="p">,</span><span class="w"> </span><span class="n">direction</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">Camera</span><span class="o">.</span><span class="n">screen_ray</span><span class="p">(</span><span class="no">Input</span><span class="o">.</span><span class="n">mouse_x</span><span class="p">,</span><span class="w"> </span><span class="no">Input</span><span class="o">.</span><span class="n">mouse_y</span><span class="p">)</span>
+<span class="w">  </span><span class="n">hit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">Physics</span><span class="o">.</span><span class="n">raycast</span><span class="p">(</span><span class="n">origin</span><span class="p">,</span><span class="w"> </span><span class="n">direction</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="o">.</span><span class="mi">0</span><span class="p">)</span>
+<span class="w">  </span><span class="n">hit</span><span class="o">[</span><span class="ss">:object</span><span class="o">].</span><span class="n">destroy</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">hit</span>
+<span class="k">end</span>
+</code></pre></div>
 <h2 id="move-a-character">Move a character<a class="headerlink" href="#move-a-character" title="Permanent link">&para;</a></h2>
 <p>Give the object a <strong>character</strong> body: set <em>Body</em> in the Inspector's <strong>Physics</strong> card (objects made
 in the editor already have one), or use <em>Add Component &gt; Physics body</em> on an object without
@@ -1185,6 +1274,32 @@ and becomes something to copy:</p>
 </code></pre></div>
 <p>Colors: <code>:white</code>, <code>:black</code>, <code>:red</code>, <code>:green</code>, <code>:blue</code>, <code>:yellow</code>, <code>:gold</code>, <code>:orange</code>, <code>:gray</code>, or
 <code>[r, g, b]</code>.</p>
+<h2 id="menus-buttons-and-images">Menus, buttons and images<a class="headerlink" href="#menus-buttons-and-images" title="Permanent link">&para;</a></h2>
+<p>Everything in <code>UI</code> is drawn the frame you call it, so a menu is just a behaviour that draws
+itself every frame. <code>UI.button</code> returns true on the frame it is clicked:</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="n">_dt</span><span class="p">)</span>
+<span class="w">  </span><span class="no">UI</span><span class="o">.</span><span class="n">rect</span><span class="p">(</span><span class="ss">x</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="ss">y</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="ss">width</span><span class="p">:</span><span class="w"> </span><span class="no">UI</span><span class="o">.</span><span class="n">width</span><span class="p">,</span><span class="w"> </span><span class="ss">height</span><span class="p">:</span><span class="w"> </span><span class="no">UI</span><span class="o">.</span><span class="n">height</span><span class="p">,</span><span class="w"> </span><span class="ss">color</span><span class="p">:</span><span class="w"> </span><span class="ss">:black</span><span class="p">,</span><span class="w"> </span><span class="ss">alpha</span><span class="p">:</span><span class="w"> </span><span class="mi">170</span><span class="p">)</span>
+<span class="w">  </span><span class="no">UI</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="s2">"My Game"</span><span class="p">,</span><span class="w"> </span><span class="ss">x</span><span class="p">:</span><span class="w"> </span><span class="no">UI</span><span class="o">.</span><span class="n">width</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="ss">y</span><span class="p">:</span><span class="w"> </span><span class="mi">120</span><span class="p">,</span><span class="w"> </span><span class="ss">size</span><span class="p">:</span><span class="w"> </span><span class="mi">72</span><span class="p">,</span><span class="w"> </span><span class="ss">align</span><span class="p">:</span><span class="w"> </span><span class="ss">:center</span><span class="p">)</span>
+<span class="w">  </span><span class="no">UI</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="ss">:logo</span><span class="p">,</span><span class="w"> </span><span class="ss">x</span><span class="p">:</span><span class="w"> </span><span class="mi">40</span><span class="p">,</span><span class="w"> </span><span class="ss">y</span><span class="p">:</span><span class="w"> </span><span class="mi">40</span><span class="p">,</span><span class="w"> </span><span class="ss">width</span><span class="p">:</span><span class="w"> </span><span class="mi">128</span><span class="p">)</span><span class="w">            </span><span class="c1"># images/logo.png</span>
+<span class="w">  </span><span class="n">start_game</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="no">UI</span><span class="o">.</span><span class="n">button</span><span class="p">(</span><span class="s2">"Play"</span><span class="p">,</span><span class="w"> </span><span class="ss">x</span><span class="p">:</span><span class="w"> </span><span class="no">UI</span><span class="o">.</span><span class="n">width</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">140</span><span class="p">,</span><span class="w"> </span><span class="ss">y</span><span class="p">:</span><span class="w"> </span><span class="mi">300</span><span class="p">,</span><span class="w"> </span><span class="ss">width</span><span class="p">:</span><span class="w"> </span><span class="mi">280</span><span class="p">,</span><span class="w"> </span><span class="ss">height</span><span class="p">:</span><span class="w"> </span><span class="mi">58</span><span class="p">)</span>
+<span class="w">  </span><span class="no">Game</span><span class="o">.</span><span class="n">quit</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="no">UI</span><span class="o">.</span><span class="n">button</span><span class="p">(</span><span class="s2">"Quit"</span><span class="p">,</span><span class="w"> </span><span class="ss">x</span><span class="p">:</span><span class="w"> </span><span class="no">UI</span><span class="o">.</span><span class="n">width</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">140</span><span class="p">,</span><span class="w"> </span><span class="ss">y</span><span class="p">:</span><span class="w"> </span><span class="mi">374</span><span class="p">,</span><span class="w"> </span><span class="ss">width</span><span class="p">:</span><span class="w"> </span><span class="mi">280</span><span class="p">,</span><span class="w"> </span><span class="ss">height</span><span class="p">:</span><span class="w"> </span><span class="mi">58</span><span class="p">)</span>
+<span class="k">end</span>
+</code></pre></div>
+<p><code>UI.width</code> and <code>UI.height</code> are the size of the screen, so layouts can be centered. Pictures go in
+the game's <code>images/</code> folder (<code>.png</code> or <code>.jpg</code>).</p>
+<h2 id="pause-and-the-flow-between-screens">Pause, and the flow between screens<a class="headerlink" href="#pause-and-the-flow-between-screens" title="Permanent link">&para;</a></h2>
+<p><code>Time.scale = 0</code> freezes the game: physics stops and behaviours get an <code>update</code> with a delta of
+0, so a menu keeps working while everything else stands still. <code>Time.scale = 1</code> resumes.</p>
+<p>The usual flow of a game is made of three things:</p>
+<ul>
+<li><strong>A title screen:</strong> a menu that starts open, with the game frozen behind it.</li>
+<li><strong>Pause:</strong> the same menu opened by a key.</li>
+<li><strong>Other screens and levels:</strong> <code>Game.load_scene("level2")</code> to move on, and
+  <code>Game.load_scene(Game.scene_name)</code> to restart the current one.</li>
+</ul>
+<p>The Platformer template ships all of this in <code>scripts/game_menu.rb</code>: a title screen, a pause
+menu on Esc or P, and an end screen. Copy it into your game and call
+<code>GameMenu.instance.finish("You win!")</code> when the game ends.</p>
 <h2 id="play-sounds-and-music">Play sounds and music<a class="headerlink" href="#play-sounds-and-music" title="Permanent link">&para;</a></h2>
 <p>Files go in the game's <code>sounds/</code> folder.</p>
 <div class="highlight"><pre><span></span><code><span class="no">Audio</span><span class="o">.</span><span class="n">play</span><span class="p">(</span><span class="ss">:jump</span><span class="p">)</span><span class="w">                      </span><span class="c1"># sounds/jump.wav (or .ogg, .mp3, .flac)</span>

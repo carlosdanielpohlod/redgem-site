@@ -850,15 +850,15 @@ and <a href="../gameplay/">Gameplay recipes</a>.</p>
 </tr>
 <tr>
 <td><code>Input</code></td>
-<td><code>axis(:horizontal / :vertical)</code>, <code>down?(:space)</code>, <code>pressed?</code>, <code>released?</code>, <code>action?(:jump)</code>, <code>action_pressed?</code></td>
+<td><code>axis(:horizontal / :vertical)</code>, <code>down?(:space)</code>, <code>pressed?</code>, <code>released?</code>, <code>action?(:jump)</code>, <code>action_pressed?</code>; mouse: <code>mouse_x</code>, <code>mouse_y</code>, <code>mouse_dx</code>, <code>mouse_dy</code>, <code>mouse_wheel</code>, <code>mouse_down?(:left)</code>, <code>mouse_pressed?</code>, <code>mouse_released?</code>, <code>mouse_locked=</code></td>
 </tr>
 <tr>
 <td><code>Time</code></td>
-<td><code>delta</code>, <code>fixed_delta</code>, <code>elapsed</code>, <code>frame</code></td>
+<td><code>delta</code>, <code>fixed_delta</code>, <code>elapsed</code>, <code>frame</code>, <code>scale(=)</code> (0 pauses the game)</td>
 </tr>
 <tr>
 <td><code>Scene</code> / <code>Camera</code></td>
-<td><code>Scene.find(name)</code>, <code>Scene.find_all(tag)</code>, <code>Scene.objects</code>, <code>Camera.main</code></td>
+<td><code>Scene.find(name)</code>, <code>Scene.find_all(tag)</code>, <code>Scene.objects</code>, <code>Camera.main</code>, <code>Camera.screen_ray(x, y)</code> → <code>[origin, direction]</code></td>
 </tr>
 <tr>
 <td><code>SceneScript</code></td>
@@ -874,7 +874,7 @@ and <a href="../gameplay/">Gameplay recipes</a>.</p>
 </tr>
 <tr>
 <td><code>UI</code> / <code>Debug</code> / <code>Game</code></td>
-<td><code>UI.text(str, x:, y:, size:, color:, alpha:)</code>, <code>Debug.log/warn/error</code>, <code>Game.quit</code>, <code>Game.screenshot(name)</code>, <code>Game.load_scene("level2")</code> (<code>scenes/level2.glb</code>; <code>"main"</code> is <code>scene.glb</code>; Ruby globals survive), <code>Game.scene_name</code></td>
+<td><code>UI.text(str, x:, y:, size:, color:, alpha:, align:)</code>, <code>UI.rect(x:, y:, width:, height:, color:, alpha:, radius:)</code>, <code>UI.image(name, x:, y:, width:, height:)</code>, <code>UI.button(label, x:, y:, width:, height:)</code> → clicked?, <code>UI.width</code>, <code>UI.height</code>, <code>UI.text_width(str, size:)</code>, <code>Debug.log/warn/error</code>, <code>Game.quit</code>, <code>Game.screenshot(name)</code>, <code>Game.load_scene("level2")</code> (<code>scenes/level2.glb</code>; <code>"main"</code> is <code>scene.glb</code>; Ruby globals survive), <code>Game.scene_name</code></td>
 </tr>
 <tr>
 <td><code>Vector3</code></td>
