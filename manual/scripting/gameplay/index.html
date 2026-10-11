@@ -14,7 +14,7 @@
         <link rel="prev" href="../behaviours/">
       
       
-        <link rel="next" href="../api/">
+        <link rel="next" href="../multiplayer/">
       
       
         
@@ -797,6 +797,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#animate-one-character" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Animate one character
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#save-progress" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -833,6 +844,34 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../multiplayer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Multiplayer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -1267,6 +1306,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#animate-one-character" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Animate one character
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#save-progress" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1433,6 +1483,10 @@ itself every frame. <code>UI.button</code> returns true on the frame it is click
 </code></pre></div>
 <p><code>UI.width</code> and <code>UI.height</code> are the size of the screen, so layouts can be centered. Pictures go in
 the game's <code>images/</code> folder (<code>.png</code> or <code>.jpg</code>).</p>
+<p>A text field hands back what is in it after this frame's typing, so keep the value and pass it in
+again (<code>Input.text</code> is what was typed this frame, for anything else):</p>
+<div class="highlight"><pre><span></span><code><span class="vi">@name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">UI</span><span class="o">.</span><span class="n">text_field</span><span class="p">(</span><span class="vi">@name</span><span class="p">,</span><span class="w"> </span><span class="ss">x</span><span class="p">:</span><span class="w"> </span><span class="mi">40</span><span class="p">,</span><span class="w"> </span><span class="ss">y</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w"> </span><span class="ss">width</span><span class="p">:</span><span class="w"> </span><span class="mi">320</span><span class="p">,</span><span class="w"> </span><span class="ss">height</span><span class="p">:</span><span class="w"> </span><span class="mi">48</span><span class="p">,</span><span class="w"> </span><span class="ss">max_length</span><span class="p">:</span><span class="w"> </span><span class="mi">12</span><span class="p">)</span>
+</code></pre></div>
 <h2 id="pause-and-the-flow-between-screens">Pause, and the flow between screens<a class="headerlink" href="#pause-and-the-flow-between-screens" title="Permanent link">&para;</a></h2>
 <p><code>Time.scale = 0</code> freezes the game: physics stops and behaviours get an <code>update</code> with a delta of
 0, so a menu keeps working while everything else stands still. <code>Time.scale = 1</code> resumes.</p>
@@ -1524,8 +1578,20 @@ with them.</p>
 <td>1 falls like everything else, 0 floats, negative rises</td>
 <td>1.0</td>
 </tr>
+<tr>
+<td><code>image</code></td>
+<td>A picture from the game's <code>images/</code> folder drawn on each particle, tinted by <code>color</code></td>
+<td>a soft dot</td>
+</tr>
+<tr>
+<td><code>spin</code></td>
+<td>Degrees per second each picture turns</td>
+<td>0</td>
+</tr>
 </tbody>
 </table>
+<p>A white picture with see-through edges works best, since the color tints it:
+<code>Particles.burst(at, image: :smoke, color: :gray, alpha: 90, size: 1.2, life: 1.5, gravity: -0.05, spin: 40)</code>.</p>
 <h2 id="control-animations">Control animations<a class="headerlink" href="#control-animations" title="Permanent link">&para;</a></h2>
 <p>Every animation in a level plays in a loop from the start. <code>Animation</code> is for the ones that should
 not, by the name the action has in Blender:</p>
@@ -1537,6 +1603,24 @@ not, by the name the action has in Blender:</p>
 </code></pre></div>
 <p><code>Animation.names</code> lists the level's clips; <code>time</code>, <code>duration</code> and <code>seek(name, seconds)</code> are there
 for syncing things to a clip. A stopped clip lets go of its objects, so scripts can move them.</p>
+<h2 id="animate-one-character">Animate one character<a class="headerlink" href="#animate-one-character" title="Permanent link">&para;</a></h2>
+<p><code>Animation</code> is for the whole level. A character with several clips (idle, walk, run) picks its own
+through <code>animation</code>, and so does each spawned copy of it:</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">start</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">animation</span><span class="o">.</span><span class="n">play</span><span class="p">(</span><span class="ss">:Idle</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="n">_dt</span><span class="p">)</span>
+<span class="w">  </span><span class="n">animation</span><span class="o">.</span><span class="n">play</span><span class="p">(</span><span class="n">moving?</span><span class="w"> </span><span class="p">?</span><span class="w"> </span><span class="ss">:Run</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="ss">:Idle</span><span class="p">,</span><span class="w"> </span><span class="ss">fade</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="o">.</span><span class="mi">2</span><span class="p">)</span><span class="w">   </span><span class="c1"># blends from one to the other over 0.2 s</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>Playing the clip a character is already on just carries on, so it is fine to call every frame.
+<code>loop: false</code> plays once and holds the last pose; <code>speed:</code> and <code>restart: true</code> work as above.
+A second clip can be laid over the first:</p>
+<div class="highlight"><pre><span></span><code><span class="n">animation</span><span class="o">.</span><span class="n">mix</span><span class="p">(</span><span class="ss">:Wave</span><span class="p">)</span><span class="w">                 </span><span class="c1"># a clip that only moves the arm: the legs keep walking</span>
+<span class="n">animation</span><span class="o">.</span><span class="n">mix</span><span class="p">(</span><span class="ss">:Limp</span><span class="p">,</span><span class="w"> </span><span class="ss">weight</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="o">.</span><span class="mi">5</span><span class="p">)</span><span class="w">    </span><span class="c1"># half of it blended into everything</span>
+<span class="n">animation</span><span class="o">.</span><span class="n">unmix</span>
+</code></pre></div>
+<p><code>animation.follow_scene(fade: 0.3)</code> hands the character back to what the level plays, and
+<code>animation.clip</code> is the name of its own clip (nil while it follows the level).</p>
 <h2 id="save-progress">Save progress<a class="headerlink" href="#save-progress" title="Permanent link">&para;</a></h2>
 <p><code>Save</code> keeps numbers, texts and true/false values between runs, in one file per game:</p>
 <div class="highlight"><pre><span></span><code><span class="n">best</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">Save</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="ss">:best_time</span><span class="p">,</span><span class="w"> </span><span class="mi">999</span><span class="o">.</span><span class="mi">0</span><span class="p">)</span><span class="w">    </span><span class="c1"># the second value is what you get when nothing was saved</span>
@@ -1611,13 +1695,13 @@ folder. Tests get a save file of their own, empty at the start of each test.</p>
         
         
           
-          <a href="../api/" class="md-footer__link md-footer__link--next" aria-label="Next: API reference">
+          <a href="../multiplayer/" class="md-footer__link md-footer__link--next" aria-label="Next: Multiplayer">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                API reference
+                Multiplayer
               </div>
             </div>
             <div class="md-footer__button md-icon">

@@ -11,7 +11,7 @@
       
       
       
-        <link rel="prev" href="../gameplay/">
+        <link rel="prev" href="../multiplayer/">
       
       
         <link rel="next" href="../../testing/">
@@ -564,6 +564,34 @@
                 
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../multiplayer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Multiplayer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
     
   
   
@@ -826,7 +854,7 @@ and <a href="../gameplay/">Gameplay recipes</a>.</p>
 </tr>
 <tr>
 <td><code>GameObject</code></td>
-<td><code>name</code>, <code>tag</code>, <code>tag?</code>, <code>props</code>, <code>alive?</code>, <code>destroy</code>, <code>visible</code> / <code>visible=</code>, <code>behaviours</code>, <code>parent</code>, <code>children</code>, <code>transform</code>, <code>character</code>, <code>rigidbody</code>, <code>vehicle</code>, <code>get_component(Klass)</code>, <code>add_component(Klass, speed: 2.0)</code>, <code>animation_offset(=)</code> (seconds a spawned copy's animations run ahead of the original's)</td>
+<td><code>name</code>, <code>tag</code>, <code>tag?</code>, <code>props</code>, <code>alive?</code>, <code>destroy</code>, <code>visible</code> / <code>visible=</code>, <code>behaviours</code>, <code>parent</code>, <code>children</code>, <code>transform</code>, <code>character</code>, <code>rigidbody</code>, <code>vehicle</code>, <code>get_component(Klass)</code>, <code>add_component(Klass, speed: 2.0)</code>, <code>tint(=)</code> (multiplies its colors: <code>[1.0, 0.5, 0.5]</code>), <code>animation</code> (its own clips, see <code>Animator</code>), <code>animation_offset(=)</code> (seconds a spawned copy's animations run ahead of the original's)</td>
 </tr>
 <tr>
 <td><code>Transform</code></td>
@@ -850,7 +878,7 @@ and <a href="../gameplay/">Gameplay recipes</a>.</p>
 </tr>
 <tr>
 <td><code>Input</code></td>
-<td><code>axis(:horizontal / :vertical)</code>, <code>down?(:space)</code>, <code>pressed?</code>, <code>released?</code>, <code>action?(:jump)</code>, <code>action_pressed?</code>; mouse: <code>mouse_x</code>, <code>mouse_y</code>, <code>mouse_dx</code>, <code>mouse_dy</code>, <code>mouse_wheel</code>, <code>mouse_down?(:left)</code>, <code>mouse_pressed?</code>, <code>mouse_released?</code>, <code>mouse_locked=</code>; gamepad: <code>gamepad?</code>, <code>gamepad_axis(:left_x)</code>, <code>gamepad_down?(:a)</code>, <code>gamepad_pressed?</code>, <code>gamepad_released?</code></td>
+<td><code>axis(:horizontal / :vertical)</code>, <code>down?(:space)</code>, <code>pressed?</code>, <code>released?</code>, <code>action?(:jump)</code>, <code>action_pressed?</code>; mouse: <code>mouse_x</code>, <code>mouse_y</code>, <code>mouse_dx</code>, <code>mouse_dy</code>, <code>mouse_wheel</code>, <code>mouse_down?(:left)</code>, <code>mouse_pressed?</code>, <code>mouse_released?</code>, <code>mouse_locked=</code>; gamepad: <code>gamepad?</code>, <code>gamepad_axis(:left_x)</code>, <code>gamepad_down?(:a)</code>, <code>gamepad_pressed?</code>, <code>gamepad_released?</code>; <code>text</code> (typed this frame)</td>
 </tr>
 <tr>
 <td><code>Time</code></td>
@@ -866,15 +894,27 @@ and <a href="../gameplay/">Gameplay recipes</a>.</p>
 </tr>
 <tr>
 <td><code>Scene.spawn</code></td>
-<td><code>Scene.spawn("Bullet", position: v, rotation: euler)</code> copies a <code>prefab = true</code> template (hidden and inert in the game) with its physics and scripts; copies of animated characters move like the original</td>
+<td><code>Scene.spawn("Bullet", position: v, rotation: euler, physics: true)</code> copies a <code>prefab = true</code> template (hidden and inert in the game) with its physics and scripts; copies of animated characters move like the original</td>
 </tr>
 <tr>
 <td><code>Particles</code></td>
-<td><code>Particles.burst(position, count:, color:, alpha:, glow:, direction:, spread:, speed:, life:, size:, gravity:)</code> → how many were added, <code>Particles.count</code>, <code>Particles.clear</code></td>
+<td><code>Particles.burst(position, count:, color:, alpha:, glow:, direction:, spread:, speed:, life:, size:, gravity:, image:, spin:)</code> → how many were added, <code>Particles.count</code>, <code>Particles.clear</code></td>
 </tr>
 <tr>
 <td><code>Animation</code></td>
 <td><code>Animation.names</code>, <code>play(name, loop: true, speed: 1.0, restart: false)</code>, <code>pause(name)</code>, <code>stop(name)</code>, <code>playing?(name)</code>, <code>time(name)</code>, <code>duration(name)</code>, <code>seek(name, seconds)</code></td>
+</tr>
+<tr>
+<td><code>Animator</code></td>
+<td><code>game_object.animation</code> (or <code>animation</code> in a behaviour): <code>play(name, loop: true, speed: 1.0, fade: 0.0, restart: false)</code>, <code>mix(name, weight: 1.0, loop: true, speed: 1.0)</code>, <code>unmix</code>, <code>pause</code>, <code>follow_scene(fade: 0.0)</code>, <code>clip</code>, <code>playing?</code>, <code>time</code></td>
+</tr>
+<tr>
+<td><code>Network</code></td>
+<td><code>host(port: 7777)</code>, <code>join(address, port: 7777)</code>, <code>leave</code>, <code>online?</code>, <code>connecting?</code>, <code>host?</code>, <code>id</code>, <code>peers</code>, <code>port</code>, <code>emit(name, data = nil, to: :all / :host / id)</code>, <code>on(name) { \|data, from\| }</code>, <code>on_connect</code>, <code>on_fail</code>, <code>on_disconnect</code>, <code>on_join { \|peer\| }</code>, <code>on_leave { \|peer\| }</code>, <code>spawn(template, owner: Network.id, position:, rotation:)</code>, <code>allow_spawn(*templates)</code> (see <a href="../multiplayer/">Multiplayer</a>)</td>
+</tr>
+<tr>
+<td><code>NetworkSync</code></td>
+<td>A behaviour: <code>add_component(NetworkSync, owner: peer_id, key: "name")</code>, <code>mine?</code>, <code>owner</code>, <code>key</code>, <code>assign(owner:, key:)</code></td>
 </tr>
 <tr>
 <td><code>Save</code></td>
@@ -886,7 +926,7 @@ and <a href="../gameplay/">Gameplay recipes</a>.</p>
 </tr>
 <tr>
 <td><code>UI</code> / <code>Debug</code> / <code>Game</code></td>
-<td><code>UI.text(str, x:, y:, size:, color:, alpha:, align:)</code>, <code>UI.rect(x:, y:, width:, height:, color:, alpha:, radius:)</code>, <code>UI.image(name, x:, y:, width:, height:)</code>, <code>UI.button(label, x:, y:, width:, height:)</code> → clicked?, <code>UI.width</code>, <code>UI.height</code>, <code>UI.text_width(str, size:)</code>, <code>Debug.log/warn/error</code>, <code>Game.quit</code>, <code>Game.screenshot(name)</code>, <code>Game.load_scene("level2")</code> (<code>scenes/level2.glb</code>; <code>"main"</code> is <code>scene.glb</code>; Ruby globals survive), <code>Game.scene_name</code></td>
+<td><code>UI.text(str, x:, y:, size:, color:, alpha:, align:)</code>, <code>UI.rect(x:, y:, width:, height:, color:, alpha:, radius:)</code>, <code>UI.image(name, x:, y:, width:, height:)</code>, <code>UI.button(label, x:, y:, width:, height:)</code> → clicked?, <code>UI.text_field(value, x:, y:, width:, height:, max_length:)</code> → the new value, <code>UI.width</code>, <code>UI.height</code>, <code>UI.text_width(str, size:)</code>, <code>Debug.log/warn/error</code>, <code>Game.quit</code>, <code>Game.screenshot(name)</code>, <code>Game.load_scene("level2")</code> (<code>scenes/level2.glb</code>; <code>"main"</code> is <code>scene.glb</code>; Ruby globals survive), <code>Game.scene_name</code></td>
 </tr>
 <tr>
 <td><code>Vector3</code></td>
@@ -926,7 +966,7 @@ its rotation keeps its velocity. Vehicle wheel meshes must have their rotation a
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../gameplay/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Gameplay recipes">
+          <a href="../multiplayer/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Multiplayer">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -936,7 +976,7 @@ its rotation keeps its velocity. Vehicle wheel meshes must have their rotation a
                 Previous
               </span>
               <div class="md-ellipsis">
-                Gameplay recipes
+                Multiplayer
               </div>
             </div>
           </a>
