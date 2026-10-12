@@ -153,6 +153,7 @@
       <a href="#credits">Built with</a>
       <a href="#start">Install</a>
       <a href="manual/">Manual</a>
+      <a href="https://github.com/carlosdanielpohlod/redgem">GitHub</a>
     </nav>
   </header>
 
@@ -165,6 +166,7 @@
       <a class="button primary" href="#start">Download</a>
       <a class="button" href="#demo">Watch the demo</a>
       <a class="button" href="manual/">Read the manual</a>
+      <a class="button" href="https://github.com/carlosdanielpohlod/redgem">Source on GitHub</a>
     </div>
     <div class="film" id="demo">
       <video controls preload="metadata" poster="assets/poster.jpg" src="assets/demo.mp4"></video>
@@ -322,8 +324,10 @@
       <div><h3>3. New game</h3><p>Pick <b>Platformer</b>, give it a name: the editor opens with a level ready to play.</p></div>
       <div><h3>4. Play</h3><p>Press Play. Move with WASD, jump with Space. Then open a script and change it.</p></div>
     </div>
+    <p class="lead">The source is on <a href="https://github.com/carlosdanielpohlod/redgem">GitHub</a>: issues and small pull requests are welcome, and the <a href="https://github.com/carlosdanielpohlod/redgem/blob/main/KNOWN_LIMITATIONS.md">known limitations</a> are a good place to start.</p>
     <p class="lead">Prefer to build it yourself? You need a C++17 toolchain, CMake and Ninja; every library is downloaded at a pinned version. The <a href="manual/install/">manual</a> has the details, Docker included.</p>
-<pre class="start">cmake -S . -B build -G Ninja &amp;&amp; cmake --build build
+<pre class="start">git clone https://github.com/carlosdanielpohlod/redgem.git &amp;&amp; cd redgem
+cmake -S . -B build -G Ninja &amp;&amp; cmake --build build
 ./build/src/redgem                        <span class="m"># project hub</span>
 ./build/src/redgem new my_game --template platformer</pre>
   </section>
@@ -332,7 +336,7 @@
 <footer>
   <div class="wrap">
     <img src="assets/redgem-logo.svg" alt="RedGem 3D Engine">
-    <span>Made with Ruby, the most human-friendly language.</span>
+    <span>Made with Ruby, the most human-friendly language. <a href="https://github.com/carlosdanielpohlod/redgem">GitHub</a> · MIT license</span>
   </div>
 </footer>
 </body>
