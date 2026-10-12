@@ -926,7 +926,11 @@ and <a href="../gameplay/">Gameplay recipes</a>.</p>
 </tr>
 <tr>
 <td><code>UI</code> / <code>Debug</code> / <code>Game</code></td>
-<td><code>UI.text(str, x:, y:, size:, color:, alpha:, align:)</code>, <code>UI.rect(x:, y:, width:, height:, color:, alpha:, radius:)</code>, <code>UI.image(name, x:, y:, width:, height:)</code>, <code>UI.button(label, x:, y:, width:, height:)</code> → clicked?, <code>UI.text_field(value, x:, y:, width:, height:, max_length:)</code> → the new value, <code>UI.width</code>, <code>UI.height</code>, <code>UI.text_width(str, size:)</code>, <code>Debug.log/warn/error</code>, <code>Game.quit</code>, <code>Game.screenshot(name)</code>, <code>Game.load_scene("level2")</code> (<code>scenes/level2.glb</code>; <code>"main"</code> is <code>scene.glb</code>; Ruby globals survive), <code>Game.scene_name</code></td>
+<td><code>UI.text(str, x:, y:, size:, color:, alpha:, align:)</code>, <code>UI.rect(x:, y:, width:, height:, color:, alpha:, radius:)</code>, <code>UI.image(name, x:, y:, width:, height:)</code>, <code>UI.button(label, x:, y:, width:, height:)</code> → clicked?, <code>UI.text_field(value, x:, y:, width:, height:, max_length:)</code> → the new value, <code>UI.width</code>, <code>UI.height</code>, <code>UI.text_width(str, size:)</code>, <code>Debug.log/warn/error</code>, <code>Game.quit</code>, <code>Game.load_scene("level2")</code> (<code>scenes/level2.glb</code>; <code>"main"</code> is <code>scene.glb</code>; Ruby globals survive), <code>Game.scene_name</code>, <code>Game.title</code></td>
+</tr>
+<tr>
+<td><code>GameMenu</code></td>
+<td>A behaviour: title screen, pause menu and end screen. <code>GameMenu.instance</code>, <code>show(:pause)</code>, <code>resume</code>, <code>restart</code>, <code>finish("You win!")</code>, <code>open?</code>, <code>screen</code>, <code>screens</code> (<code>:title</code>, <code>:pause</code>, <code>:over</code>, and the game's own), <code>button_box(index)</code>; <code>GameMenu::Screen.new(heading:, options:, back:)</code>, <code>add_option(label, index:) { }</code>; settings <code>title</code>, <code>start_open</code> (see <a href="../gameplay/#pause-and-the-flow-between-screens">Gameplay recipes</a>)</td>
 </tr>
 <tr>
 <td><code>Vector3</code></td>

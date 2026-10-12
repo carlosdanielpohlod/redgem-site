@@ -1497,9 +1497,25 @@ again (<code>Input.text</code> is what was typed this frame, for anything else):
 <li><strong>Other screens and levels:</strong> <code>Game.load_scene("level2")</code> to move on, and
   <code>Game.load_scene(Game.scene_name)</code> to restart the current one.</li>
 </ul>
-<p>The Platformer template ships all of this in <code>scripts/game_menu.rb</code>: a title screen, a pause
-menu on Esc or P, and an end screen. Copy it into your game and call
-<code>GameMenu.instance.finish("You win!")</code> when the game ends.</p>
+<p><code>GameMenu</code> is all of this, ready made: a title screen, a pause menu on Esc, P or a gamepad's
+Start, and an end screen. Put it on an object from the scene's script, and end the game from
+anywhere:</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">MainScene</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="no">SceneScript</span>
+<span class="w">  </span><span class="k">def</span><span class="w"> </span><span class="nf">setup</span>
+<span class="w">    </span><span class="no">Camera</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">add_component</span><span class="p">(</span><span class="no">GameMenu</span><span class="p">)</span><span class="w">   </span><span class="c1"># title: "...", start_open: false</span>
+<span class="w">  </span><span class="k">end</span>
+<span class="k">end</span>
+
+<span class="no">GameMenu</span><span class="o">.</span><span class="n">instance</span><span class="o">.</span><span class="n">finish</span><span class="p">(</span><span class="s2">"You win!"</span><span class="p">)</span>
+</code></pre></div>
+<p>Its screens are <code>:title</code>, <code>:pause</code> and <code>:over</code>. A game adds options and screens of its own:</p>
+<div class="highlight"><pre><span></span><code><span class="n">menu</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">GameMenu</span><span class="o">.</span><span class="n">instance</span>
+<span class="n">menu</span><span class="o">.</span><span class="n">screens</span><span class="o">[</span><span class="ss">:credits</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">GameMenu</span><span class="o">::</span><span class="no">Screen</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">heading</span><span class="p">:</span><span class="w"> </span><span class="s2">"Made by Ana"</span><span class="p">,</span><span class="w"> </span><span class="ss">back</span><span class="p">:</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">menu</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="ss">:pause</span><span class="p">)</span><span class="w"> </span><span class="p">})</span>
+<span class="n">menu</span><span class="o">.</span><span class="n">screens</span><span class="o">[</span><span class="ss">:pause</span><span class="o">].</span><span class="n">add_option</span><span class="p">(</span><span class="s2">"Credits"</span><span class="p">,</span><span class="w"> </span><span class="ss">index</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">menu</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="ss">:credits</span><span class="p">)</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div>
+<p><code>back</code> is what the pause keys do on that screen. A screen that draws more than buttons is a
+subclass of <code>GameMenu::Screen</code> (<code>draw</code>, <code>space_above</code>, <code>opened</code>, <code>closed</code>, <code>typing?</code>): the
+platformer's multiplayer screen, <code>games/platformer/scripts/multiplayer_screen.rb</code>, is one.</p>
 <h2 id="play-sounds-and-music">Play sounds and music<a class="headerlink" href="#play-sounds-and-music" title="Permanent link">&para;</a></h2>
 <p>Files go in the game's <code>sounds/</code> folder.</p>
 <div class="highlight"><pre><span></span><code><span class="no">Audio</span><span class="o">.</span><span class="n">play</span><span class="p">(</span><span class="ss">:jump</span><span class="p">)</span><span class="w">                      </span><span class="c1"># sounds/jump.wav (or .ogg, .mp3, .flac)</span>
@@ -1631,8 +1647,11 @@ A second clip can be laid over the first:</p>
 </code></pre></div>
 <p>Whole numbers come back as integers (a saved <code>12.0</code> is read as <code>12</code>): call <code>.to_f</code> on a value you
 divide.</p>
-<p>The file is written on every change, to <code>.config/redgem/saves/&lt;game&gt;.json</code> in the player's home
-folder. Tests get a save file of their own, empty at the start of each test.</p>
+<p>The file is written on every change, to <code>.config/redgem/saves/by-id/&lt;id&gt;.json</code> in the player's
+home folder, where <code>&lt;id&gt;</code> is the game's <code>id</code> from its <code>game.json</code>: the save stays with the game
+when its folder is moved or renamed. A game with no <code>id</code> saves to
+<code>.config/redgem/saves/&lt;folder&gt;-&lt;digits&gt;.json</code>, with digits made from where its folder is. Tests
+get a save file of their own, empty at the start of each test.</p>
 <h2 id="keep-score-across-objects">Keep score across objects<a class="headerlink" href="#keep-score-across-objects" title="Permanent link">&para;</a></h2>
 <p>Put a manager behaviour on one object and let the others find it:</p>
 <div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">GameManager</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="no">Behaviour</span>

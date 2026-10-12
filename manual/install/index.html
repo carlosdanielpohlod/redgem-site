@@ -341,10 +341,21 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#with-docker-easiest" class="md-nav__link">
+  <a href="#download-easiest" class="md-nav__link">
     <span class="md-ellipsis">
       
-        With Docker (easiest)
+        Download (easiest)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#with-docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        With Docker
       
     </span>
   </a>
@@ -910,10 +921,21 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#with-docker-easiest" class="md-nav__link">
+  <a href="#download-easiest" class="md-nav__link">
     <span class="md-ellipsis">
       
-        With Docker (easiest)
+        Download (easiest)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#with-docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        With Docker
       
     </span>
   </a>
@@ -971,8 +993,37 @@
 
 
 <h1 id="install">Install<a class="headerlink" href="#install" title="Permanent link">&para;</a></h1>
-<p>RedGem runs on Linux. Pick one of the two ways below.</p>
-<h2 id="with-docker-easiest">With Docker (easiest)<a class="headerlink" href="#with-docker-easiest" title="Permanent link">&para;</a></h2>
+<p>RedGem is experimental. The editor is developed on Linux; there is a Windows download too.
+Pick one of the ways below.</p>
+<h2 id="download-easiest">Download (easiest)<a class="headerlink" href="#download-easiest" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>System</th>
+<th>Download</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Linux (x86_64)</td>
+<td><a href="https://github.com/carlosdanielpohlod/redgem/releases/latest/download/redgem-linux-x86_64.tar.gz">redgem-linux-x86_64.tar.gz</a></td>
+</tr>
+<tr>
+<td>Windows (x86_64)</td>
+<td><a href="https://github.com/carlosdanielpohlod/redgem/releases/latest/download/redgem-windows-x86_64.zip">redgem-windows-x86_64.zip</a></td>
+</tr>
+</tbody>
+</table>
+<p>Unpack it anywhere and run <code>bin/redgem</code> (Linux) or <code>redgem.exe</code> (Windows). Nothing is installed:
+delete the folder to remove it. The demos are in its <code>games/</code> folder.</p>
+<ul>
+<li><strong>Linux</strong> needs a desktop with OpenGL 3.3, a processor with AVX2 and glibc 2.39 or newer
+  (Ubuntu 24.04 and later). It builds games for Linux, Windows and Android.</li>
+<li><strong>Windows</strong> is compiled from Linux and has only been tried under Wine, not on a real Windows
+  machine yet. It builds games for Windows.</li>
+</ul>
+<p>Wherever this manual says <code>./build/src/redgem ...</code>, write <code>bin/redgem ...</code> (or <code>redgem.exe ...</code>).</p>
+<h2 id="with-docker">With Docker<a class="headerlink" href="#with-docker" title="Permanent link">&para;</a></h2>
 <p>You need <a href="https://docs.docker.com/engine/install/">Docker</a> and a desktop session using X11.</p>
 <div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>&lt;repository<span class="w"> </span>URL&gt;<span class="w"> </span>redgem
 <span class="nb">cd</span><span class="w"> </span>redgem

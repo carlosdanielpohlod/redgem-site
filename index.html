@@ -135,6 +135,10 @@
     header.top nav { display: none; }
     section { padding-top: 64px; }
   }
+  .hero p.notice { margin-top: 14px; max-width: 60ch; font-size: 15.5px; }
+  .hero p.notice b { color: var(--paper); }
+  .card p + p { margin-top: 16px; }
+  #start .steps { margin-bottom: 36px; }
 </style>
 </head>
 <body>
@@ -147,7 +151,7 @@
       <a href="#editor">Editor</a>
       <a href="#features">Features</a>
       <a href="#credits">Built with</a>
-      <a href="#start">Get started</a>
+      <a href="#start">Install</a>
       <a href="manual/">Manual</a>
     </nav>
   </header>
@@ -156,9 +160,10 @@
     <h1>Build 3D games in <em>Ruby</em>.</h1>
     <p class="claim">With Ruby, <b>the most human-friendly language</b>.</p>
     <p>RedGem is a game engine with its own editor. Build your levels, write the gameplay in Ruby, press Play, ship it for Linux, Windows and Android.</p>
+    <p class="notice"><b>Experimental.</b> A young engine with rough edges, built on open source: Blender, Jolt Physics, raylib, mruby and <a href="#credits">more</a>.</p>
     <div class="actions">
-      <a class="button primary" href="#demo">Watch the demo</a>
-      <a class="button" href="#start">Get started</a>
+      <a class="button primary" href="#start">Download</a>
+      <a class="button" href="#demo">Watch the demo</a>
       <a class="button" href="manual/">Read the manual</a>
     </div>
     <div class="film" id="demo">
@@ -281,7 +286,7 @@
   <section id="credits">
     <p class="eyebrow">Built with</p>
     <h2>Standing on open source.</h2>
-    <p class="lead">RedGem is written in C++17 and would not exist without these projects. Thank you to the people behind them.</p>
+    <p class="lead">RedGem was not built from zero. It is C++17 glue and tooling around these projects, and would not exist without them. Thank you to the people behind them.</p>
     <div class="scroll">
     <table>
       <thead><tr><th>Project</th><th>Used for</th><th>License</th></tr></thead>
@@ -304,15 +309,21 @@
   </section>
 
   <section id="start">
-    <p class="eyebrow">Get started</p>
-    <h2>Try it.</h2>
-    <p class="lead">Linux, with Docker or a C++17 toolchain. Every library is downloaded by CMake at a pinned version.</p>
-<pre class="start"><span class="m"># with Docker</span>
-tools/docker/editor.sh                    <span class="m"># builds the image the first time, then opens the editor</span>
-tools/docker/editor.sh games/platformer   <span class="m"># open a demo</span>
-
-<span class="m"># from source</span>
-cmake -S . -B build -G Ninja &amp;&amp; cmake --build build
+    <p class="eyebrow">How to install</p>
+    <h2>Download, unpack, run.</h2>
+    <p class="lead">Nothing to install. RedGem is experimental and free, under the MIT license.</p>
+    <div class="grid">
+      <div class="card"><h3>Linux</h3><p>x86_64, OpenGL 3.3, Ubuntu 24.04 or newer. The tested one: builds games for Linux, Windows and Android.</p><p><a class="button primary" href="https://github.com/carlosdanielpohlod/redgem/releases/latest/download/redgem-linux-x86_64.tar.gz">Download for Linux</a></p></div>
+      <div class="card"><h3>Windows</h3><p>x86_64. Compiled from Linux and only tried under Wine so far: tell us what breaks. Builds games for Windows.</p><p><a class="button" href="https://github.com/carlosdanielpohlod/redgem/releases/latest/download/redgem-windows-x86_64.zip">Download for Windows</a></p></div>
+    </div>
+    <div class="steps">
+      <div><h3>1. Unpack</h3><p>Anywhere you like. To remove RedGem, delete the folder.</p></div>
+      <div><h3>2. Run</h3><p><code>bin/redgem</code> on Linux, <code>redgem.exe</code> on Windows. The project hub opens.</p></div>
+      <div><h3>3. New game</h3><p>Pick <b>Platformer</b>, give it a name: the editor opens with a level ready to play.</p></div>
+      <div><h3>4. Play</h3><p>Press Play. Move with WASD, jump with Space. Then open a script and change it.</p></div>
+    </div>
+    <p class="lead">Prefer to build it yourself? You need a C++17 toolchain, CMake and Ninja; every library is downloaded at a pinned version. The <a href="manual/install/">manual</a> has the details, Docker included.</p>
+<pre class="start">cmake -S . -B build -G Ninja &amp;&amp; cmake --build build
 ./build/src/redgem                        <span class="m"># project hub</span>
 ./build/src/redgem new my_game --template platformer</pre>
   </section>

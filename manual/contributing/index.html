@@ -861,6 +861,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#libraries-and-programs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Libraries and programs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#not-there-yet" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -939,6 +950,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#libraries-and-programs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Libraries and programs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#not-there-yet" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -989,13 +1011,27 @@ with <code>tools/assets/fetch_kenney.sh</code> and <code>tools/blender/run.sh bu
 <div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>build<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>ctest<span class="w"> </span>--output-on-failure<span class="w">        </span><span class="c1"># everything</span>
 ctest<span class="w"> </span>-L<span class="w"> </span>system<span class="w">                              </span><span class="c1"># only the system tests</span>
 </code></pre></div>
-<p>A system test is a Ruby file run against a game:
-<code>redgem &lt;game_dir&gt; --test &lt;file.rb&gt; [--screenshots &lt;dir&gt;] [--headless]</code> (<code>--headless</code> runs
-without a window; <code>redgem --help</code> lists every option).</p>
+<p>Tests are run by a program of their own, <code>redgem-test</code>, built beside <code>redgem</code> (see
+<a href="#libraries-and-programs">Libraries and programs</a>). A system test is
+a Ruby file run against a game:
+<code>redgem-test &lt;game_dir&gt; &lt;file.rb&gt; [--screenshots &lt;dir&gt;] [--headless] [--work &lt;dir&gt;]</code> (<code>--headless</code>
+runs without a window, <code>--work</code> gives the run a folder of its own for its save file and notes;
+<code>redgem-test --help</code> lists every option).</p>
+<p>The engine knows nothing of tests. Neither <code>redgem</code> nor <code>redgem-player</code>, which is what every
+built game ships as, has test code in it: what tests are written with (<code>TestInput</code>, <code>SystemTest</code>,
+<code>RedGemTest</code>, the runners and their command line) lives in <code>src/testing</code> and <code>ruby/testing</code>, a library that only
+<code>redgem-test</code> links. The engine gives it nothing but general options (<code>EngineOptions</code>: a fixed
+step per frame, an input fed by code, a save file, who shows the game) and the window a game is
+shown in tells whoever asks when a frame is drawn; the pictures a test takes (<code>t.screenshot</code>) are
+written by the test tool from there. Keep it that way: the <code>app.ships_no_test_code</code> test looks
+into the built <code>redgem-player</code> and <code>redgem</code> and fails when test code got in.</p>
 <ul>
 <li><strong>C++ unit + integration</strong> (doctest): math, extras parser, glTF loading from Blender fixtures,
-  scene hierarchy, physics world, Ruby VM, and a headless engine running the <code>sandbox</code> fixture game.</li>
-<li><strong>Ruby tests</strong> run inside the engine's mruby: <code>redgem --ruby-test tests/ruby/vector3_test.rb</code>.</li>
+  scene hierarchy, physics world, Ruby VM, and an engine nobody shows running the <code>sandbox</code> fixture
+  game (and one shown by a presenter that records what it is handed).</li>
+<li><strong>Tests of the test tool</strong> (<code>tests/testing/</code>, doctest): its command line, its save file, what it
+  adds to a game's Ruby, and whole runs of passing and failing tests.</li>
+<li><strong>Ruby tests</strong> run inside the engine's mruby: <code>redgem-test --ruby tests/ruby/vector3_test.rb</code>.</li>
 <li><strong>Editor system test</strong> (<code>tests/editor_system/</code>) opens the editor window on a copy of the platformer,
   picks, edits, plays, stops, undoes and saves.</li>
 <li><strong>System tests</strong> (<code>tests/system/&lt;game&gt;/*_test.rb</code>, run against <code>games/&lt;game&gt;</code>) open the real game
@@ -1008,26 +1044,50 @@ without a window; <code>redgem --help</code> lists every option).</p>
 <span class="w">  </span><span class="n">t</span><span class="o">.</span><span class="n">screenshot</span><span class="p">(</span><span class="s2">"collect_coin_after"</span><span class="p">)</span><span class="w">        </span><span class="c1"># saved to build/screenshots/&lt;game&gt;/</span>
 <span class="k">end</span>
 </code></pre></div>
+<p>A template is tested as the game it makes: <code>tests/system_templates/&lt;template&gt;/*_test.rb</code> run
+against a game created from it by <code>redgem new</code>. Every template needs at least one.</p>
 <p>Test fixtures are regenerated with
 <code>tools/blender/run.sh build_test_fixtures.py tests/fixtures</code>.</p>
 <h2 id="layout">Layout<a class="headerlink" href="#layout" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>src/core      constants (config.hpp), math, logging, fixed timestep clock
+<div class="highlight"><pre><span></span><code>src/core      what everything shares: math, logging, the fixed timestep clock, files, the platform
+              layer (the only place, with src/net/socket.cpp, that asks which system this is),
+              embedding files in the binary, the game folder's layout (config.hpp)
 src/scene     glTF loader (meshes, skeletons, animations), Blender extras parser, scene graph,
-              animation playback, particles
+              animation playback, particles; the custom properties scenes carry (props.hpp)
 src/physics   PhysicsWorld interface + Jolt implementation
-src/input     keys, axes/actions, keyboard, mouse, gamepad and scripted input sources
+src/input     keys, axes/actions, keyboard, mouse, gamepad and scripted input sources; a touch
+              screen's on-screen controls (touch_input_source.hpp), which only the program for
+              a touch screen puts in front of the others
 src/net       sockets (the only place with OS socket calls), message framing and wire format, the
-              host/guest session, discovery on the local network, the relay
-src/audio     sound effects and music (raylib, or a recorder for tests)
+              host/guest session, discovery on the local network, the relay and the entry point
+              of its program (relay_main.cpp)
+src/audio     sound effects and music (raylib, or silence when there is no audio device)
+src/storage   what a game keeps between runs (the save store)
+src/render    the window (window.hpp: the only place that opens one, with its graphics card, frame
+              pace and pointer), the renderer that draws in it and owns what is on the card (HDR,
+              shadows, reflections, post-processing), shaders, environment, culling, mesh
+              conversion, what differs per graphics API (gpu_profile.hpp), the font texts are
+              drawn with
 src/script    mruby VM, behaviour host, native bindings
-src/render    renderer (HDR, shadows, reflections, post-processing), shaders, environment,
-              culling, graphics card choice, mesh conversion
+src/app       what plays a game: the engine loop, which draws nothing and hands each frame
+              (FrameView) to a presenter (presenter.hpp); the presenter that shows a game in a
+              window of its own and the painter every drawing presenter shares; game.json, the
+              game beside a built executable, where saves go, user settings, the entry points of
+              the player (player_main.cpp; on Android, android_main.cpp)
 src/editor    editor: scene document (undo, save, import), session (play mode), camera, picking,
-              project hub, script tabs, ImGui panels and theme (src/editor/ui)
-src/app       engine loop, game projects (templates, build, recent games), user settings and
-              command line
-ruby/engine   Ruby prelude embedded in the binary (Behaviour, Vector3, test DSLs)
-templates     scripts of the new-game templates (embedded in the binary)
+              script tabs, ImGui panels and theme (src/editor/ui)
+src/project   the tools around a game: new games from templates, builds (desktop and Android),
+              recent games and the project hub, the command line, the entry point of redgem
+              (main.cpp)
+src/testing   what runs tests, apart from the engine: TestInput, the pictures a test takes of the
+              game (TestScreen), the system test and Ruby test runners, the audio tests listen
+              with, redgem-test and its command line
+ruby/engine   Ruby prelude embedded in the runtime (Behaviour, Vector3, UI, Network...)
+ruby/testing  the Ruby tests are written with (assertions, test cases, the system test DSL),
+              embedded in redgem-test only
+templates     the new-game templates: each folder is a whole game (scene, scripts, sounds) and a
+              template.json about it, embedded in redgem as it is; a new game is a copy of one.
+              A template is edited like any game: redgem templates/platformer
 assets/editor fonts of the editor (Inter, JetBrains Mono; SIL Open Font License, see the license files)
 games         demo games: scene.glb, scripts and the .blend each scene was built from
 showcase      renders of the showcase scene and the credits of its assets
@@ -1036,6 +1096,48 @@ tools/assets  downloaders of the free assets the demos use
 tests         unit, integration, Ruby and system tests, with their fixtures
 cmake         dependencies (pinned versions) and file embedding
 </code></pre></div>
+<p>The folders of <code>src</code> are layers, in the order above: each includes only itself and what is below
+it (<code>core</code>; then <code>scene</code>, <code>net</code>, <code>input</code>, <code>audio</code>, <code>physics</code>, <code>storage</code>; then <code>render</code> and
+<code>script</code>; then <code>app</code>; then <code>editor</code>, <code>project</code>; <code>testing</code> sees everything and nothing sees it).
+Each layer keeps its own numbers in a <code>&lt;layer&gt;_config.hpp</code> next to its code.</p>
+<h2 id="libraries-and-programs">Libraries and programs<a class="headerlink" href="#libraries-and-programs" title="Permanent link">&para;</a></h2>
+<p>The folders are built into a few static libraries, one on top of the other, and each program
+links only the ones it is made of (<code>src/CMakeLists.txt</code>):</p>
+<div class="highlight"><pre><span></span><code>redgem_core     src/core                                           links nothing of the engine's
+redgem_net      src/net                                            redgem_core, the JSON library
+redgem_runtime  scene, physics, audio, input, storage, render,     redgem_net, raylib, Jolt, mruby,
+                script, app, and the Ruby prelude                  cgltf, the JSON library
+redgem_editor   src/editor                                         redgem_runtime, Dear ImGui
+redgem_project  src/project (without main.cpp), the templates      redgem_editor
+                and the licenses
+redgem_testing  src/testing, ruby/testing                          redgem_runtime
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>redgem-player   src/app/player_main.cpp    redgem_runtime   what players receive: plays the game in
+                                                            the game/ folder beside it, nothing else
+redgem          src/project/main.cpp       redgem_project   the editor, the project hub, the command
+                                                            line (new, build, --play)
+redgem-relay    src/net/relay_main.cpp     redgem_net       the meeting point for games over the
+                                                            internet: no window, for servers
+redgem-test     src/testing/main.cpp       redgem_testing   runs a game's tests
+libredgem.so    src/app/android_main.cpp   redgem_runtime   the player on Android, loaded by the app
+</code></pre></div>
+<p>A built game is a copy of the player, never of the program that builds it: <code>redgem build</code> and
+the editor's Build take <code>redgem-player</code> from beside <code>redgem</code>, or <code>runtimes/&lt;system&gt;/</code> there for
+another system (<code>tools/windows/build_runtime.sh</code>, <code>tools/android/build_runtime.sh</code> build those).
+<code>cmake --install build --component redgem --prefix &lt;folder&gt;</code> puts the four programs in
+<code>&lt;folder&gt;/bin</code> and the players for other systems in <code>&lt;folder&gt;/bin/runtimes</code>, where the same
+lookups find them.</p>
+<p>Keep what players receive small: nothing the player links may include <code>editor/</code> or <code>project/</code>
+(the include directions below say so, and linking proves it). The tests <code>app.player_ships_no_tools</code>
+and <code>app.relay_ships_no_game</code> look into the built programs (<code>tests/ships_no_tools.sh</code>) for texts
+only the tools, or only a game, have.</p>
+<p>A program opens one window, through <code>Window</code>, and makes what draws in it afterwards (a <code>Renderer</code>,
+the editor's <code>ui::Interface</code>): the project hub, the editor and a played game each do. The engine
+never does: it is given a <code>Presenter</code>. <code>WindowPresenter</code> shows a game in its own window
+(<code>redgem-player</code>, <code>redgem --play</code>, <code>redgem-test</code>), the editor's Scene view is another (<code>EditorApp::GameView</code>),
+and without one nobody shows the game (<code>NullPresenter</code>: tests, servers). What a game can show is
+a field of <code>FrameView</code>, drawn in <code>FramePainter</code>: added there, it reaches every presenter.
+<code>tests/include_directions.sh</code> holds the table and fails the test suite on an include that goes up.</p>
 <h2 id="not-there-yet">Not there yet<a class="headerlink" href="#not-there-yet" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Blend trees and animation events. Characters copied with Duplicate in the editor keep the pose

@@ -752,6 +752,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#testing-ruby-code-by-itself" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Testing Ruby code by itself
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -887,6 +898,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#testing-ruby-code-by-itself" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Testing Ruby code by itself
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -917,11 +939,16 @@ and can take screenshots. It runs the real game, frame by frame, at the same pac
 <span class="w">  </span><span class="n">t</span><span class="o">.</span><span class="n">screenshot</span><span class="p">(</span><span class="s2">"coin_collected"</span><span class="p">)</span>
 <span class="k">end</span>
 </code></pre></div>
-<p>Run it:</p>
-<div class="highlight"><pre><span></span><code>./build/src/redgem<span class="w"> </span>my_game<span class="w"> </span>--test<span class="w"> </span>tests/collect_coin_test.rb<span class="w"> </span>--screenshots<span class="w"> </span>shots
+<p>Run it with <code>redgem-test</code>, the program that runs tests (it is built next to <code>redgem</code>):</p>
+<div class="highlight"><pre><span></span><code>./build/src/redgem-test<span class="w"> </span>my_game<span class="w"> </span>tests/collect_coin_test.rb<span class="w"> </span>--screenshots<span class="w"> </span>shots
 </code></pre></div>
 <p>The command exits with an error when an assertion fails or a script raises, so it fits in any
-automated check. Add <code>--headless</code> to run without opening a window (no screenshots then).</p>
+automated check. Add <code>--headless</code> to run without opening a window (no screenshots then);
+<code>redgem-test --help</code> lists every option.</p>
+<p><code>redgem-test</code> is a development tool. It is not part of a built game: the program your players
+receive (what <code>redgem build</code> and the editor's Build make) contains no test code at all, and
+<code>SystemTest</code> and the rest of what tests are written with do not exist in the Ruby your game
+runs in. They are only there while <code>redgem-test</code> plays it.</p>
 <h2 id="what-a-test-can-do">What a test can do<a class="headerlink" href="#what-a-test-can-do" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -973,13 +1000,31 @@ automated check. Add <code>--headless</code> to run without opening a window (no
 </tr>
 <tr>
 <td><code>t.screenshot("name")</code></td>
-<td>Saves <code>name.png</code> in the screenshots folder</td>
+<td>Saves a picture of the next frame as <code>name.png</code> in the screenshots folder (<code>--screenshots &lt;dir&gt;</code>, <code>screenshots</code> unless said)</td>
 </tr>
 </tbody>
 </table>
 <p>Inside the blocks you have the whole scripting API, so a test can also move objects or read any
-behaviour's state. What the game saves with <code>Save</code> goes to a file of the test's own, which starts
+behaviour's state. Taking pictures is something only tests do: a game's own scripts have no call
+for it. What the game saves with <code>Save</code> goes to a file of the test's own, which starts
 empty: a test never sees or changes your real progress.</p>
+<h2 id="testing-ruby-code-by-itself">Testing Ruby code by itself<a class="headerlink" href="#testing-ruby-code-by-itself" title="Permanent link">&para;</a></h2>
+<p>Code that needs no running game (a formula, a helper class) can be tested without one. A file of
+unit tests defines classes that inherit from <code>RedGemTest::Case</code>; every method whose name starts
+with <code>test_</code> is a test:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># tests/score_test.rb</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ScoreTest</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="no">RedGemTest</span><span class="o">::</span><span class="no">Case</span>
+<span class="w">  </span><span class="k">def</span><span class="w"> </span><span class="nf">test_a_coin_is_worth_ten_points</span>
+<span class="w">    </span><span class="n">assert_equal</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">10</span>
+<span class="w">    </span><span class="n">assert_in_delta</span><span class="w"> </span><span class="mi">0</span><span class="o">.</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="no">Vector3</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">0</span><span class="o">.</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">length</span>
+<span class="w">  </span><span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>./build/src/redgem-test<span class="w"> </span>--ruby<span class="w"> </span>tests/score_test.rb
+</code></pre></div>
+<p>It runs in the same Ruby a game runs in, with the scripting API and an empty scene. The
+assertions are <code>assert</code>, <code>refute</code>, <code>assert_equal</code>, <code>assert_nil</code>, <code>assert_in_delta</code>,
+<code>assert_vector</code> and <code>assert_raises</code>; a system test has them too.</p>
 
 
 
