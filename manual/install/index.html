@@ -993,7 +993,8 @@
 
 
 <h1 id="install">Install<a class="headerlink" href="#install" title="Permanent link">&para;</a></h1>
-<p>RedGem is experimental. The editor is developed on Linux; there is a Windows download too.
+<p>RedGem is experimental. The editor is developed on Linux; there are Windows and macOS downloads
+too.
 Pick one of the ways below.</p>
 <h2 id="download-easiest">Download (easiest)<a class="headerlink" href="#download-easiest" title="Permanent link">&para;</a></h2>
 <table>
@@ -1012,17 +1013,34 @@ Pick one of the ways below.</p>
 <td>Windows (x86_64)</td>
 <td><a href="https://github.com/carlosdanielpohlod/redgem/releases/latest/download/redgem-windows-x86_64.zip">redgem-windows-x86_64.zip</a></td>
 </tr>
+<tr>
+<td>macOS (Apple Silicon)</td>
+<td><a href="https://github.com/carlosdanielpohlod/redgem/releases/latest/download/redgem-macos-arm64.zip">redgem-macos-arm64.zip</a></td>
+</tr>
+<tr>
+<td>macOS (Intel)</td>
+<td><a href="https://github.com/carlosdanielpohlod/redgem/releases/latest/download/redgem-macos-x86_64.zip">redgem-macos-x86_64.zip</a></td>
+</tr>
 </tbody>
 </table>
-<p>Unpack it anywhere and run <code>bin/redgem</code> (Linux) or <code>redgem.exe</code> (Windows). Nothing is installed:
-delete the folder to remove it. The demos are in its <code>games/</code> folder.</p>
+<p>Unpack it anywhere and run <code>bin/redgem</code> (Linux), <code>redgem.exe</code> (Windows) or open <code>RedGem.app</code>
+(macOS). Nothing is installed: delete the folder to remove it. The demos are in its <code>games/</code> folder.</p>
 <ul>
 <li><strong>Linux</strong> needs a desktop with OpenGL 3.3, a processor with AVX2 and glibc 2.39 or newer
   (Ubuntu 24.04 and later). It builds games for Linux, Windows and Android.</li>
 <li><strong>Windows</strong> is compiled from Linux and has only been tried under Wine, not on a real Windows
   machine yet. It builds games for Windows.</li>
+<li><strong>macOS</strong> needs macOS 11 or newer. It is built and tested on GitHub's Mac machines (macOS 14 on
+  Apple Silicon, macOS 15 on Intel), which are virtual machines with no graphics card OpenGL can
+  use: there the editor opens, edits, plays and saves a game drawn by Apple's software renderer.
+  It has not been tried on a real Mac yet. It builds games for the Mac only.
+  The app is not signed by a registered Apple developer nor notarized, so macOS refuses it the
+  first time: right-click <code>RedGem.app</code> and choose <em>Open</em> (on macOS 15 and later: try once, then
+  <em>System Settings &gt; Privacy &amp; Security &gt; Open Anyway</em>), or run
+  <code>xattr -dr com.apple.quarantine RedGem.app</code> in the unpacked folder.</li>
 </ul>
-<p>Wherever this manual says <code>./build/src/redgem ...</code>, write <code>bin/redgem ...</code> (or <code>redgem.exe ...</code>).</p>
+<p>Wherever this manual says <code>./build/src/redgem ...</code>, write <code>bin/redgem ...</code> (or <code>redgem.exe ...</code>,
+or <code>RedGem.app/Contents/MacOS/redgem ...</code> on macOS).</p>
 <h2 id="with-docker">With Docker<a class="headerlink" href="#with-docker" title="Permanent link">&para;</a></h2>
 <p>You need <a href="https://docs.docker.com/engine/install/">Docker</a> and a desktop session using X11.</p>
 <div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/carlosdanielpohlod/redgem.git
@@ -1044,6 +1062,8 @@ development files. On Ubuntu or Debian:</p>
 <div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>build-essential<span class="w"> </span>cmake<span class="w"> </span>ninja-build<span class="w"> </span>git<span class="w"> </span>ca-certificates<span class="w"> </span>xz-utils<span class="w"> </span>ruby<span class="w"> </span>rake<span class="w"> </span>bison<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>libgl1-mesa-dev<span class="w"> </span>libx11-dev<span class="w"> </span>libxrandr-dev<span class="w"> </span>libxinerama-dev<span class="w"> </span>libxcursor-dev<span class="w"> </span>libxi-dev<span class="w"> </span>libasound2-dev
 </code></pre></div>
+<p>On macOS: the Xcode command line tools (<code>xcode-select --install</code>), then
+<code>brew install cmake ninja</code> and a Ruby with rake (the CI builds with Ruby 3.3).</p>
 <p>Then:</p>
 <div class="highlight"><pre><span></span><code>cmake<span class="w"> </span>-S<span class="w"> </span>.<span class="w"> </span>-B<span class="w"> </span>build<span class="w"> </span>-G<span class="w"> </span>Ninja
 cmake<span class="w"> </span>--build<span class="w"> </span>build
