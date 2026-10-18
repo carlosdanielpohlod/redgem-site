@@ -1,0 +1,1430 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="The manual of RedGem, a 3D game engine where games are written in Ruby.">
+      
+      
+      
+      
+        <link rel="prev" href="../multiplayer/">
+      
+      
+        <link rel="next" href="../i18n/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/redgem-mark.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Online services - RedGem 3D Engine</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/manual.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#online-services" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="RedGem 3D Engine" class="md-header__button md-logo" aria-label="RedGem 3D Engine" data-md-component="logo">
+      
+  <img src="../../assets/redgem-mark.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            RedGem 3D Engine
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Online services
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="RedGem 3D Engine" class="md-nav__button md-logo" aria-label="RedGem 3D Engine" data-md-component="logo">
+      
+  <img src="../../assets/redgem-mark.svg" alt="logo">
+
+    </a>
+    RedGem 3D Engine
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../install/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Install
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../first-game/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Your first game
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Using the editor
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Using the editor
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../editor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The editor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../levels/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Levels, lighting and Blender
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scripting in Ruby
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Scripting in Ruby
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../behaviours/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Behaviours
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gameplay/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Gameplay recipes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../multiplayer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Multiplayer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Online services
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Online services
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#http" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HTTP
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#letting-players-in" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Letting players in
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#saving-on-a-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Saving on a server
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#with-a-hosted-service-supabase" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        With a hosted service: Supabase
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#with-a-backend-of-your-own" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        With a backend of your own
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="With a backend of your own">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-platformer-with-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The platformer with it
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../i18n/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Texts in several languages
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Finishing a game
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Finishing a game
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../testing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing your game
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../shipping/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Building and sharing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dedicated-server/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dedicated server
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Limits and troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Working on the engine
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#http" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HTTP
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#letting-players-in" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Letting players in
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#saving-on-a-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Saving on a server
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#with-a-hosted-service-supabase" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        With a hosted service: Supabase
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#with-a-backend-of-your-own" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        With a backend of your own
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="With a backend of your own">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-platformer-with-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The platformer with it
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="online-services">Online services<a class="headerlink" href="#online-services" title="Permanent link">&para;</a></h1>
+<p>What a game played online needs besides the game itself: talking to web services (<code>HTTP</code>),
+letting in only the players who logged in (connection approval) and keeping their progress
+(<code>Save</code> on a <a href="../../dedicated-server/">dedicated server</a>, or a database behind a web service).
+No service is built into the engine and none is required: below are two ways to do it, a hosted
+service (Supabase) and a backend of your own.</p>
+<p>The player's password only ever goes from their device to the service, over HTTPS. The game
+connection carries the token the service gave, then gameplay.</p>
+<h2 id="http">HTTP<a class="headerlink" href="#http" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="no">HTTP</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"https://api.example.com/news"</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="o">|</span><span class="n">response</span><span class="o">|</span><span class="w"> </span><span class="vi">@news</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">response</span><span class="o">.</span><span class="n">ok?</span><span class="w"> </span><span class="p">}</span>
+
+<span class="no">HTTP</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">"https://api.example.com/scores"</span><span class="p">,</span><span class="w"> </span><span class="ss">json</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="ss">player</span><span class="p">:</span><span class="w"> </span><span class="nb">id</span><span class="p">,</span><span class="w"> </span><span class="ss">points</span><span class="p">:</span><span class="w"> </span><span class="mi">120</span><span class="w"> </span><span class="p">},</span>
+<span class="w">          </span><span class="ss">headers</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="s2">"Authorization"</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s2">"Bearer </span><span class="si">#{</span><span class="n">token</span><span class="si">}</span><span class="s2">"</span><span class="w"> </span><span class="p">})</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="o">|</span><span class="n">response</span><span class="o">|</span>
+<span class="w">  </span><span class="k">next</span><span class="w"> </span><span class="no">Debug</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">"scores: </span><span class="si">#{</span><span class="n">response</span><span class="o">.</span><span class="n">error</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">response</span><span class="o">.</span><span class="n">status</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span><span class="w"> </span><span class="k">unless</span><span class="w"> </span><span class="n">response</span><span class="o">.</span><span class="n">ok?</span>
+
+<span class="w">  </span><span class="n">show_ranking</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="o">[</span><span class="ss">:top</span><span class="o">]</span><span class="p">)</span>
+<span class="k">end</span>
+</code></pre></div>
+<ul>
+<li><code>HTTP.get</code>, <code>post</code>, <code>put</code>, <code>patch</code>, <code>delete(url, json:, body:, headers:, timeout:)</code>. <code>json:</code> sends
+  a hash or an array as JSON (with its <code>Content-Type</code>); <code>body:</code> sends a text as it is.</li>
+<li>The block gets the <code>response</code> a moment later, on the game's own thread: the frame never waits.
+  <code>ok?</code> (a 2xx status), <code>status</code> (0 when no answer came), <code>headers</code> (names in lower case), <code>body</code>,
+  <code>json</code> (nil when the body is not JSON) and <code>error</code> (why no answer came).</li>
+<li><code>response.json</code> gives hash keys as symbols when your scripts use that symbol, as strings
+  otherwise (as messages do).</li>
+<li>Addresses are <code>https://</code>, checked against the certificates the system trusts, or <code>http://</code> to
+  this machine or the local network only (a backend you run beside the game).</li>
+<li>An answer is at most 8 MB; 16 requests may be on their way at once; each gives up after 15
+  seconds unless <code>timeout:</code> says otherwise (at most 120). Redirects are not followed.</li>
+<li>When a level is loaded, the blocks of requests still on their way are not called (the requests
+  still go out). When the game ends (or Play is stopped in the editor) they are given up.</li>
+</ul>
+<h2 id="letting-players-in">Letting players in<a class="headerlink" href="#letting-players-in" title="Permanent link">&para;</a></h2>
+<p>The joining machine sends a hash with its join, usually the token it got when logging in. The
+game that hosts (on a dedicated server, the server's game) decides:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># on the device, after logging in</span>
+<span class="no">Network</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">"play.example.com"</span><span class="p">,</span><span class="w"> </span><span class="ss">auth</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="ss">token</span><span class="p">:</span><span class="w"> </span><span class="n">session_token</span><span class="w"> </span><span class="p">})</span>
+
+<span class="c1"># on the server</span>
+<span class="no">Network</span><span class="o">.</span><span class="n">authenticate</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="o">|</span><span class="n">peer</span><span class="p">,</span><span class="w"> </span><span class="n">auth</span><span class="p">,</span><span class="w"> </span><span class="n">decide</span><span class="o">|</span>
+<span class="w">  </span><span class="no">HTTP</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"https://auth.example.com/user"</span><span class="p">,</span>
+<span class="w">           </span><span class="ss">headers</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="s2">"Authorization"</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s2">"Bearer </span><span class="si">#{</span><span class="n">auth</span><span class="o">[</span><span class="ss">:token</span><span class="o">]</span><span class="si">}</span><span class="s2">"</span><span class="w"> </span><span class="p">})</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="o">|</span><span class="n">response</span><span class="o">|</span>
+<span class="w">    </span><span class="k">next</span><span class="w"> </span><span class="n">decide</span><span class="o">.</span><span class="n">deny</span><span class="p">(</span><span class="s2">"not logged in"</span><span class="p">)</span><span class="w"> </span><span class="k">unless</span><span class="w"> </span><span class="n">response</span><span class="o">.</span><span class="n">ok?</span>
+
+<span class="w">    </span><span class="n">decide</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="ss">identity</span><span class="p">:</span><span class="w"> </span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="o">[</span><span class="ss">:id</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="nb">name</span><span class="p">:</span><span class="w"> </span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="o">[</span><span class="ss">:name</span><span class="o">]</span><span class="p">)</span>
+<span class="w">  </span><span class="k">end</span>
+<span class="k">end</span>
+
+<span class="no">Network</span><span class="o">.</span><span class="n">on_join</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="o">|</span><span class="n">peer</span><span class="o">|</span><span class="w"> </span><span class="n">greet</span><span class="p">(</span><span class="no">Network</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="n">peer</span><span class="p">),</span><span class="w"> </span><span class="no">Network</span><span class="o">.</span><span class="n">player_name</span><span class="p">(</span><span class="n">peer</span><span class="p">))</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div>
+<ul>
+<li>The block gets the newcomer's id, what its join carried (a hash, empty when nothing) and the
+  decision to make: <code>decide.accept(identity:, name:)</code> or <code>decide.deny(reason)</code>, now or later.</li>
+<li>Until then the newcomer waits: <code>on_join</code> fires once it is accepted. One not decided on within 10
+  seconds is turned away. A player turned away gets <code>on_fail { |reason| }</code> with the reason.</li>
+<li><code>Network.identity(peer)</code> and <code>Network.player_name(peer)</code> say who a player is, on the machine
+  that accepted it, until after its <code>on_leave</code>.</li>
+<li>Without <code>authenticate</code> everyone is let in, as before. <code>Network.authenticate</code> with no block turns
+  it off. The handler stays when a level is loaded.</li>
+<li>What a join carries is at most 4 KB once written as JSON. It is untrusted: check it with the
+  service that issued it.</li>
+<li>It works with a player hosting too, and in a room on a relay, where the game of whoever opened the
+  room decides: the relay decides nothing, it passes each join on and the decision back.</li>
+</ul>
+<h2 id="saving-on-a-server">Saving on a server<a class="headerlink" href="#saving-on-a-server" title="Permanent link">&para;</a></h2>
+<p><code>Save</code> on a dedicated server is written to the server's data folder (<code>--data</code>, see
+<a href="../../dedicated-server/">Dedicated server</a>), shared by all its rooms, and survives restarts.
+<code>Save</code> keeps numbers, texts, true/false, <code>Vector3</code>, and arrays and hashes of those (hashes come
+back with string keys), so each player's data can be kept under their identity:</p>
+<div class="highlight"><pre><span></span><code><span class="no">Network</span><span class="o">.</span><span class="n">on_leave</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="o">|</span><span class="n">peer</span><span class="o">|</span>
+<span class="w">  </span><span class="no">Save</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s2">"players"</span><span class="p">,</span><span class="w"> </span><span class="p">{})</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="o">|</span><span class="n">players</span><span class="o">|</span>
+<span class="w">    </span><span class="n">players</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="no">Network</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="n">peer</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="s2">"level"</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="vi">@level</span><span class="p">,</span><span class="w"> </span><span class="s2">"coins"</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="vi">@coins</span><span class="w"> </span><span class="p">})</span>
+<span class="w">  </span><span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>The server's rooms run at the same time, each on a thread of its own, and share its <code>Save</code>. Reading
+a value and writing it back (<code>players = Save["players"]; ...; Save["players"] = players</code>) can lose
+what another room wrote in between: change a value that more than one room may change with
+<code>Save.update</code>, whose block gets the value as it is and returns the new one, with no other room
+reading or writing the save meanwhile (keep the block short: the other rooms' saves wait for it).</p>
+<p>The server keeps its saves in a database, one row per key, each written as soon as it changes:
+a hash of every player is rewritten whole when one player changes, so with many players keep a
+key per player instead (<code>Save["player:#{Network.identity(peer)}"]</code>). For queries such as a
+ranking, send the data to a backend with <code>HTTP</code>.</p>
+<p><strong>Secrets of the server</strong> (the key a backend lets only the server write with) go in the server's
+own save, written with the <code>sqlite3</code> tool while the server is stopped (each value is stored as
+JSON, so a text is in double quotes):</p>
+<div class="highlight"><pre><span></span><code>sqlite3<span class="w"> </span>/srv/platformer-data/save.sqlite3<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="s2">"CREATE TABLE IF NOT EXISTS saves (key TEXT PRIMARY KEY NOT NULL, value TEXT NOT NULL) WITHOUT ROWID;</span>
+<span class="s2">   INSERT OR REPLACE INTO saves VALUES ('backend_key', '\"some-long-secret\"');"</span>
+</code></pre></div>
+<p>The server's game reads them with <code>Save["backend_key"]</code>; players' machines never see a server's
+saves.</p>
+<h2 id="with-a-hosted-service-supabase">With a hosted service: Supabase<a class="headerlink" href="#with-a-hosted-service-supabase" title="Permanent link">&para;</a></h2>
+<p><a href="https://supabase.com">Supabase</a> has a free tier with accounts and a database reached over HTTPS.</p>
+<ol>
+<li>Create a project. Its settings give the project's address (<code>https://&lt;ref&gt;.supabase.co</code>), the
+   public <strong>anon</strong> key (for the game) and the secret <strong>service_role</strong> key (for the server only).</li>
+<li>In the SQL editor, create a table for each player's progress that anyone may read:</li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="k">create</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="n">progress</span><span class="w"> </span><span class="p">(</span><span class="n">player_id</span><span class="w"> </span><span class="n">uuid</span><span class="w"> </span><span class="k">primary</span><span class="w"> </span><span class="k">key</span><span class="w"> </span><span class="k">references</span><span class="w"> </span><span class="n">auth</span><span class="p">.</span><span class="n">users</span><span class="p">,</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="nb">text</span><span class="p">,</span><span class="w"> </span><span class="n">coins</span><span class="w"> </span><span class="nb">int</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="k">null</span><span class="w"> </span><span class="k">default</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="k">alter</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="n">progress</span><span class="w"> </span><span class="n">enable</span><span class="w"> </span><span class="k">row</span><span class="w"> </span><span class="k">level</span><span class="w"> </span><span class="k">security</span><span class="p">;</span>
+<span class="k">create</span><span class="w"> </span><span class="n">policy</span><span class="w"> </span><span class="ss">"anyone reads the ranking"</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="n">progress</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="k">using</span><span class="w"> </span><span class="p">(</span><span class="k">true</span><span class="p">);</span>
+</code></pre></div>
+<p>On the device (<code>SUPABASE</code> is the project's address, <code>ANON_KEY</code> its anon key):</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Sign up once (Supabase may ask the player to confirm their email first)</span>
+<span class="no">HTTP</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">"</span><span class="si">#{</span><span class="no">SUPABASE</span><span class="si">}</span><span class="s2">/auth/v1/signup"</span><span class="p">,</span><span class="w"> </span><span class="ss">json</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="ss">email</span><span class="p">:</span><span class="w"> </span><span class="n">email</span><span class="p">,</span><span class="w"> </span><span class="ss">password</span><span class="p">:</span><span class="w"> </span><span class="n">password</span><span class="w"> </span><span class="p">},</span>
+<span class="w">          </span><span class="ss">headers</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="s2">"apikey"</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="no">ANON_KEY</span><span class="w"> </span><span class="p">})</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="o">|</span><span class="n">response</span><span class="o">|</span><span class="w"> </span><span class="o">...</span><span class="w"> </span><span class="p">}</span>
+
+<span class="c1"># Log in: the answer holds the session token</span>
+<span class="no">HTTP</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">"</span><span class="si">#{</span><span class="no">SUPABASE</span><span class="si">}</span><span class="s2">/auth/v1/token?grant_type=password"</span><span class="p">,</span><span class="w"> </span><span class="ss">json</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="ss">email</span><span class="p">:</span><span class="w"> </span><span class="n">email</span><span class="p">,</span><span class="w"> </span><span class="ss">password</span><span class="p">:</span><span class="w"> </span><span class="n">password</span><span class="w"> </span><span class="p">},</span>
+<span class="w">          </span><span class="ss">headers</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="s2">"apikey"</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="no">ANON_KEY</span><span class="w"> </span><span class="p">})</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="o">|</span><span class="n">response</span><span class="o">|</span>
+<span class="w">  </span><span class="k">next</span><span class="w"> </span><span class="n">show_error</span><span class="p">(</span><span class="s2">"could not log in (</span><span class="si">#{</span><span class="n">response</span><span class="o">.</span><span class="n">error</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">response</span><span class="o">.</span><span class="n">status</span><span class="si">}</span><span class="s2">)"</span><span class="p">)</span><span class="w"> </span><span class="k">unless</span><span class="w"> </span><span class="n">response</span><span class="o">.</span><span class="n">ok?</span>
+
+<span class="w">  </span><span class="no">Network</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="no">SERVER</span><span class="p">,</span><span class="w"> </span><span class="ss">auth</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="ss">token</span><span class="p">:</span><span class="w"> </span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="o">[</span><span class="ss">:access_token</span><span class="o">]</span><span class="w"> </span><span class="p">})</span>
+<span class="k">end</span>
+
+<span class="c1"># The ranking</span>
+<span class="no">HTTP</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"</span><span class="si">#{</span><span class="no">SUPABASE</span><span class="si">}</span><span class="s2">/rest/v1/progress?select=name,coins&amp;order=coins.desc&amp;limit=10"</span><span class="p">,</span>
+<span class="w">         </span><span class="ss">headers</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="s2">"apikey"</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="no">ANON_KEY</span><span class="w"> </span><span class="p">})</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="o">|</span><span class="n">response</span><span class="o">|</span><span class="w"> </span><span class="vi">@ranking</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">response</span><span class="o">.</span><span class="n">ok?</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div>
+<p>On the server, the token is checked with Supabase, and each player's coins (kept in the
+server's save, as above) are written with the service_role key, kept in the server's save too:</p>
+<div class="highlight"><pre><span></span><code><span class="no">Network</span><span class="o">.</span><span class="n">authenticate</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="o">|</span><span class="n">_peer</span><span class="p">,</span><span class="w"> </span><span class="n">auth</span><span class="p">,</span><span class="w"> </span><span class="n">decide</span><span class="o">|</span>
+<span class="w">  </span><span class="no">HTTP</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"</span><span class="si">#{</span><span class="no">SUPABASE</span><span class="si">}</span><span class="s2">/auth/v1/user"</span><span class="p">,</span>
+<span class="w">           </span><span class="ss">headers</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="s2">"apikey"</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="no">ANON_KEY</span><span class="p">,</span><span class="w"> </span><span class="s2">"Authorization"</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s2">"Bearer </span><span class="si">#{</span><span class="n">auth</span><span class="o">[</span><span class="ss">:token</span><span class="o">]</span><span class="si">}</span><span class="s2">"</span><span class="w"> </span><span class="p">})</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="o">|</span><span class="n">response</span><span class="o">|</span>
+<span class="w">    </span><span class="k">next</span><span class="w"> </span><span class="n">decide</span><span class="o">.</span><span class="n">deny</span><span class="p">(</span><span class="s2">"not logged in"</span><span class="p">)</span><span class="w"> </span><span class="k">unless</span><span class="w"> </span><span class="n">response</span><span class="o">.</span><span class="n">ok?</span>
+
+<span class="w">    </span><span class="n">decide</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="ss">identity</span><span class="p">:</span><span class="w"> </span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="o">[</span><span class="ss">:id</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="nb">name</span><span class="p">:</span><span class="w"> </span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="o">[</span><span class="ss">:email</span><span class="o">]</span><span class="p">)</span>
+<span class="w">  </span><span class="k">end</span>
+<span class="k">end</span>
+
+<span class="no">Network</span><span class="o">.</span><span class="n">on_leave</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="o">|</span><span class="n">peer</span><span class="o">|</span>
+<span class="w">  </span><span class="n">key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">Save</span><span class="o">[</span><span class="s2">"supabase_service_key"</span><span class="o">]</span>
+<span class="w">  </span><span class="n">coins</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">Save</span><span class="o">[</span><span class="s2">"players"</span><span class="o">][</span><span class="no">Network</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="n">peer</span><span class="p">)</span><span class="o">][</span><span class="s2">"coins"</span><span class="o">]</span>
+<span class="w">  </span><span class="no">HTTP</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">"</span><span class="si">#{</span><span class="no">SUPABASE</span><span class="si">}</span><span class="s2">/rest/v1/progress"</span><span class="p">,</span>
+<span class="w">            </span><span class="ss">json</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="ss">player_id</span><span class="p">:</span><span class="w"> </span><span class="no">Network</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="n">peer</span><span class="p">),</span><span class="w"> </span><span class="nb">name</span><span class="p">:</span><span class="w"> </span><span class="no">Network</span><span class="o">.</span><span class="n">player_name</span><span class="p">(</span><span class="n">peer</span><span class="p">),</span><span class="w"> </span><span class="ss">coins</span><span class="p">:</span><span class="w"> </span><span class="n">coins</span><span class="w"> </span><span class="p">},</span>
+<span class="w">            </span><span class="ss">headers</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="s2">"apikey"</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="s2">"Authorization"</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s2">"Bearer </span><span class="si">#{</span><span class="n">key</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+<span class="w">                       </span><span class="s2">"Prefer"</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="s2">"resolution=merge-duplicates"</span><span class="w"> </span><span class="p">})</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="o">|</span><span class="n">response</span><span class="o">|</span><span class="w"> </span><span class="o">...</span><span class="w"> </span><span class="p">}</span>
+<span class="k">end</span>
+</code></pre></div>
+<h2 id="with-a-backend-of-your-own">With a backend of your own<a class="headerlink" href="#with-a-backend-of-your-own" title="Permanent link">&para;</a></h2>
+<p>A backend of your own needs only a few calls. The essentials, in Ruby with Sinatra and SQLite (a
+<code>players</code> table with <code>id</code>, <code>name</code>, <code>salt</code>, <code>digest</code> and <code>coins</code>, and a <code>sessions</code> table that ties
+tokens to players; signing up inserts a player with a random salt and the digest of its password):</p>
+<div class="highlight"><pre><span></span><code><span class="no">DB</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">SQLite3</span><span class="o">::</span><span class="no">Database</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">"accounts.sqlite3"</span><span class="p">,</span><span class="w"> </span><span class="ss">results_as_hash</span><span class="p">:</span><span class="w"> </span><span class="kp">true</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">digest</span><span class="p">(</span><span class="n">password</span><span class="p">,</span><span class="w"> </span><span class="n">salt</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">OpenSSL</span><span class="o">::</span><span class="no">KDF</span><span class="o">.</span><span class="n">pbkdf2_hmac</span><span class="p">(</span><span class="n">password</span><span class="p">,</span><span class="w"> </span><span class="ss">salt</span><span class="p">:</span><span class="w"> </span><span class="n">salt</span><span class="p">,</span><span class="w"> </span><span class="ss">iterations</span><span class="p">:</span><span class="w"> </span><span class="mi">100_000</span><span class="p">,</span>
+<span class="w">                                                                 </span><span class="ss">length</span><span class="p">:</span><span class="w"> </span><span class="mi">32</span><span class="p">,</span><span class="w"> </span><span class="nb">hash</span><span class="p">:</span><span class="w"> </span><span class="s2">"sha256"</span><span class="p">)</span><span class="o">.</span><span class="n">unpack1</span><span class="p">(</span><span class="s2">"H*"</span><span class="p">)</span>
+
+<span class="n">post</span><span class="w"> </span><span class="s2">"/login"</span><span class="w"> </span><span class="k">do</span>
+<span class="w">  </span><span class="nb">name</span><span class="p">,</span><span class="w"> </span><span class="n">password</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">JSON</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">read</span><span class="p">)</span><span class="o">.</span><span class="n">values_at</span><span class="p">(</span><span class="s2">"name"</span><span class="p">,</span><span class="w"> </span><span class="s2">"password"</span><span class="p">)</span>
+<span class="w">  </span><span class="n">player</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">DB</span><span class="o">.</span><span class="n">get_first_row</span><span class="p">(</span><span class="s2">"SELECT * FROM players WHERE name = ?"</span><span class="p">,</span><span class="w"> </span><span class="o">[</span><span class="nb">name</span><span class="o">.</span><span class="n">to_s</span><span class="o">]</span><span class="p">)</span>
+<span class="w">  </span><span class="n">correct</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">player</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="no">Rack</span><span class="o">::</span><span class="no">Utils</span><span class="o">.</span><span class="n">secure_compare</span><span class="p">(</span><span class="n">player</span><span class="o">[</span><span class="s2">"digest"</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="n">digest</span><span class="p">(</span><span class="n">password</span><span class="o">.</span><span class="n">to_s</span><span class="p">,</span><span class="w"> </span><span class="n">player</span><span class="o">[</span><span class="s2">"salt"</span><span class="o">]</span><span class="p">))</span>
+<span class="w">  </span><span class="n">halt</span><span class="w"> </span><span class="mi">401</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="ss">error</span><span class="p">:</span><span class="w"> </span><span class="s2">"wrong name or password"</span><span class="w"> </span><span class="p">}</span><span class="o">.</span><span class="n">to_json</span><span class="w"> </span><span class="k">unless</span><span class="w"> </span><span class="n">correct</span>
+<span class="w">  </span><span class="n">token</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">SecureRandom</span><span class="o">.</span><span class="n">hex</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span>
+<span class="w">  </span><span class="no">DB</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"INSERT INTO sessions (token, player_id) VALUES (?, ?)"</span><span class="p">,</span><span class="w"> </span><span class="o">[</span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="n">player</span><span class="o">[</span><span class="s2">"id"</span><span class="o">]]</span><span class="p">)</span>
+<span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="ss">token</span><span class="p">:</span><span class="w"> </span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="nb">id</span><span class="p">:</span><span class="w"> </span><span class="n">player</span><span class="o">[</span><span class="s2">"id"</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="nb">name</span><span class="p">:</span><span class="w"> </span><span class="n">player</span><span class="o">[</span><span class="s2">"name"</span><span class="o">]</span><span class="w"> </span><span class="p">}</span><span class="o">.</span><span class="n">to_json</span>
+<span class="k">end</span>
+
+<span class="n">get</span><span class="w"> </span><span class="s2">"/me"</span><span class="w"> </span><span class="k">do</span><span class="w">   </span><span class="c1"># who a token is: what the game server asks</span>
+<span class="w">  </span><span class="n">token</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">request</span><span class="o">.</span><span class="n">env</span><span class="o">[</span><span class="s2">"HTTP_AUTHORIZATION"</span><span class="o">].</span><span class="n">to_s</span><span class="o">.</span><span class="n">delete_prefix</span><span class="p">(</span><span class="s2">"Bearer "</span><span class="p">)</span><span class="o">.</span><span class="n">dup</span><span class="o">.</span><span class="n">force_encoding</span><span class="p">(</span><span class="s2">"UTF-8"</span><span class="p">)</span>
+<span class="w">  </span><span class="n">player</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">DB</span><span class="o">.</span><span class="n">get_first_row</span><span class="p">(</span><span class="s2">"SELECT players.* FROM sessions JOIN players ON players.id = player_id "</span><span class="w"> </span><span class="p">\</span>
+<span class="w">                            </span><span class="s2">"WHERE token = ?"</span><span class="p">,</span><span class="w"> </span><span class="o">[</span><span class="n">token</span><span class="o">]</span><span class="p">)</span>
+<span class="w">  </span><span class="n">halt</span><span class="w"> </span><span class="mi">401</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="ss">error</span><span class="p">:</span><span class="w"> </span><span class="s2">"not logged in"</span><span class="w"> </span><span class="p">}</span><span class="o">.</span><span class="n">to_json</span><span class="w"> </span><span class="k">unless</span><span class="w"> </span><span class="n">player</span>
+<span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="nb">id</span><span class="p">:</span><span class="w"> </span><span class="n">player</span><span class="o">[</span><span class="s2">"id"</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="nb">name</span><span class="p">:</span><span class="w"> </span><span class="n">player</span><span class="o">[</span><span class="s2">"name"</span><span class="o">]</span><span class="w"> </span><span class="p">}</span><span class="o">.</span><span class="n">to_json</span>
+<span class="k">end</span>
+
+<span class="n">post</span><span class="w"> </span><span class="s2">"/progress"</span><span class="w"> </span><span class="k">do</span><span class="w">   </span><span class="c1"># only the game server, which holds the key</span>
+<span class="w">  </span><span class="n">halt</span><span class="w"> </span><span class="mi">403</span><span class="w"> </span><span class="k">unless</span><span class="w"> </span><span class="no">Rack</span><span class="o">::</span><span class="no">Utils</span><span class="o">.</span><span class="n">secure_compare</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">env</span><span class="o">[</span><span class="s2">"HTTP_X_SERVER_KEY"</span><span class="o">].</span><span class="n">to_s</span><span class="p">,</span><span class="w"> </span><span class="no">ENV</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s2">"SERVER_KEY"</span><span class="p">))</span>
+<span class="w">  </span><span class="n">player</span><span class="p">,</span><span class="w"> </span><span class="n">coins</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">JSON</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">read</span><span class="p">)</span><span class="o">.</span><span class="n">values_at</span><span class="p">(</span><span class="s2">"player"</span><span class="p">,</span><span class="w"> </span><span class="s2">"coins"</span><span class="p">)</span>
+<span class="w">  </span><span class="no">DB</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"UPDATE players SET coins = coins + ? WHERE id = ?"</span><span class="p">,</span><span class="w"> </span><span class="o">[</span><span class="n">coins</span><span class="o">.</span><span class="n">to_i</span><span class="p">,</span><span class="w"> </span><span class="n">player</span><span class="o">.</span><span class="n">to_i</span><span class="o">]</span><span class="p">)</span>
+<span class="w">  </span><span class="n">halt</span><span class="w"> </span><span class="mi">204</span>
+<span class="k">end</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Call</th>
+<th>Sends</th>
+<th>Answers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>POST /login</code></td>
+<td><code>{name, password}</code></td>
+<td>200 <code>{token, id, name}</code>, 401 <code>{error}</code></td>
+</tr>
+<tr>
+<td><code>GET /me</code></td>
+<td><code>Authorization: Bearer &lt;token&gt;</code></td>
+<td>200 <code>{id, name}</code>, 401</td>
+</tr>
+<tr>
+<td><code>POST /progress</code></td>
+<td><code>{player, coins}</code> and <code>X-Server-Key</code></td>
+<td>204, 403 without the key</td>
+</tr>
+</tbody>
+</table>
+<p>Sinatra listens on this machine only (<code>-o 0.0.0.0</code> lets the local network in). On the internet,
+put it behind HTTPS (a reverse proxy in front of it): games reach other machines over <code>https://</code>
+only.</p>
+<h3 id="the-platformer-with-it">The platformer with it<a class="headerlink" href="#the-platformer-with-it" title="Permanent link">&para;</a></h3>
+<p>The platformer demo logs in when its <code>ACCOUNTS</code> constant is set (<code>scripts/main_scene.rb</code>), next to
+<code>SERVER</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="no">SERVER</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"127.0.0.1"</span><span class="o">.</span><span class="n">freeze</span>
+<span class="no">ACCOUNTS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"http://127.0.0.1:4567"</span><span class="o">.</span><span class="n">freeze</span>
+</code></pre></div>
+<p>The multiplayer menu then offers <strong>Log in</strong> (a name, then a password) before <strong>Play online</strong>,
+which joins with the token. The server checks it with <code>GET /me</code>, lets the player in as
+<code>user-&lt;id&gt;</code>, and when the player leaves keeps their coins in its save and, given the backend's
+key, in the backend too:</p>
+<div class="highlight"><pre><span></span><code>mkdir<span class="w"> </span>-p<span class="w"> </span>/srv/platformer-data<span class="w">      </span><span class="c1"># once: the backend's key, in the server's own save (see above)</span>
+redgem-server<span class="w"> </span>games/platformer<span class="w"> </span>--data<span class="w"> </span>/srv/platformer-data
+</code></pre></div>
+<p>With <code>ACCOUNTS</code> empty (as it ships), players join as guests, each under an id their machine keeps,
+and the server keeps their coins all the same. See <code>scripts/accounts.rb</code> and
+<code>scripts/server_gate.rb</code>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../multiplayer/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Multiplayer">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Multiplayer
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../i18n/" class="md-footer__link md-footer__link--next" aria-label="Next: Texts in several languages">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Texts in several languages
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.footer", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

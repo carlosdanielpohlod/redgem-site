@@ -11,7 +11,7 @@
       
       
       
-        <link rel="prev" href="../shipping/">
+        <link rel="prev" href="../dedicated-server/">
       
       
         <link rel="next" href="../contributing/">
@@ -593,6 +593,62 @@
   
   
     <li class="md-nav__item">
+      <a href="../scripting/online-services/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Online services
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripting/i18n/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Texts in several languages
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../scripting/api/" class="md-nav__link">
         
   
@@ -716,6 +772,34 @@
     
   
     Building and sharing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dedicated-server/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dedicated server
   
 
     
@@ -945,6 +1029,10 @@
   macOS 15 and later: <em>System Settings &gt; Privacy &amp; Security &gt; Open Anyway</em>), or run
   <code>xattr -dr com.apple.quarantine RedGem.app</code> in the unpacked folder.</li>
 <li>Scripts are loaded when you press Play; they are not reloaded while the game runs.</li>
+<li><strong>Scene size:</strong> a scene (or a model) that would need more than 4 GB of memory, counting its file,
+  its vertices as the engine keeps them and its pictures as they are once decoded, is refused with
+  a message saying how much it needs. The biggest demo scene comes to about 1.8 GB. This is an
+  estimate of the memory the game holds, not a limit on the graphics card's memory.</li>
 </ul>
 <h2 id="common-problems">Common problems<a class="headerlink" href="#common-problems" title="Permanent link">&para;</a></h2>
 <p><strong>The editor does not open from Docker.</strong>
@@ -966,6 +1054,13 @@ Give the platform a <em>kinematic</em> body. A static body is not meant to move.
 <p><strong>The game is slow on a laptop with two graphics cards.</strong>
 RedGem asks for the dedicated card and logs which one it got when it starts. To choose:
 Edit &gt; Graphics Card in the editor, or start with <code>--gpu dedicated</code>.</p>
+<p><strong>Joining fails with "this game runs protocol 1, the other side 2".</strong>
+The two machines (or the game and the relay or server it meets on) run versions of RedGem whose
+network messages differ. Build every copy of the game, the relay and the server from the same
+version.</p>
+<p><strong>I want to see what the machines of a game say to each other.</strong>
+Start the game, the relay or the server with <code>REDGEM_LOG_MESSAGES=1</code> in its environment: every
+message it sends and receives is written to its log, as JSON text.</p>
 <p><strong>I changed the level in Blender and the editor did not update.</strong>
 It reloads <code>scene.glb</code> by itself when you have no unsaved edits. With unsaved edits it asks.</p>
 
@@ -997,7 +1092,7 @@ It reloads <code>scene.glb</code> by itself when you have no unsaved edits. With
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../shipping/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Building and sharing">
+          <a href="../dedicated-server/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Dedicated server">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1007,7 +1102,7 @@ It reloads <code>scene.glb</code> by itself when you have no unsaved edits. With
                 Previous
               </span>
               <div class="md-ellipsis">
-                Building and sharing
+                Dedicated server
               </div>
             </div>
           </a>

@@ -11,7 +11,7 @@
       
       
       
-        <link rel="prev" href="../multiplayer/">
+        <link rel="prev" href="../i18n/">
       
       
         <link rel="next" href="../../testing/">
@@ -592,6 +592,62 @@
                 
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../online-services/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Online services
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../i18n/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Texts in several languages
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
     
   
   
@@ -741,6 +797,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dedicated-server/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dedicated server
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -854,7 +938,7 @@ and <a href="../gameplay/">Gameplay recipes</a>.</p>
 </tr>
 <tr>
 <td><code>GameObject</code></td>
-<td><code>name</code>, <code>tag</code>, <code>tag?</code>, <code>props</code>, <code>alive?</code>, <code>destroy</code>, <code>visible</code> / <code>visible=</code>, <code>behaviours</code>, <code>parent</code>, <code>children</code>, <code>transform</code>, <code>character</code>, <code>rigidbody</code>, <code>vehicle</code>, <code>get_component(Klass)</code>, <code>add_component(Klass, speed: 2.0)</code>, <code>tint(=)</code> (multiplies its colors: <code>[1.0, 0.5, 0.5]</code>), <code>animation</code> (its own clips, see <code>Animator</code>), <code>animation_offset(=)</code> (seconds a spawned copy's animations run ahead of the original's)</td>
+<td><code>name</code>, <code>tag</code>, <code>tag?</code>, <code>props</code>, <code>alive?</code>, <code>destroy</code>, <code>visible</code> / <code>visible=</code>, <code>behaviours</code>, <code>parent</code>, <code>children</code>, <code>transform</code>, <code>character</code>, <code>rigidbody</code>, <code>vehicle</code>, <code>get_component(Klass)</code>, <code>add_component(Klass, speed: 2.0)</code>, <code>tint(=)</code> (multiplies its colors: <code>[1.0, 0.5, 0.5]</code>), <code>light</code> (the light it shines with, or <code>nil</code>), <code>animation</code> (its own clips, see <code>Animator</code>), <code>animation_offset(=)</code> (seconds a spawned copy's animations run ahead of the original's)</td>
 </tr>
 <tr>
 <td><code>Transform</code></td>
@@ -867,6 +951,10 @@ and <a href="../gameplay/">Gameplay recipes</a>.</p>
 <tr>
 <td><code>Rigidbody</code></td>
 <td><code>velocity(=)</code>, <code>add_impulse(vector)</code></td>
+</tr>
+<tr>
+<td><code>Light</code></td>
+<td><code>game_object.light</code>: <code>intensity(=)</code> (watts for a point or spot light, lux for the sun, as in Blender), <code>color(=)</code> (<code>:orange</code> or <code>[r, g, b]</code> from 0 to 255); a change shows from the next frame (see <a href="../gameplay/#light-that-flickers-and-fades">Gameplay recipes</a>)</td>
 </tr>
 <tr>
 <td><code>Vehicle</code></td>
@@ -897,8 +985,12 @@ and <a href="../gameplay/">Gameplay recipes</a>.</p>
 <td><code>Scene.spawn("Bullet", position: v, rotation: euler, physics: true)</code> copies a <code>prefab = true</code> template (hidden and inert in the game) with its physics and scripts; copies of animated characters move like the original</td>
 </tr>
 <tr>
+<td><code>Scatter</code></td>
+<td><code>Scatter.place("GrassTuft", count: 50_000, area: [corner, corner], ground: Scene.find("Ground"), seed: 7, scale: 0.7..1.4, align: true)</code> puts copies of an object's mesh (its scale, tint, drawing distances and <code>cast_shadow</code> too) in great numbers: only drawn, never objects of their own, the same places for the same seed on every machine. Each stands where a ray straight down meets <code>ground</code> (none where it misses it); without <code>ground</code>, on the area's bottom. <code>align: true</code> leans them with the slope. How they look: <code>tints: [[r, g, b], ...]</code> (each copy a color along the list), <code>tint_variation: 0.1</code> (brighter or darker by up to that share), <code>fade: 8.0</code> (meters over which they fade out before the template's <code>visible_to</code> instead of popping), <code>normals_up: 0.7</code> (grass lit as the ground it stands on). Returns a set: <code>count</code> (how many were placed), <code>remove</code>; <code>Scatter.clear</code> removes them all. A scene holds at most 262,144 (see <a href="../../levels/#grass-forests-and-cities">Levels</a>)</td>
+</tr>
+<tr>
 <td><code>Particles</code></td>
-<td><code>Particles.burst(position, count:, color:, alpha:, glow:, direction:, spread:, speed:, life:, size:, gravity:, image:, spin:)</code> → how many were added, <code>Particles.count</code>, <code>Particles.clear</code></td>
+<td><code>Particles.burst(position, count:, color:, alpha:, glow:, lit:, soft:, direction:, spread:, speed:, life:, size:, gravity:, image:, frames: [columns, rows], fps:, spin:)</code> → how many were added (<code>size</code>, <code>color</code> and <code>alpha</code> may be lists of up to 4 values over the particles' life: see <a href="../gameplay/#over-their-life">Gameplay recipes</a>), <code>Particles.count</code>, <code>Particles.clear</code></td>
 </tr>
 <tr>
 <td><code>Animation</code></td>
@@ -910,15 +1002,19 @@ and <a href="../gameplay/">Gameplay recipes</a>.</p>
 </tr>
 <tr>
 <td><code>Network</code></td>
-<td><code>host(port: 7777, name:, visible: true, room: false)</code>, <code>join(address, port: 7777)</code> / <code>join(room: "K7QM3P")</code>, <code>relay=</code>, <code>room</code>, <code>search</code>, <code>searching?</code>, <code>stop_search</code>, <code>games</code>, <code>discovery_port=</code>, <code>leave</code>, <code>online?</code>, <code>connecting?</code>, <code>host?</code>, <code>id</code>, <code>peers</code>, <code>port</code>, <code>emit(name, data = nil, to: :all / :host / id)</code>, <code>on(name) { \|data, from\| }</code>, <code>on_connect</code>, <code>on_fail</code>, <code>on_disconnect</code>, <code>on_join { \|peer\| }</code>, <code>on_leave { \|peer\| }</code>, <code>spawn(template, owner: Network.id, position:, rotation:)</code>, <code>allow_spawn(*templates)</code> (see <a href="../multiplayer/">Multiplayer</a>)</td>
+<td><code>host(port: 7777, name:, visible: true, room: false)</code>, <code>join(address, port: 7777)</code> / <code>join(room: "K7QM3P")</code> / <code>join(address, room: "K7QM3P")</code> (a room on a dedicated server), <code>relay=</code>, <code>room</code>, <code>search</code>, <code>searching?</code>, <code>stop_search</code>, <code>games</code>, <code>discovery_port=</code>, <code>leave</code>, <code>online?</code>, <code>connecting?</code>, <code>host?</code>, <code>server?</code> (this machine is a dedicated server: it plays nobody), <code>id</code>, <code>peers</code>, <code>players</code> (the peers without a dedicated server), <code>port</code>, <code>emit(name, data = nil, to: :all / :host / id)</code>, <code>on(name) { \|data, from\| }</code>, <code>on_connect</code>, <code>on_disconnect</code>, <code>on_join { \|peer\| }</code>, <code>on_leave { \|peer\| }</code>, <code>join(address, auth: { token: })</code>, <code>authenticate { \|peer, auth, decide\| }</code> (<code>decide.accept(identity:, name:)</code>, <code>decide.deny(reason)</code>), <code>identity(peer)</code>, <code>player_name(peer)</code>, <code>on_fail { \|reason\| }</code> (see <a href="../online-services/">Online services</a>), <code>spawn(template, owner: Network.id, position:, rotation:)</code>, <code>allow_spawn(*templates)</code> (see <a href="../multiplayer/">Multiplayer</a>)</td>
 </tr>
 <tr>
 <td><code>NetworkSync</code></td>
-<td>A behaviour: <code>add_component(NetworkSync, owner: peer_id, key: "name")</code>, <code>mine?</code>, <code>owner</code>, <code>key</code>, <code>assign(owner:, key:)</code></td>
+<td>A behaviour: <code>add_component(NetworkSync, owner: peer_id, key: "name", interpolate: true, delay: nil, animation: true)</code> (its own animation goes along: the others see the same clips, from the same moment) (see <a href="../multiplayer/#objects-in-the-same-place-everywhere">Multiplayer</a>), <code>mine?</code>, <code>owner</code>, <code>key</code>, <code>assign(owner:, key:)</code></td>
 </tr>
 <tr>
 <td><code>Save</code></td>
-<td><code>Save.get(key, default = nil)</code>, <code>Save[key]</code>, <code>Save[key] = value</code> (numbers, texts, true/false), <code>Save.delete(key)</code>, <code>Save.clear</code>, <code>Save.keys</code></td>
+<td><code>Save.get(key, default = nil)</code>, <code>Save[key]</code>, <code>Save[key] = value</code> (numbers, texts, true/false, <code>Vector3</code>, arrays and hashes of those; hashes come back with string keys; <code>nil</code> removes the key), <code>Save.update(key, default = nil) { \|value\| new_value }</code> (reads and writes the key with nothing in between: on a dedicated server, what changes a value another room may change too), <code>Save.delete(key)</code>, <code>Save.clear</code>, <code>Save.keys</code>; on a dedicated server, the server's own (see <a href="../online-services/#saving-on-a-server">Online services</a>)</td>
+</tr>
+<tr>
+<td><code>HTTP</code></td>
+<td><code>HTTP.get/post/put/patch/delete(url, json:, body:, headers:, timeout: 15) { \|response\| }</code>; <code>response.ok?</code>, <code>status</code>, <code>headers</code>, <code>body</code>, <code>json</code>, <code>error</code> (see <a href="../online-services/#http">Online services</a>)</td>
 </tr>
 <tr>
 <td><code>Audio</code></td>
@@ -926,19 +1022,29 @@ and <a href="../gameplay/">Gameplay recipes</a>.</p>
 </tr>
 <tr>
 <td><code>UI</code> / <code>Debug</code> / <code>Game</code></td>
-<td><code>UI.text(str, x:, y:, size:, color:, alpha:, align:)</code>, <code>UI.rect(x:, y:, width:, height:, color:, alpha:, radius:)</code>, <code>UI.image(name, x:, y:, width:, height:)</code>, <code>UI.button(label, x:, y:, width:, height:)</code> → clicked?, <code>UI.text_field(value, x:, y:, width:, height:, max_length:)</code> → the new value, <code>UI.width</code>, <code>UI.height</code>, <code>UI.text_width(str, size:)</code>, <code>Debug.log/warn/error</code>, <code>Game.quit</code>, <code>Game.load_scene("level2")</code> (<code>scenes/level2.glb</code>; <code>"main"</code> is <code>scene.glb</code>; Ruby globals survive), <code>Game.scene_name</code>, <code>Game.title</code></td>
+<td><code>UI.text(str, x:, y:, size:, color:, alpha:, align:)</code>, <code>UI.rect(x:, y:, width:, height:, color:, alpha:, radius:)</code>, <code>UI.image(name, x:, y:, width:, height:)</code>, <code>UI.button(label, x:, y:, width:, height:)</code> → clicked?, <code>UI.text_field(value, x:, y:, width:, height:, max_length:, secret:)</code> → the new value (<code>secret: true</code> shows stars), <code>UI.width</code>, <code>UI.height</code>, <code>UI.text_width(str, size:)</code>, <code>Debug.log/warn/error</code>, <code>Game.quit</code>, <code>Game.stop_recording</code> (ends a video being recorded with <code>--record</code>, see <a href="../../shipping/#recording-a-video">Building and sharing</a>; the game goes on), <code>Game.load_scene("level2")</code> (<code>scenes/level2.glb</code>; <code>"main"</code> is <code>scene.glb</code>; Ruby globals survive), <code>Game.scene_name</code>, <code>Game.title</code></td>
 </tr>
 <tr>
 <td><code>GameMenu</code></td>
-<td>A behaviour: title screen, pause menu and end screen. <code>GameMenu.instance</code>, <code>show(:pause)</code>, <code>resume</code>, <code>restart</code>, <code>finish("You win!")</code>, <code>open?</code>, <code>screen</code>, <code>screens</code> (<code>:title</code>, <code>:pause</code>, <code>:over</code>, and the game's own), <code>button_box(index)</code>; <code>GameMenu::Screen.new(heading:, options:, back:)</code>, <code>add_option(label, index:) { }</code>; settings <code>title</code>, <code>start_open</code> (see <a href="../gameplay/#pause-and-the-flow-between-screens">Gameplay recipes</a>)</td>
+<td>A behaviour: title screen, pause menu and end screen. <code>GameMenu.instance</code>, <code>show(:pause)</code>, <code>resume</code>, <code>restart</code>, <code>finish("You win!")</code>, <code>open?</code>, <code>screen</code>, <code>screens</code> (<code>:title</code>, <code>:pause</code>, <code>:over</code>, and the game's own), <code>button_box(index)</code>; <code>GameMenu::Screen.new(heading:, options:, back:)</code>, <code>add_option(label, index:) { }</code>; settings <code>title</code>, <code>start_open</code>; its labels are the engine's texts <code>game.menu.*</code>, which a game's <code>locales/</code> files may change (see <a href="../i18n/#the-engines-own-texts">Texts in several languages</a>); never opens on a dedicated server (see <a href="../gameplay/#pause-and-the-flow-between-screens">Gameplay recipes</a>)</td>
+</tr>
+<tr>
+<td><code>I18n</code></td>
+<td><code>I18n.t("hud.coins", count: 3)</code> → the text of a key in the language in use, its <code>{count}</code> filled (see <a href="../i18n/">Texts in several languages</a>), <code>I18n.locale</code> (<code>:en</code>), <code>I18n.locale = :pt</code>, <code>I18n.available_locales</code> (the languages of the game's <code>locales/</code> files)</td>
 </tr>
 <tr>
 <td><code>Vector3</code></td>
-<td><code>Vector3.new(x, y, z)</code>, <code>Vector3.zero</code>, <code>one</code>, <code>up</code>, <code>down</code>, <code>left</code>, <code>right</code>, <code>forward</code>, <code>back</code>; arithmetic, <code>dot</code>, <code>cross</code>, <code>length</code>, <code>normalized</code>, <code>clamped(max_length = 1.0)</code>, <code>lerp</code>, <code>flat</code>, <code>with(y: 0)</code>, <code>distance_to</code>, <code>approx?</code>, <code>to_a</code></td>
+<td><code>Vector3.new(x, y, z)</code>, <code>Vector3.zero</code>, <code>one</code>, <code>up</code>, <code>down</code>, <code>left</code>, <code>right</code>, <code>forward</code>, <code>back</code>; arithmetic, <code>dot</code>, <code>cross</code>, <code>length</code>, <code>normalized</code>, <code>clamped(max_length = 1.0)</code>, <code>lerp</code>, <code>flat</code>, <code>with(y: 0)</code>, <code>distance_to</code>, <code>approx?</code>, <code>to_a</code>; in place, for math done thousands of times a frame: <code>set(x, y, z)</code>, <code>add!(v)</code>, <code>sub!(v)</code>, <code>scale!(k)</code>, <code>normalize!</code> (they change the vector and hand it back: <code>dup</code> one you got from someone else first)</td>
 </tr>
 </tbody>
 </table>
 <p>Script errors are logged with a backtrace and only disable the failing behaviour; the game keeps running.
+Every native takes finite numbers a float can hold: infinity, NaN (<code>0.0 / 0.0</code>) or a number too
+large (<code>1e300</code>) raises an <code>ArgumentError</code> instead of reaching the scene. So does <code>Vector3</code>
+arithmetic whose result would leave that range, and dividing a <code>Vector3</code> by zero; a vector changed
+in place (<code>add!</code>, <code>scale!</code>...) is left as it was when that happens. A setting with a range raises outside it and says the range
+(<code>Camera.motion_blur must be from 0 to 1, not 3</code>); nothing is quietly clamped, except
+<code>Vehicle#drive</code>'s inputs, which an analog stick may push a little past full.
 Assigning <code>transform.position</code> to a physics object teleports it (moving bodies also stop); changing
 its rotation keeps its velocity. Vehicle wheel meshes must have their rotation applied (axle along X).</p>
 
@@ -970,7 +1076,7 @@ its rotation keeps its velocity. Vehicle wheel meshes must have their rotation a
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../multiplayer/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Multiplayer">
+          <a href="../i18n/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Texts in several languages">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -980,7 +1086,7 @@ its rotation keeps its velocity. Vehicle wheel meshes must have their rotation a
                 Previous
               </span>
               <div class="md-ellipsis">
-                Multiplayer
+                Texts in several languages
               </div>
             </div>
           </a>

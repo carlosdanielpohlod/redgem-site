@@ -503,6 +503,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Look of a scene: environment, lights and effects">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#see-through-materials-and-wind" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        See-through materials and wind
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#grass-forests-and-cities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Grass, forests and cities
+      
+    </span>
+  </a>
+  
 </li>
       
         <li class="md-nav__item">
@@ -703,6 +731,62 @@
   
   
     <li class="md-nav__item">
+      <a href="../scripting/online-services/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Online services
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripting/i18n/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Texts in several languages
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../scripting/api/" class="md-nav__link">
         
   
@@ -839,6 +923,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dedicated-server/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dedicated server
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -942,6 +1054,34 @@
     <span class="md-ellipsis">
       
         Look of a scene: environment, lights and effects
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Look of a scene: environment, lights and effects">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#see-through-materials-and-wind" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        See-through materials and wind
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#grass-forests-and-cities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Grass, forests and cities
       
     </span>
   </a>
@@ -1067,30 +1207,161 @@ Environment in the editor, or a Blender empty) sets the mood through its propert
 <td><code>grain</code>, <code>aberration</code></td>
 <td>film grain, and color fringes toward the corners as through a lens (0 turns each off)</td>
 </tr>
+<tr>
+<td><code>sky_image</code>, <code>sky_rotation</code>, <code>sky_intensity</code></td>
+<td>a picture of the sky in the game's <code>images/</code> folder, drawn behind everything and lighting the scene (see "A sky picture"), the degrees it is turned around the vertical, and its brightness (1 = as the picture is)</td>
+</tr>
+<tr>
+<td><code>msaa</code></td>
+<td>samples per pixel of the scene's picture (2, 4 or 8; 0, the default, is one): smoother edges, and grass and leaves whose cut-out edges are smoothed too</td>
+</tr>
+<tr>
+<td><code>antialias</code></td>
+<td><code>"temporal"</code> smooths edges with the frames before (see "Large outdoor scenes"); anything else, the default, smooths them after the picture is drawn</td>
+</tr>
+<tr>
+<td><code>shadow_cascades</code>, <code>shadow_distance</code></td>
+<td>sun shadows over a large area: 1 to 4 maps, each farther from the camera, reaching <code>shadow_distance</code> meters (150 unless given)</td>
+</tr>
+<tr>
+<td><code>shadow_softness</code></td>
+<td>how wide the sun is, in degrees: shadows grow softer the farther they fall from what casts them (the real sun is about 0.5; 0, the default, keeps every edge equally soft)</td>
+</tr>
+<tr>
+<td><code>glow_limit</code></td>
+<td>the brightest glowing particles together make a pixel, in linear light (2 to 4 suits fire): many flames or sparks over each other come near it and keep their color instead of washing out to white (0, the default, sets no limit)</td>
+</tr>
 </tbody>
 </table>
 <p>Without one, scenes get a clear day. Other things worth knowing: the 16 point lights nearest to the
 camera are used each frame (so a street can have dozens of lamps); the sun casts soft shadows
-around the camera; materials use their glTF normal, roughness/metallic, occlusion and emission
-textures; and textured materials with transparency are cut out by their alpha and sway with the
-wind (leaves, fences).</p>
+around the camera; and materials use their glTF normal, roughness/metallic, occlusion and emission
+textures. A light's intensity and color can change while the game runs (see
+<a href="../scripting/gameplay/#light-that-flickers-and-fades">Gameplay recipes</a>).</p>
+<h3 id="see-through-materials-and-wind">See-through materials and wind<a class="headerlink" href="#see-through-materials-and-wind" title="Permanent link">&para;</a></h3>
+<p>Blender's material settings decide how a material shows what is behind it (the glTF exporter
+writes them as the material's alpha mode):</p>
+<table>
+<thead>
+<tr>
+<th>Alpha mode</th>
+<th>Drawn as</th>
+<th>For</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Opaque</td>
+<td>whole: its alpha is not looked at</td>
+<td>almost everything</td>
+</tr>
+<tr>
+<td>Mask (alpha clip)</td>
+<td>cut out where its alpha is below the material's cutoff</td>
+<td>leaves, grass, fences</td>
+</tr>
+<tr>
+<td>Blend</td>
+<td>see-through: mixed with what is behind it by its alpha</td>
+<td>glass, hair cards, fur, smoke on a card</td>
+</tr>
+</tbody>
+</table>
+<p>A blended material is drawn in two steps. What of it is nearly opaque (alpha 0.9 and above) is
+drawn with the opaque surfaces, so that a dozen hair cards over each other still sort themselves
+out; the rest is drawn after every opaque surface, mixed with what is behind it, one object at a
+time from the farthest to the nearest. Two see-through parts of the same object are not sorted
+between themselves, nor are copies scattered with <code>Scatter.place</code>. For many layers of fine cards
+(fur, a mane), give the material the custom property <code>transparency = "dithered"</code> (Material
+Properties → Custom Properties, exported when the exporter's <em>Custom Properties</em> is on): its texels
+are then left out in a fine pattern that thins with their alpha, which needs no sorting at all,
+at the price of a slight grain.</p>
+<p><strong>Wind.</strong> Textured cut-out and blended materials are foliage: drawn on both sides, and swaying
+with the environment's <code>wind</code>. An object whose foliage must stay still gives itself <code>sway =
+false</code>; objects moved by a skeleton (characters, and so their hair) do not sway unless they say
+<code>sway = true</code>. Copies scattered from an object sway as it does.</p>
 <p>Glossy surfaces reflect their surroundings: the engine keeps capturing the scene around the camera
 (one cube face per frame) and uses it for reflections and ambient light.</p>
+<p><strong>A sky picture.</strong> <code>sky_image = "meadow_sky"</code> puts a picture of the whole sky around the scene
+(<code>images/meadow_sky.hdr</code>, <code>.png</code> or <code>.jpg</code>): an <em>equirectangular</em> picture, twice as wide as it is
+high, the kind sites of free skies offer and Blender takes as a world texture. It is laid as
+Blender lays it (the middle of the picture toward +X; <code>sky_rotation</code> turns it), and it lights the
+scene in place of the gradient: matte surfaces take the light of the sky around them, and glossy
+ones reflect it, sharper the smoother they are. Give the picture's sun a sun light of its own
+pointing the same way (the picture's own sun is held down in the light it gives, so that it does
+not light the scene twice) and set <code>ambient</code> to 1 for the sky's light as the picture has it.
+A Radiance picture (<code>.hdr</code>) holds light brighter than white, as a real sky has; a PNG or JPEG
+stops at white, and <code>sky_intensity</code> makes up for it. Pictures are read up to 8192 pixels a side;
+the sky drawn behind everything is kept at 4096 pixels across, its light is worked out from a
+smaller copy when the scene is loaded (a fraction of a second).</p>
+<p><strong>Large outdoor scenes.</strong> With <code>shadow_cascades = 4</code> the sun's shadows reach <code>shadow_distance</code>
+meters, sharp up close and coarser far away; <code>shadow_softness = 1.5</code> widens their edges with the
+distance to what casts them (a tree's shadow is sharp at its trunk and soft at its crown). Each
+cascade draws the scene's casters once more: a forest of tens of thousands of copies costs more
+with four than with one. <code>msaa = 4</code> smooths edges with four samples a pixel; cut-out materials
+(grass, leaves) then let those samples smooth their edges too, which keeps a meadow from
+shimmering as the camera moves. Without it, cut-out edges are smoothed afterwards with the rest of
+the picture.</p>
+<p><code>antialias = "temporal"</code> goes further: each frame the view moves by less than a pixel, a different
+amount every frame, and the frames before, followed to where each pixel was then, are mixed into
+this one. Thin grass, leaves and the glints of shiny surfaces stop shimmering, and copies fading
+out by distance turn from a fine pattern into an even shade. What moves is followed, characters'
+bones and swaying foliage included; what is no longer there (a lightning flash, a character
+running past, the camera cutting to another place) is not smeared over the picture; particles
+take less of the frames before. A new scene, a new window size and a camera that jumps start over.
+It works with <code>msaa</code> on or off and costs one more pass over the scene's opaque surfaces.</p>
 <p><strong>Animated characters.</strong> glTF skeletons and animations are supported: skinned meshes are deformed on
-the GPU (up to 64 bones per skeleton, 4 per vertex) and every animation in the scene plays in a
+the GPU (up to 1024 bones per skeleton, 4 per vertex: a character with fingers has about 65) and every animation in the scene plays in a
 loop until a script says otherwise (see <a href="../scripting/gameplay/#control-animations">Control animations</a>). The editor keeps skeletons and animations when saving, reordering or importing models.
 <code>tools/blender/walk_rig.py</code> gives a scanned standing person leg bones and a walk cycle.</p>
 <p><strong>Per-object color.</strong> The property <code>tint = "#rrggbb"</code> multiplies the colors of an object's mesh, so
 copies sharing one mesh (cars, crates) can each have their own color.</p>
+<p><strong>No shadow.</strong> <code>cast_shadow = false</code> keeps an object out of the sun's shadows (a sky dome, a glow,
+a light's shade): it is still drawn and still receives shadows.</p>
 <p><strong>Graphics card.</strong> On laptops with two cards the engine asks for the dedicated one and logs which
 card it got. To choose: Edit &gt; Graphics Card in the editor (saved in
 <code>~/.config/redgem/settings.json</code>, used from the next start), the <code>REDGEM_GPU</code> environment
 variable (read by <code>redgem</code> and <code>redgem-test</code>), or <code>--gpu auto|dedicated|integrated</code> for one run. The command line wins over the
 environment, which wins over the saved setting.</p>
 <p><strong>Performance.</strong> Objects outside the view, and parts too small to see from where the camera is, are
-not drawn. What costs most is the number of separate objects on screen, more than their triangles:
-join the parts of a model that share a material, and give heavy models lighter versions for far
-away with <code>visible_from</code> and <code>visible_to</code>.</p>
+not drawn. Objects that share a mesh (linked duplicates in Blender, Alt+D, or copies of one model)
+and come one after the other in the level are drawn together, every copy of a part in one call,
+however many there are: a street of the same building costs little more than one. Blender keeps
+duplicates together by their names (Tree, Tree.001, Tree.002...); copies whose turn comes between
+other objects are drawn in that order, so that surfaces lying on each other look as they did. What still costs is the number of different meshes on
+screen, and of separate parts in each: join the parts of a model that share a material, and give
+heavy models lighter versions for far away with <code>visible_from</code> and <code>visible_to</code>.</p>
+<h2 id="grass-forests-and-cities">Grass, forests and cities<a class="headerlink" href="#grass-forests-and-cities" title="Permanent link">&para;</a></h2>
+<p>Tens of thousands of copies (a meadow's grass, a forest) are too many to be objects: a script
+scatters them instead (<code>Scatter.place</code>, see the <a href="../scripting/api/">API reference</a>). Model one tuft
+or one tree, give it <code>prefab = true</code> so the template itself is hidden in the game, and scatter it
+over the ground from a scene script's <code>setup</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="no">Scatter</span><span class="o">.</span><span class="n">place</span><span class="p">(</span><span class="s2">"GrassTuft"</span><span class="p">,</span><span class="w"> </span><span class="ss">count</span><span class="p">:</span><span class="w"> </span><span class="mi">50_000</span><span class="p">,</span><span class="w"> </span><span class="ss">area</span><span class="p">:</span><span class="w"> </span><span class="o">[</span><span class="no">Vector3</span><span class="o">[-</span><span class="mi">80</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">80</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="no">Vector3</span><span class="o">[</span><span class="mi">80</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">80</span><span class="o">]]</span><span class="p">,</span>
+<span class="w">              </span><span class="ss">ground</span><span class="p">:</span><span class="w"> </span><span class="n">find</span><span class="p">(</span><span class="s2">"Ground"</span><span class="p">),</span><span class="w"> </span><span class="ss">seed</span><span class="p">:</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span><span class="w"> </span><span class="ss">scale</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="o">.</span><span class="mi">7</span><span class="o">..</span><span class="mi">1</span><span class="o">.</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="ss">align</span><span class="p">:</span><span class="w"> </span><span class="kp">true</span><span class="p">)</span>
+<span class="no">Scatter</span><span class="o">.</span><span class="n">place</span><span class="p">(</span><span class="s2">"Tree"</span><span class="p">,</span><span class="w"> </span><span class="ss">count</span><span class="p">:</span><span class="w"> </span><span class="mi">2_000</span><span class="p">,</span><span class="w"> </span><span class="ss">area</span><span class="p">:</span><span class="w"> </span><span class="o">[</span><span class="no">Vector3</span><span class="o">[-</span><span class="mi">140</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">140</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="no">Vector3</span><span class="o">[</span><span class="mi">140</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">90</span><span class="o">]]</span><span class="p">,</span>
+<span class="w">              </span><span class="ss">ground</span><span class="p">:</span><span class="w"> </span><span class="n">find</span><span class="p">(</span><span class="s2">"Ground"</span><span class="p">),</span><span class="w"> </span><span class="ss">seed</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="ss">scale</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="o">.</span><span class="mi">8</span><span class="o">..</span><span class="mi">1</span><span class="o">.</span><span class="mi">5</span><span class="p">)</span>
+</code></pre></div>
+<p>The copies take the template's own mesh (a model whose parts are children: join them), its scale,
+tint, <code>visible_from</code> / <code>visible_to</code> and <code>cast_shadow</code>. They are only drawn: nothing collides with them (give the
+trees a collider of their own, or invisible objects, where players must not walk through) and no
+script runs on them. The same seed places them the same on every machine of a game.</p>
+<p>They are drawn by patches of ground 16 m across: a patch out of view, or too far for its biggest
+copy to show, is skipped whole. Like any object, they cast shadows, and small things (grass) only
+near the camera: a tuft half a meter high stops casting one about 50 m away, a tree hundreds of
+meters away. Their foliage sways in the wind (<code>wind</code> on the environment), each copy with its own
+phase, so a field does not move in step.</p>
+<p>How the copies look can vary too, the same for the same seed on every machine:</p>
+<div class="highlight"><pre><span></span><code><span class="no">Scatter</span><span class="o">.</span><span class="n">place</span><span class="p">(</span><span class="s2">"GrassTuft"</span><span class="p">,</span><span class="w"> </span><span class="ss">count</span><span class="p">:</span><span class="w"> </span><span class="mi">50_000</span><span class="p">,</span><span class="w"> </span><span class="ss">area</span><span class="p">:</span><span class="w"> </span><span class="n">field</span><span class="p">,</span><span class="w"> </span><span class="ss">ground</span><span class="p">:</span><span class="w"> </span><span class="n">find</span><span class="p">(</span><span class="s2">"Ground"</span><span class="p">),</span><span class="w"> </span><span class="ss">seed</span><span class="p">:</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span><span class="w"> </span><span class="ss">align</span><span class="p">:</span><span class="w"> </span><span class="kp">true</span><span class="p">,</span>
+<span class="w">              </span><span class="ss">tints</span><span class="p">:</span><span class="w"> </span><span class="o">[[</span><span class="mi">0</span><span class="o">.</span><span class="mi">85</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="o">.</span><span class="mi">7</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="o">[</span><span class="mi">1</span><span class="o">.</span><span class="mo">05</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="o">.</span><span class="mi">8</span><span class="o">]]</span><span class="p">,</span><span class="w">  </span><span class="c1"># each a color between these</span>
+<span class="w">              </span><span class="ss">tint_variation</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="o">.</span><span class="mi">12</span><span class="p">,</span><span class="w">                         </span><span class="c1"># and a little brighter or darker</span>
+<span class="w">              </span><span class="ss">fade</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="o">.</span><span class="mi">0</span><span class="p">,</span><span class="w">                                   </span><span class="c1"># fading out over the last 10 m</span>
+<span class="w">              </span><span class="ss">normals_up</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="o">.</span><span class="mi">7</span><span class="p">)</span><span class="w">                              </span><span class="c1"># lit as the meadow, not as flat cards</span>
+</code></pre></div>
+<p><code>fade</code> makes copies near the template's <code>visible_to</code> thin out pixel by pixel over that many meters
+instead of popping away (and fade in after its <code>visible_from</code>, when it has one: two levels of
+detail whose distances overlap by the fade cross over without a gap). <code>normals_up</code> bends the
+copies' normals toward their own up: grass cards are then lit as the ground they stand on, so a
+field does not show the cards' faces turning light and dark with the sun.</p>
 <h2 id="terrain">Terrain<a class="headerlink" href="#terrain" title="Permanent link">&para;</a></h2>
 <p><strong>GameObject &gt; Terrain</strong> adds a square of ground, 100 m across, that you shape with a brush. It
 comes selected with the brush on: mountains, holes and plateaus are a drag of the mouse away.</p>
@@ -1201,6 +1472,16 @@ regenerates a whole level from code; <code>tools/blender/scene_kit.py</code> has
 <td><code>tint</code></td>
 <td><code>"#rrggbb"</code></td>
 <td>Multiplies the colors of this object's mesh (copies sharing a mesh can differ)</td>
+</tr>
+<tr>
+<td><code>cast_shadow</code></td>
+<td><code>false</code></td>
+<td>Keeps the object out of the sun's shadows (a sky dome)</td>
+</tr>
+<tr>
+<td><code>sway</code></td>
+<td><code>true</code> / <code>false</code></td>
+<td>Whether the wind sways its foliage: unless said, yes, except on objects a skeleton moves (see "See-through materials and wind")</td>
 </tr>
 <tr>
 <td><code>environment</code></td>

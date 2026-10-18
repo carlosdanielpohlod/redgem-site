@@ -605,6 +605,62 @@
   
   
     <li class="md-nav__item">
+      <a href="../scripting/online-services/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Online services
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripting/i18n/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Texts in several languages
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../scripting/api/" class="md-nav__link">
         
   
@@ -728,6 +784,34 @@
     
   
     Building and sharing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dedicated-server/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dedicated server
   
 
     
@@ -878,6 +962,11 @@ icons):</p>
 <li><strong>Ctrl+Z / Ctrl+Y</strong> undo and redo, <strong>Ctrl+D</strong> duplicate, <strong>Del</strong> delete, <strong>Ctrl+S</strong> save. Help &gt;
   Keyboard Shortcuts lists them all. File &gt; New / Open Game goes back to the hub.</li>
 </ul>
+<p>Undo goes back up to 200 steps, and keeps at most 256 MB for them (its copies of the objects and
+terrains, and what deleted objects and undone imports were made of: vertices, pictures and their
+bytes in the scene's file; an estimate, counted as each step begins): past either, the oldest steps
+go, and what no step can bring back any more is let go of, so a long session with many imports does
+not keep growing. The latest step always stays, however big.</p>
 <p>Saving rewrites <code>scene.glb</code> in place (only the glTF JSON; meshes and textures are untouched), so the
 file still opens in Blender. When the file changes on disk (e.g. you re-export from Blender) the
 editor reloads it automatically, unless you have unsaved edits.</p>

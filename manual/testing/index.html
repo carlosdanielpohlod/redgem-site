@@ -593,6 +593,62 @@
   
   
     <li class="md-nav__item">
+      <a href="../scripting/online-services/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Online services
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripting/i18n/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Texts in several languages
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../scripting/api/" class="md-nav__link">
         
   
@@ -787,6 +843,34 @@
     
   
     Building and sharing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dedicated-server/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dedicated server
   
 
     
@@ -1025,6 +1109,19 @@ with <code>test_</code> is a test:</p>
 <p>It runs in the same Ruby a game runs in, with the scripting API and an empty scene. The
 assertions are <code>assert</code>, <code>refute</code>, <code>assert_equal</code>, <code>assert_nil</code>, <code>assert_in_delta</code>,
 <code>assert_vector</code> and <code>assert_raises</code>; a system test has them too.</p>
+<p>To test the game's own classes, say which game they are from: they then load by name from its
+<code>scripts</code> folder, as they do when the game runs (without <code>--game</code>, from the test file's folder).</p>
+<div class="highlight"><pre><span></span><code>./build/src/redgem-test<span class="w"> </span>--ruby<span class="w"> </span>tests/score_test.rb<span class="w"> </span>--game<span class="w"> </span>.
+</code></pre></div>
+<p>A test may reopen one of the game's classes to add to it, a trace or a stand-in for a method:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># tests/fighter_trace_test.rb</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Fighter</span>
+<span class="w">  </span><span class="k">alias</span><span class="w"> </span><span class="n">untraced_strike</span><span class="w"> </span><span class="n">strike</span>
+<span class="w">  </span><span class="k">def</span><span class="w"> </span><span class="nf">strike</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="no">Debug</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">"strike </span><span class="si">#{</span><span class="n">args</span><span class="o">.</span><span class="n">inspect</span><span class="si">}</span><span class="s2">"</span><span class="p">);</span><span class="w"> </span><span class="n">untraced_strike</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">))</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>A <code>class</code> or <code>module</code> line at the top of the file (not indented) loads that class from the game's
+scripts first, so the line reopens the game's <code>Fighter</code> instead of making a new, empty one.</p>
 
 
 

@@ -591,6 +591,62 @@
   
   
     <li class="md-nav__item">
+      <a href="../scripting/online-services/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Online services
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripting/i18n/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Texts in several languages
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../scripting/api/" class="md-nav__link">
         
   
@@ -714,6 +770,34 @@
     
   
     Building and sharing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dedicated-server/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dedicated server
   
 
     
@@ -858,6 +942,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Layout">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#objects-and-keeping-hold-of-one" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objects, and keeping hold of one
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -865,6 +966,17 @@
     <span class="md-ellipsis">
       
         Libraries and programs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#texts-users-read" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Texts users read
       
     </span>
   </a>
@@ -947,6 +1059,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Layout">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#objects-and-keeping-hold-of-one" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objects, and keeping hold of one
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -954,6 +1083,17 @@
     <span class="md-ellipsis">
       
         Libraries and programs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#texts-users-read" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Texts users read
       
     </span>
   </a>
@@ -1053,16 +1193,20 @@ against a game created from it by <code>redgem new</code>. Every template needs 
               layer (the only place, with the sockets of src/net, that asks which system this is),
               the words of a command line, embedding files in the binary, the game folder's layout
               (config.hpp)
-src/scene     glTF loader (meshes, skeletons, animations), Blender extras parser, scene graph,
-              animation playback, particles; the custom properties scenes carry (props.hpp)
+src/scene     scene graph (objects, transforms, copies), particles, the custom properties scenes
+              carry (props.hpp); in folders of their own: gltf/ (the loader: meshes, skeletons,
+              animations, Blender extras), animation/ (clips and their playback), shapes/
+              (primitives and terrain)
 src/physics   PhysicsWorld interface + Jolt implementation
 src/input     keys, axes/actions, keyboard, mouse, gamepad and scripted input sources; a touch
               screen's on-screen controls (touch_input_source.hpp), which only the program for
               a touch screen puts in front of the others
-src/net       sockets (socket*.cpp and datagrams.cpp: the only place with OS socket calls, what the
-              systems spell differently being in socket_native), message framing and wire format, the
-              host/guest session, discovery on the local network, the relay and the entry point
-              of its program (relay_main.cpp)
+src/net       message framing and wire format, the host/guest session and its connection approval;
+              socket/ (the only place with OS socket calls, what the systems spell differently being
+              in socket_native), discovery/ (games on the local network), rooms/ (the relay and the
+              entry point of its program, relay_main.cpp, and what a dedicated server's rooms share
+              with it: codes, the lobby, guessers kept out), http/ (the games' web requests:
+              HTTP/1.1 over Mbed TLS, one thread per request)
 src/audio     sound effects and music (raylib, or silence when there is no audio device)
 src/storage   what a game keeps between runs (the save store)
 src/render    the window (window.hpp: the only place that opens one, with its graphics card, frame
@@ -1075,12 +1219,13 @@ src/app       what plays a game: the engine loop, which draws nothing and hands 
               (FrameView) to a presenter (presenter.hpp); the presenter that shows a game in a
               window of its own and the painter every drawing presenter shares; game.json, the
               game beside a built executable, where saves go, user settings, the entry points of
-              the player (player_main.cpp; on Android, android_main.cpp)
-src/editor    editor: scene document (undo, save, import), session (play mode), camera, picking,
-              script tabs, ImGui panels and theme (src/editor/ui)
-src/project   the tools around a game: new games from templates, builds (desktop and Android),
-              recent games and the project hub, the command line, the entry point of redgem
-              (main.cpp)
+              the player (player_main.cpp; on Android, android/android_main.cpp)
+src/editor    editor: session (play mode), camera, picking, the app and its panels; document/ (the
+              scene document: undo, save, the glb it edits, importing models), scripts/ (the script
+              tabs), ui/ (ImGui panels and theme)
+src/project   the tools around a game: new games from templates, builds (desktop, and Android in
+              android/), recent games and the project hub, the command line, the entry point of
+              redgem (main.cpp)
 src/testing   what runs tests, apart from the engine: TestInput, the pictures a test takes of the
               game (TestScreen), the system test and Ruby test runners, the audio tests listen
               with, redgem-test and its command line
@@ -1090,6 +1235,7 @@ ruby/testing  the Ruby tests are written with (assertions, test cases, the syste
 templates     the new-game templates: each folder is a whole game (scene, scripts, sounds) and a
               template.json about it, embedded in redgem as it is; a new game is a copy of one.
               A template is edited like any game: redgem templates/platformer
+locales      the texts users read, one translation file per language (see Texts users read)
 assets/editor fonts of the editor (Inter, JetBrains Mono; SIL Open Font License, see the license files)
 games         demo games: scene.glb, scripts and the .blend each scene was built from
 showcase      renders of the showcase scene and the credits of its assets
@@ -1100,15 +1246,34 @@ cmake         dependencies (pinned versions) and file embedding
 </code></pre></div>
 <p>The folders of <code>src</code> are layers, in the order above: each includes only itself and what is below
 it (<code>core</code>; then <code>scene</code>, <code>net</code>, <code>input</code>, <code>audio</code>, <code>physics</code>, <code>storage</code>; then <code>render</code> and
-<code>script</code>; then <code>app</code>; then <code>editor</code>, <code>project</code>; <code>testing</code> sees everything and nothing sees it).
+<code>script</code>; then <code>app</code>; then <code>server</code>, <code>editor</code>, <code>project</code>; <code>testing</code> sees everything and nothing
+sees it).
 Each layer keeps its own numbers in a <code>&lt;layer&gt;_config.hpp</code> next to its code.</p>
+<h3 id="objects-and-keeping-hold-of-one">Objects, and keeping hold of one<a class="headerlink" href="#objects-and-keeping-hold-of-one" title="Permanent link">&para;</a></h3>
+<p>A scene object's <code>ObjectId</code> is a slot. The loaded scene's objects keep their slots (an id below
+the node count is that node); the slot of an object made while the game runs (<code>Scene::clone</code>,
+<code>Scene.spawn</code>) holds a new object once it is destroyed. Every object also gets an <code>ObjectSerial</code>
+no other object ever had, in any scene.</p>
+<ul>
+<li>What keeps an object past the step it was handed it (a skin's bones, a vehicle's wheels, a
+  character's own clip, a behaviour, a Ruby <code>GameObject</code> or <code>Transform</code>) keeps an <code>ObjectHandle</code>
+  and asks <code>Scene::resolve</code> for it each time: that finds the object while it is alive, and
+  nothing afterwards, whoever sits in its slot.</li>
+<li>Only a registry the engine updates in the very step an object is destroyed may key by bare id:
+  the physics bodies (<code>Engine::process_destroyed</code> removes them) and the scene's own hierarchy and
+  copies.</li>
+<li>Destruction is two steps: <code>request_destroy</code> marks an object and what is under it, its
+  <code>on_destroy</code> runs with everything still there, then the batch is torn down children first.</li>
+</ul>
 <h2 id="libraries-and-programs">Libraries and programs<a class="headerlink" href="#libraries-and-programs" title="Permanent link">&para;</a></h2>
 <p>The folders are built into a few static libraries, one on top of the other, and each program
 links only the ones it is made of (<code>src/CMakeLists.txt</code>):</p>
 <div class="highlight"><pre><span></span><code>redgem_core     src/core                                           links nothing of the engine's
-redgem_net      src/net                                            redgem_core, the JSON library
+redgem_net      src/net                                            redgem_core, the JSON library,
+                                                                   Mbed TLS
 redgem_runtime  scene, physics, audio, input, storage, render,     redgem_net, raylib, Jolt, mruby,
                 script, app, and the Ruby prelude                  cgltf, the JSON library
+redgem_game_server src/server (without server_main.cpp)            redgem_runtime
 redgem_editor   src/editor                                         redgem_runtime, Dear ImGui
 redgem_project  src/project (without main.cpp), the templates      redgem_editor
                 and the licenses
@@ -1118,20 +1283,23 @@ redgem_testing  src/testing, ruby/testing                          redgem_runtim
                                                             the game/ folder beside it, nothing else
 redgem          src/project/main.cpp       redgem_project   the editor, the project hub, the command
                                                             line (new, build, --play)
-redgem-relay    src/net/relay_main.cpp     redgem_net       the meeting point for games over the
+redgem-relay    src/net/rooms/relay_main.cpp     redgem_net       the meeting point for games over the
                                                             internet: no window, for servers
+redgem-server   src/server/server_main.cpp redgem_game_server
+                                                            a game run on a server for players to
+                                                            join, in rooms: no window, no display
 redgem-test     src/testing/main.cpp       redgem_testing   runs a game's tests
-libredgem.so    src/app/android_main.cpp   redgem_runtime   the player on Android, loaded by the app
+libredgem.so    src/app/android/android_main.cpp   redgem_runtime   the player on Android, loaded by the app
 </code></pre></div>
 <p>A built game is a copy of the player, never of the program that builds it: <code>redgem build</code> and
 the editor's Build take <code>redgem-player</code> from beside <code>redgem</code>, or <code>runtimes/&lt;system&gt;/</code> there for
 another system (<code>tools/windows/build_runtime.sh</code>, <code>tools/android/build_runtime.sh</code> build those).
-<code>cmake --install build --component redgem --prefix &lt;folder&gt;</code> puts the four programs in
+<code>cmake --install build --component redgem --prefix &lt;folder&gt;</code> puts the five programs in
 <code>&lt;folder&gt;/bin</code> and the players for other systems in <code>&lt;folder&gt;/bin/runtimes</code>, where the same
 lookups find them.</p>
 <p>Keep what players receive small: nothing the player links may include <code>editor/</code> or <code>project/</code>
-(the include directions below say so, and linking proves it). The tests <code>app.player_ships_no_tools</code>
-and <code>app.relay_ships_no_game</code> look into the built programs (<code>tests/ships_no_tools.sh</code>) for texts
+(the include directions below say so, and linking proves it). The tests <code>app.player_ships_no_tools</code>,
+<code>app.relay_ships_no_game</code> and <code>app.server_ships_no_tools</code> look into the built programs (<code>tests/ships_no_tools.sh</code>) for texts
 only the tools, or only a game, have.</p>
 <p>A program opens one window, through <code>Window</code>, and makes what draws in it afterwards (a <code>Renderer</code>,
 the editor's <code>ui::Interface</code>): the project hub, the editor and a played game each do. The engine
@@ -1140,6 +1308,39 @@ never does: it is given a <code>Presenter</code>. <code>WindowPresenter</code> s
 and without one nobody shows the game (<code>NullPresenter</code>: tests, servers). What a game can show is
 a field of <code>FrameView</code>, drawn in <code>FramePainter</code>: added there, it reaches every presenter.
 <code>tests/include_directions.sh</code> holds the table and fails the test suite on an include that goes up.</p>
+<h2 id="texts-users-read">Texts users read<a class="headerlink" href="#texts-users-read" title="Permanent link">&para;</a></h2>
+<p>What a user of RedGem reads is not written in the code: it is in translation files, one per
+language, under <code>locales/&lt;part&gt;/&lt;language&gt;.json</code>, and the code names it by a key
+(<code>tr("editor.menu.file")</code>, see <code>src/core/translations.hpp</code>). Today there is English (<code>en.json</code>)
+alone; a translation is another file beside it, with the same keys.</p>
+<ul>
+<li><strong>Into a translation file</strong>: everything a user reads in a window or at a terminal. The
+  editor and the project hub (menus, buttons, panels, tooltips, dialogs, hints, the status bar,
+  the inspector's labels), the help, usage and errors of the command lines of <code>redgem</code>,
+  <code>redgem-server</code>, <code>redgem-relay</code> and <code>redgem-test</code> that are about what the user typed, and the
+  texts the engine shows players (the labels of <code>GameMenu</code>).</li>
+<li><strong>In English in the code</strong>: the log, and the messages of errors that are for whoever works on
+  the engine or a game (a broken file, a failed call). Those are searched for, quoted in bug
+  reports and read next to the code; they stay in one language, as the code does.</li>
+</ul>
+<p>Each part is the texts of one library, built into it (<code>redgem_embed_texts</code> in
+<code>src/CMakeLists.txt</code>), so that a program carries only what it shows: <code>core</code> (what a command
+line says of an option it cannot read), <code>game</code> (the runtime: what players read), <code>editor</code>, <code>project</code> (the hub and <code>redgem</code>'s command line), <code>server</code>, <code>relay</code> and
+<code>testing</code> (the command lines of the other programs). A program adds its parts and picks the
+language as it starts: the one in the user's settings (<code>"language"</code> in <code>settings.json</code>), else the
+system's; a key a translation lacks is shown in English.</p>
+<p>A key is the part's name, then where the text is, then what it is: <code>editor.menu.file</code>. The
+first word says which file it is in. A text with values in it names them, <code>Created {game}</code>, and
+the code fills them in: <code>tr("project.cli.created", {{"game", name}})</code>. A long text (a command's
+usage) may be a list of lines. <code>tests/unit/translation_keys_test.cpp</code> fails when the code shows a
+key English has no text for, when an English text is shown nowhere, or when a translation has a
+key English lacks; keys are written whole in the code, as string literals, for it to find them.</p>
+<p>A game's texts are not the engine's: they are in the game's own <code>locales/&lt;language&gt;.json</code>, and its
+scripts show them with <code>I18n.t("hud.coins")</code> (see <a href="../scripting/i18n/">Texts in several languages</a>),
+behind which are the engine's <code>game</code> part (the prelude's <code>I18n.t</code> calls, in <code>ruby/engine/</code>), so a
+game's files may translate those too. The same test checks the games and templates of this
+repository: every key their scripts show has a text in their <code>locales/en.json</code> or the <code>game</code> part,
+and every text of theirs is shown.</p>
 <h2 id="not-there-yet">Not there yet<a class="headerlink" href="#not-there-yet" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Blend trees and animation events. Characters copied with Duplicate in the editor keep the pose

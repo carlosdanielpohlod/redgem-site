@@ -14,7 +14,7 @@
         <link rel="prev" href="../testing/">
       
       
-        <link rel="next" href="../troubleshooting/">
+        <link rel="next" href="../dedicated-server/">
       
       
         
@@ -593,6 +593,62 @@
   
   
     <li class="md-nav__item">
+      <a href="../scripting/online-services/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Online services
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripting/i18n/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Texts in several languages
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../scripting/api/" class="md-nav__link">
         
   
@@ -809,6 +865,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#recording-a-video" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recording a video
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#notes" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -834,6 +901,34 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dedicated-server/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dedicated server
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -966,6 +1061,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#recording-a-video" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recording a video
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#notes" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1052,7 +1158,7 @@ emulator that <code>adb</code> sees, and shows its log.</p>
   A and B under the right, Start in the corner. A game that plays with a gamepad plays on a phone
   as it is; taps also work as mouse clicks, so <code>UI.button</code> menus work. A game with a touch
   interface of its own hides them with <code>Input.touch_controls = false</code>.</li>
-<li>Characters may have up to 48 bones on a phone (64 on a computer).</li>
+<li>Characters may have as many bones on a phone as on a computer (up to 1024 per skeleton).</li>
 <li>There is no on-screen keyboard yet, so text fields cannot be typed in.</li>
 <li>Phones are slower than computers: keep levels light (few lights, modest textures) and test on
   a real device. It needs Android 8 or later with OpenGL ES 3.</li>
@@ -1087,6 +1193,24 @@ emulator that <code>adb</code> sees, and shows its log.</p>
 <p>(<code>REDGEM_KEY_PASSWORD</code> too, when the key has a password of its own.)
 - Keep the keystore outside the game's folder. If one is left there anyway, builds leave it out:
   a signing key never travels with a game.</p>
+<h2 id="recording-a-video">Recording a video<a class="headerlink" href="#recording-a-video" title="Permanent link">&para;</a></h2>
+<p><code>redgem &lt;game_dir&gt; --record out.mp4</code> plays the game into a video. You need
+<a href="https://ffmpeg.org">ffmpeg</a> on the <code>PATH</code>; without it RedGem says so and does not start.</p>
+<div class="highlight"><pre><span></span><code>redgem games/arena --record trailer.mp4 --record-fps 30 --record-size 3840x2160 --record-scale 1920x1080 --record-seconds 20
+</code></pre></div>
+<ul>
+<li>Each frame moves the game on by exactly 1/<code>--record-fps</code> seconds (30 unless given), however
+  long it takes to draw. A scene too heavy to play smoothly still comes out smooth in the video,
+  and so do the wind, film grain and everything else that moves with time.</li>
+<li><code>--record-size</code> is the size the game is drawn at, off screen (the window's own size unless
+  given). It is not limited by the window or the desktop, and the window shows a fitted copy.
+  <code>--record-scale</code> sets the video's size; frames are scaled down to it with lanczos, so drawing
+  at 4K and scaling to 1080p gives very clean edges.</li>
+<li>Recording ends after <code>--record-seconds</code>, when a script calls <code>Game.stop_recording</code> (the game
+  keeps running in the window), or when the game quits.</li>
+<li>Frames are read back from the graphics card a few frames late, so drawing never waits for it.
+  They are encoded as H.264 (<code>-crf 16</code>, preset <code>medium</code>, <code>yuv420p</code>), which plays everywhere.</li>
+</ul>
 <h2 id="notes">Notes<a class="headerlink" href="#notes" title="Permanent link">&para;</a></h2>
 <ul>
 <li>The executable needs the <code>game/</code> folder next to it.</li>
@@ -1115,6 +1239,7 @@ build folder, laid out the way builds expect:</p>
 <div class="highlight"><pre><span></span><code>&lt;folder&gt;/bin/redgem            the editor, the project hub and the command line
 &lt;folder&gt;/bin/redgem-player     what a game built for this system is a copy of
 &lt;folder&gt;/bin/redgem-relay      the meeting point for games over the internet
+&lt;folder&gt;/bin/redgem-server     runs a game on a server, for players to join (see Dedicated server)
 &lt;folder&gt;/bin/redgem-test       the tool that runs a game's tests
 &lt;folder&gt;/bin/runtimes/         the players for other systems that were built before installing
 </code></pre></div>
@@ -1164,13 +1289,13 @@ build folder, laid out the way builds expect:</p>
         
         
           
-          <a href="../troubleshooting/" class="md-footer__link md-footer__link--next" aria-label="Next: Limits and troubleshooting">
+          <a href="../dedicated-server/" class="md-footer__link md-footer__link--next" aria-label="Next: Dedicated server">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Limits and troubleshooting
+                Dedicated server
               </div>
             </div>
             <div class="md-footer__button md-icon">

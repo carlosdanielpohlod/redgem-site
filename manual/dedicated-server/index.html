@@ -1,0 +1,1273 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="The manual of RedGem, a 3D game engine where games are written in Ruby.">
+      
+      
+      
+      
+        <link rel="prev" href="../shipping/">
+      
+      
+        <link rel="next" href="../troubleshooting/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/redgem-mark.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Dedicated server - RedGem 3D Engine</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+    
+    
+      <link rel="stylesheet" href="../assets/manual.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#dedicated-server" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="RedGem 3D Engine" class="md-header__button md-logo" aria-label="RedGem 3D Engine" data-md-component="logo">
+      
+  <img src="../assets/redgem-mark.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            RedGem 3D Engine
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Dedicated server
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="RedGem 3D Engine" class="md-nav__button md-logo" aria-label="RedGem 3D Engine" data-md-component="logo">
+      
+  <img src="../assets/redgem-mark.svg" alt="logo">
+
+    </a>
+    RedGem 3D Engine
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../install/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Install
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../first-game/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Your first game
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Using the editor
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Using the editor
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../editor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The editor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../levels/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Levels, lighting and Blender
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scripting in Ruby
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Scripting in Ruby
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripting/behaviours/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Behaviours
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripting/gameplay/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Gameplay recipes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripting/multiplayer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Multiplayer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripting/online-services/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Online services
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripting/i18n/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Texts in several languages
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripting/api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Finishing a game
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Finishing a game
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../testing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing your game
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../shipping/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Building and sharing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dedicated server
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dedicated server
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#run-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Run it
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#run-it-with-docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Run it with Docker
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#put-it-on-the-internet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Put it on the internet
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#make-the-game-work-on-a-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Make the game work on a server
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Limits and troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Working on the engine
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#run-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Run it
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#run-it-with-docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Run it with Docker
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#put-it-on-the-internet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Put it on the internet
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#make-the-game-work-on-a-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Make the game work on a server
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="dedicated-server">Dedicated server<a class="headerlink" href="#dedicated-server" title="Permanent link">&para;</a></h1>
+<p>With a dedicated server nobody has to host: the game runs on a machine on the internet, with no
+window and no player, and everyone joins it, phones included. A small rented Linux server (a VPS)
+is enough. It needs no display and no graphics card.</p>
+<p>The server is a program of its own, <code>redgem-server</code>. One server holds several <strong>rooms</strong>. Each room
+is a match of its own, with the whole game running in it. Players join by the server's address and
+get the first room with a free place, or a new room when every room is full. A friend can follow
+them into the same room with its code (<code>Network.room</code>). A room closes when its match ends: the game
+calls <code>Game.quit</code>, or everyone left. The next players get a new room, with a new game.</p>
+<p>Nobody runs a server for you: each game runs its own, on a machine its players can reach, as
+below. The same goes for a <a href="../scripting/multiplayer/#over-the-internet-rooms">relay</a>.</p>
+<h2 id="run-it">Run it<a class="headerlink" href="#run-it" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>./build/src/redgem-server<span class="w"> </span>games/platformer<span class="w">      </span><span class="c1"># listens on port 7777</span>
+./build/src/redgem-server<span class="w"> </span>games/platformer<span class="w"> </span>--port<span class="w"> </span><span class="m">9000</span><span class="w"> </span>--max-players<span class="w"> </span><span class="m">4</span><span class="w"> </span>--rooms<span class="w"> </span><span class="m">16</span><span class="w"> </span>--data<span class="w"> </span>/srv/platformer
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Default</th>
+<th>What it is</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--port</code></td>
+<td>7777</td>
+<td>The TCP port players connect to (0 picks a free one)</td>
+</tr>
+<tr>
+<td><code>--max-players</code></td>
+<td>8</td>
+<td>Players in one room, up to 15</td>
+</tr>
+<tr>
+<td><code>--rooms</code></td>
+<td>8</td>
+<td>Rooms open at once, up to 64</td>
+</tr>
+<tr>
+<td><code>--threads</code></td>
+<td>The machine's cores</td>
+<td>Threads the rooms run on, up to 64: each room has one of its own while there are no more rooms than threads</td>
+</tr>
+<tr>
+<td><code>--per-address</code></td>
+<td>24</td>
+<td>Machines one address may connect, up to 1024: raise it when many players share one address (a campus, some mobile networks)</td>
+</tr>
+<tr>
+<td><code>--data</code></td>
+<td><code>&lt;game&gt;-data</code> beside the game's folder</td>
+<td>Where the game's <code>Save</code> is kept (<code>save.sqlite3</code>), for every room and every run</td>
+</tr>
+</tbody>
+</table>
+<p>It writes what happens to its output (rooms opened and closed, how many players) and stops
+cleanly on Ctrl+C or <code>SIGTERM</code>: every room is closed and its players are told.</p>
+<p>A room is light (a platformer room takes 1 to 2 MB of memory and a few percent of one core), but
+every room runs the whole game, so <code>--rooms</code> is what sizes the machine. Each room runs on a thread
+of its own, so the rooms use all the machine's cores, and a room loading a level (when its first
+player arrives, or when its game loads another) holds up no other room. Players connect and are
+placed in rooms on the server's main thread meanwhile. With more rooms open than <code>--threads</code>, the
+rooms share the threads there are: a level loading in one then holds up the others on its thread
+for that moment.</p>
+<h2 id="run-it-with-docker">Run it with Docker<a class="headerlink" href="#run-it-with-docker" title="Permanent link">&para;</a></h2>
+<p><code>Dockerfile.server</code> builds an image holding the server and one game, nothing else:</p>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>build<span class="w"> </span>-f<span class="w"> </span>Dockerfile.server<span class="w"> </span>--build-arg<span class="w"> </span><span class="nv">GAME</span><span class="o">=</span>games/platformer<span class="w"> </span>-t<span class="w"> </span>my-game-server<span class="w"> </span>.
+docker<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>--restart<span class="w"> </span>unless-stopped<span class="w"> </span>-p<span class="w"> </span><span class="m">7777</span>:7777<span class="w"> </span>-v<span class="w"> </span>my-game-data:/data<span class="w"> </span>my-game-server<span class="w"> </span>--rooms<span class="w"> </span><span class="m">4</span>
+</code></pre></div>
+<p><code>GAME</code> is the game's folder, relative to the repository. <code>docker compose up server</code> does the same
+for the platformer (<code>GAME=path/to/game docker compose up server</code> for another). The container runs
+as an unprivileged user and writes only to <code>/data</code>, where the game's saves are kept (a volume, so
+that they outlive the container).</p>
+<h2 id="put-it-on-the-internet">Put it on the internet<a class="headerlink" href="#put-it-on-the-internet" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Rent any small Linux server with a public address, and install Docker on it (or build RedGem
+   there, see <a href="../install/">Install</a>).</li>
+<li>Copy the repository and your game there, then build and run the image as above.</li>
+<li>Open the port: allow TCP 7777 in the server's firewall and in the provider's control panel.</li>
+<li>Point the game at it. In the platformer demo, set <code>SERVER</code> in <code>scripts/main_scene.rb</code>; in a game
+   made from the platformer template, set <code>SERVER</code> in <code>scripts/online.rb</code>:</li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="no">SERVER</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"play.example.com"</span><span class="o">.</span><span class="n">freeze</span><span class="w">      </span><span class="c1"># or "203.0.113.7", or "play.example.com:9000"</span>
+</code></pre></div>
+<p>The game's menus then offer <strong>Play online</strong>. In your own game, it is one line:</p>
+<div class="highlight"><pre><span></span><code><span class="no">Network</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">"play.example.com"</span><span class="p">)</span><span class="w">                  </span><span class="c1"># any room with a free place</span>
+<span class="no">Network</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">"play.example.com"</span><span class="p">,</span><span class="w"> </span><span class="ss">room</span><span class="p">:</span><span class="w"> </span><span class="s2">"K7QM3P"</span><span class="p">)</span><span class="w">  </span><span class="c1"># the room a friend is in</span>
+</code></pre></div>
+<h2 id="make-the-game-work-on-a-server">Make the game work on a server<a class="headerlink" href="#make-the-game-work-on-a-server" title="Permanent link">&para;</a></h2>
+<p>The server runs the same scripts as the players, with <code>Network.server?</code> true. It has no player of
+its own, so whatever a script does for "my player" is skipped there:</p>
+<div class="highlight"><pre><span></span><code><span class="no">Network</span><span class="o">.</span><span class="n">on_connect</span><span class="w"> </span><span class="k">do</span>
+<span class="w">  </span><span class="n">spawn_my_hero</span><span class="w"> </span><span class="k">unless</span><span class="w"> </span><span class="no">Network</span><span class="o">.</span><span class="n">server?</span><span class="w">                </span><span class="c1"># the server plays nobody</span>
+<span class="w">  </span><span class="no">Network</span><span class="o">.</span><span class="n">players</span><span class="o">.</span><span class="n">each</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="o">|</span><span class="n">peer</span><span class="o">|</span><span class="w"> </span><span class="n">show_hero_of</span><span class="p">(</span><span class="n">peer</span><span class="p">)</span><span class="w"> </span><span class="p">}</span><span class="w">  </span><span class="c1"># the others who play, never the server</span>
+<span class="k">end</span>
+</code></pre></div>
+<p><code>Network.host?</code> is true on the server: it hosts the game and owns the level's own objects, so
+what the host decides (scores, a door opening, the end of a match) is decided there. Menus never
+open on a server. Call <code>Game.quit</code> on the server when a match is over to give its room to the next
+players.</p>
+<p><code>Save</code> on the server is the server's own: a SQLite database in its data folder (<code>--data</code>),
+shared by all its rooms and kept across restarts. Each key is a row of its own, written as soon as
+it changes, in a transaction (a crash keeps every change made before it, never half of one), and
+only what a script asks for is read into memory. Rooms write one at a time, and change a value
+that several rooms may change with <code>Save.update</code>, which reads and writes it with no other room's
+save in between. Arrays and hashes
+saved there may hold any number of things (only their nesting is limited, to 16 levels). Keep
+each player's data under their identity, as
+<a href="../scripting/online-services/#saving-on-a-server">Online services</a> shows; with many players,
+a key per player (<code>Save["player:#{identity}"]</code>) reads and writes one player instead of all of
+them.</p>
+<p>A copy of the database for a backup is taken with <code>sqlite3 save.sqlite3 ".backup copy.sqlite3"</code>,
+or by copying the folder while the server is stopped.</p>
+<p>The server faces the internet. It keeps every limit a hosted game and the relay have (message
+sizes, how much each player may send, connections per address, spawned objects), lets go of
+machines that stay silent and of players who say nothing to the game for five minutes (a game
+left paused counts), and keeps out addresses that guess at room codes. Messages are not encrypted.
+Players are let in without asking unless the game decides who plays: see
+<a href="../scripting/online-services/#letting-players-in">Online services</a>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../shipping/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Building and sharing">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Building and sharing
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../troubleshooting/" class="md-footer__link md-footer__link--next" aria-label="Next: Limits and troubleshooting">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Limits and troubleshooting
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.footer", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

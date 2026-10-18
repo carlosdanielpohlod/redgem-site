@@ -612,6 +612,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Reaching things">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#objects-that-are-gone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objects that are gone
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -688,6 +705,62 @@
     
   
     Multiplayer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../online-services/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Online services
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../i18n/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Texts in several languages
   
 
     
@@ -844,6 +917,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dedicated-server/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dedicated server
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -973,6 +1074,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Reaching things">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#objects-that-are-gone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objects that are gone
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1087,6 +1205,15 @@ can be tuned per object without changing code.</p>
 </tr>
 </tbody>
 </table>
+<h3 id="objects-that-are-gone">Objects that are gone<a class="headerlink" href="#objects-that-are-gone" title="Permanent link">&para;</a></h3>
+<p><code>destroy</code> takes an object out at the end of the step: its <code>on_destroy</code> still runs, and until then
+it can be used as usual. After that, a reference you kept (in a variable, a global, a timer's
+block) stands for that object only. <code>alive?</code> says <code>false</code>, <code>name</code> and <code>tag</code> still answer, and
+anything else raises <code>game object "Coin" (id 12) was destroyed</code>, even once a newly spawned object
+sits in the same place (its <code>id</code>) or the level was switched. A kept reference never starts acting
+on another object.</p>
+<div class="highlight"><pre><span></span><code><span class="vi">@target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kp">nil</span><span class="w"> </span><span class="k">unless</span><span class="w"> </span><span class="vi">@target</span><span class="o">&amp;.</span><span class="n">alive?</span><span class="w">   </span><span class="c1"># forget an enemy someone else destroyed</span>
+</code></pre></div>
 <h2 id="setting-a-level-up-in-ruby">Setting a level up in Ruby<a class="headerlink" href="#setting-a-level-up-in-ruby" title="Permanent link">&para;</a></h2>
 <p>Instead of attaching scripts object by object, a level can have a <strong>scene script</strong>:
 <code>scripts/main_scene.rb</code> for <code>scene.glb</code>, <code>scripts/level2_scene.rb</code> for <code>scenes/level2.glb</code>. Its

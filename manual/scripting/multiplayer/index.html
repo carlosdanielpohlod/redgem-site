@@ -14,7 +14,7 @@
         <link rel="prev" href="../gameplay/">
       
       
-        <link rel="next" href="../api/">
+        <link rel="next" href="../online-services/">
       
       
         
@@ -671,6 +671,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#on-a-dedicated-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        On a dedicated server
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#messages" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -729,6 +740,62 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../online-services/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Online services
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../i18n/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Texts in several languages
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -877,6 +944,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dedicated-server/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dedicated server
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1009,6 +1104,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#on-a-dedicated-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        On a dedicated server
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#messages" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1084,7 +1190,8 @@
 <p>Games can be played together over a local network or the internet. One machine <strong>hosts</strong> the game
 and the others <strong>join</strong> it; every machine has an id (the host is 1, then 2, 3... as players arrive).
 Up to 16 machines play together.</p>
-<p>There are three ways for the others to get to the host, from the easiest:</p>
+<p>There are three ways for the others to get to the host, from the easiest, and a fourth where
+nobody hosts:</p>
 <table>
 <thead>
 <tr>
@@ -1109,6 +1216,11 @@ Up to 16 machines play together.</p>
 <td>The host's address</td>
 <td>The host's router forwarding a port</td>
 </tr>
+<tr>
+<td>Anywhere</td>
+<td>The server's address</td>
+<td>The game running on a <a href="../../dedicated-server/">dedicated server</a></td>
+</tr>
 </tbody>
 </table>
 <h2 id="host-and-join">Host and join<a class="headerlink" href="#host-and-join" title="Permanent link">&para;</a></h2>
@@ -1116,13 +1228,21 @@ Up to 16 machines play together.</p>
 <span class="no">Network</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">"192.168.0.12"</span><span class="p">)</span><span class="w">           </span><span class="c1"># on the others: the host's address</span>
 
 <span class="no">Network</span><span class="o">.</span><span class="n">on_connect</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">start_round</span><span class="w"> </span><span class="p">}</span><span class="w">     </span><span class="c1"># this machine is in the game</span>
-<span class="no">Network</span><span class="o">.</span><span class="n">on_fail</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">show</span><span class="p">(</span><span class="s2">"Could not join"</span><span class="p">)</span><span class="w"> </span><span class="p">}</span>
+<span class="no">Network</span><span class="o">.</span><span class="n">on_fail</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="o">|</span><span class="n">reason</span><span class="o">|</span><span class="w"> </span><span class="n">show</span><span class="p">(</span><span class="s2">"Could not join: </span><span class="si">#{</span><span class="n">reason</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span><span class="w"> </span><span class="p">}</span><span class="w">  </span><span class="c1"># reason: nil, the host's, or a timeout</span>
 <span class="no">Network</span><span class="o">.</span><span class="n">on_join</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="o">|</span><span class="n">peer</span><span class="o">|</span><span class="w"> </span><span class="o">...</span><span class="w"> </span><span class="p">}</span><span class="w">         </span><span class="c1"># someone else arrived</span>
 <span class="no">Network</span><span class="o">.</span><span class="n">on_leave</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="o">|</span><span class="n">peer</span><span class="o">|</span><span class="w"> </span><span class="o">...</span><span class="w"> </span><span class="p">}</span><span class="w">        </span><span class="c1"># someone else left</span>
 <span class="no">Network</span><span class="o">.</span><span class="n">on_disconnect</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="o">...</span><span class="w"> </span><span class="p">}</span><span class="w">          </span><span class="c1"># the game is gone: the host left or the connection dropped</span>
 </code></pre></div>
 <p><code>Network.online?</code>, <code>Network.host?</code>, <code>Network.id</code> and <code>Network.peers</code> (everyone else's ids) tell
-where things stand. <code>Network.leave</code> leaves the game; when the host leaves, it ends for everyone.</p>
+where things stand. A join that hears nothing back for 5 seconds gives up, and <code>on_fail</code> gets
+<code>"the game did not answer in time"</code>. That time, like every wait of the network, is real time: a game
+run with no window (a headless test) plays its frames faster than that, and they do not count. <code>Network.leave</code> leaves the game; when the host leaves, it ends for everyone.</p>
+<p>Every machine in a game runs the same version of the engine's network protocol, and so do the relay
+and the dedicated server it meets on. A machine of another version is turned away: <code>on_fail</code> gets
+the reason (<code>"this game runs protocol 1, the other side 2"</code>), and both sides write it to the log.</p>
+<p>A host lets 4 machines from one address be joining at the same moment (more are hung up on, and
+try again). Players behind one shared address (a campus, some mobile networks) joining together
+may need more: <code>Network.host(waiting_per_address: 16)</code>, up to 32.</p>
 <h2 id="games-on-the-same-network">Games on the same network<a class="headerlink" href="#games-on-the-same-network" title="Permanent link">&para;</a></h2>
 <p>A hosted game answers the machines around it, so nobody types an address:</p>
 <div class="highlight"><pre><span></span><code><span class="no">Network</span><span class="o">.</span><span class="n">host</span><span class="p">(</span><span class="nb">name</span><span class="p">:</span><span class="w"> </span><span class="s2">"Ana's game"</span><span class="p">)</span><span class="w">       </span><span class="c1"># name: the game's title unless said; visible: false hides it</span>
@@ -1155,6 +1275,9 @@ small rented server is enough, it only passes messages on):</p>
 <div class="highlight"><pre><span></span><code>./build/src/redgem-relay<span class="w">               </span><span class="c1"># listens on port 7778; --port &lt;number&gt; picks another</span>
 docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>relay<span class="w">                </span><span class="c1"># or with Docker</span>
 </code></pre></div>
+<p>One address may hold 24 machines and 8 open rooms on a relay. When many players share one
+address (a campus, some mobile networks), raise them: <code>--per-address &lt;number&gt;</code> (up to 1024) and
+<code>--rooms-per-address &lt;number&gt;</code> (up to 256).</p>
 <p>While nobody talks to it the relay sleeps: it wakes when a machine connects or says something,
 and about once a second to let go of machines that went silent.</p>
 <p>The relay expects strangers: one address can only open a few rooms and hold a few connections,
@@ -1163,6 +1286,23 @@ guessing room codes gets it kept out for a while, and a machine that goes silent
 <p>Without a relay, players anywhere can still join the host's public address
 (<code>Network.join("203.0.113.7")</code>) if the host's router forwards the game's port (7777, TCP) to the
 host's machine.</p>
+<h2 id="on-a-dedicated-server">On a dedicated server<a class="headerlink" href="#on-a-dedicated-server" title="Permanent link">&para;</a></h2>
+<p>A dedicated server runs the game itself, with no player, and everyone joins it
+(see <a href="../../dedicated-server/">Dedicated server</a>):</p>
+<div class="highlight"><pre><span></span><code><span class="no">Network</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">"play.example.com"</span><span class="p">)</span><span class="w">                  </span><span class="c1"># any room with a free place</span>
+<span class="no">Network</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">"play.example.com"</span><span class="p">,</span><span class="w"> </span><span class="ss">room</span><span class="p">:</span><span class="w"> </span><span class="s2">"K7QM3P"</span><span class="p">)</span><span class="w">  </span><span class="c1"># the room a friend is in (their Network.room)</span>
+</code></pre></div>
+<p>The server runs the same scripts with <code>Network.server?</code> true. It hosts the game (<code>Network.host?</code>,
+id 1) but plays nobody, so skip "my player" there, and use <code>Network.players</code> (everyone else
+without the server) where a game shows the other players:</p>
+<div class="highlight"><pre><span></span><code><span class="no">Network</span><span class="o">.</span><span class="n">on_connect</span><span class="w"> </span><span class="k">do</span>
+<span class="w">  </span><span class="n">spawn_my_hero</span><span class="w"> </span><span class="k">unless</span><span class="w"> </span><span class="no">Network</span><span class="o">.</span><span class="n">server?</span>
+<span class="w">  </span><span class="no">Network</span><span class="o">.</span><span class="n">players</span><span class="o">.</span><span class="n">each</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="o">|</span><span class="n">peer</span><span class="o">|</span><span class="w"> </span><span class="n">show_hero_of</span><span class="p">(</span><span class="n">peer</span><span class="p">)</span><span class="w"> </span><span class="p">}</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>To let in only players who logged in, the join carries their token and the server's game decides
+(<code>Network.join(address, auth: { token: token })</code>, <code>Network.authenticate</code>): see
+<a href="../online-services/">Online services</a>.</p>
 <h2 id="messages">Messages<a class="headerlink" href="#messages" title="Permanent link">&para;</a></h2>
 <p>Machines talk in named messages:</p>
 <div class="highlight"><pre><span></span><code><span class="no">Network</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="ss">:hit</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="o">|</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">from</span><span class="o">|</span><span class="w"> </span><span class="vi">@health</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="n">data</span><span class="o">[</span><span class="ss">:damage</span><span class="o">]</span><span class="w"> </span><span class="p">}</span>
@@ -1174,7 +1314,7 @@ host's machine.</p>
 <p>A message carries <code>nil</code>, true/false, numbers, texts, <code>Vector3</code>, and arrays and hashes of those
 (hash keys arrive as symbols; a key no script of the receiving game uses anywhere arrives as a
 text instead, so <code>data[:damage]</code> works as written and only keys nobody asked for stay texts).
-An array or a hash holds at most 4096 things. Messages arrive whole and in the order they were sent. Handlers last
+An array or a hash holds at most 4096 things (in a message: <code>Save</code> keeps any number). Messages arrive whole and in the order they were sent. Handlers last
 until the next level is loaded, so register them in a behaviour's <code>start</code> or a scene script's
 <code>setup</code>. Names starting with <code>$</code> are the engine's own.</p>
 <h2 id="objects-in-the-same-place-everywhere">Objects in the same place everywhere<a class="headerlink" href="#objects-in-the-same-place-everywhere" title="Permanent link">&para;</a></h2>
@@ -1192,6 +1332,30 @@ game on, everything is this machine's, so the same script works in single player
 to them; the host owns them unless you say otherwise:</p>
 <div class="highlight"><pre><span></span><code><span class="n">find!</span><span class="p">(</span><span class="s2">"Lift"</span><span class="p">)</span><span class="o">.</span><span class="n">add_component</span><span class="p">(</span><span class="no">NetworkSync</span><span class="p">)</span>
 <span class="n">find!</span><span class="p">(</span><span class="s2">"Ball"</span><span class="p">)</span><span class="o">.</span><span class="n">add_component</span><span class="p">(</span><span class="no">NetworkSync</span><span class="p">,</span><span class="w"> </span><span class="ss">owner</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="ss">key</span><span class="p">:</span><span class="w"> </span><span class="s2">"ball"</span><span class="p">)</span><span class="w">   </span><span class="c1"># key: its name on the network</span>
+</code></pre></div>
+<p>A key is one object's: a second <code>NetworkSync</code> under a key another object goes by already raises
+an error (the behaviour is disabled, the first object keeps the key), and so does <code>assign</code> to it.
+A key is at most 128 bytes long.</p>
+<p>The owner sends where its object is 20 times a second, in a few bytes: only what changed since the
+last time (an object standing still sends little more than its key). The other machines show it a moment behind,
+blended between the last two places they heard of, so it moves smoothly however unevenly those
+arrive. The delay follows the network: about 75 milliseconds when places arrive steadily, longer
+(up to 350) when they come in bursts. When the next place is late, the object goes on the way it
+was going for a fifth of a second, then waits; moved far at once (more than 6 meters), it jumps
+there instead of sliding across. Your own objects are never delayed: they are moved on your
+machine. Each watcher can tune it per object:</p>
+<div class="highlight"><pre><span></span><code><span class="n">add_component</span><span class="p">(</span><span class="no">NetworkSync</span><span class="p">,</span><span class="w"> </span><span class="ss">delay</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="o">.</span><span class="mi">2</span><span class="p">)</span><span class="w">            </span><span class="c1"># always this many seconds behind</span>
+<span class="n">add_component</span><span class="p">(</span><span class="no">NetworkSync</span><span class="p">,</span><span class="w"> </span><span class="ss">interpolate</span><span class="p">:</span><span class="w"> </span><span class="kp">false</span><span class="p">)</span><span class="w">    </span><span class="c1"># no delay: chases the newest place, less smoothly</span>
+</code></pre></div>
+<p>What the object's own animation does goes along with its place: play an attack on the owner's
+machine (<code>animation.play(:Attack, loop: false, fade: 0.1)</code>) and the others see the same clip,
+from the same moment of it, as far behind as they show the object, fading in as it does there.
+So do its speed, a pause, a clip mixed over it (<code>animation.mix</code>) and going back to the level's
+clips (<code>animation.follow_scene</code>). Only changes are sent, as part of the object's place, and the
+whole of it now and then, so a machine that joins in the middle of a fight sees it too. Clips are
+known by name: every machine needs the same ones, and a name is at most 64 bytes long. To leave a
+character's animation to each machine's own scripts:</p>
+<div class="highlight"><pre><span></span><code><span class="n">add_component</span><span class="p">(</span><span class="no">NetworkSync</span><span class="p">,</span><span class="w"> </span><span class="ss">animation</span><span class="p">:</span><span class="w"> </span><span class="kp">false</span><span class="p">)</span>
 </code></pre></div>
 <p>For objects created while playing, <code>Network.spawn</code> makes the copy on every machine, including the
 ones that join later, and removes it when its owner leaves:</p>
@@ -1224,14 +1388,19 @@ machine:</p>
 <code>games/platformer/scripts/co_op.rb</code> is the whole of its networking.</p>
 <h2 id="testing-it">Testing it<a class="headerlink" href="#testing-it" title="Permanent link">&para;</a></h2>
 <p>The engine's own multiplayer test runs two copies of the game at once, each with its own test
-script (<code>tests/system_pairs/</code>). For a quick try on one machine, open the game twice, host in one
+script (<code>tests/system_pairs/</code>), and two copies against the game on a dedicated server
+(<code>tests/system_servers/</code>). For a quick try on one machine, open the game twice, host in one
 and join <code>127.0.0.1</code> in the other.</p>
 <h2 id="what-it-does-not-do">What it does not do<a class="headerlink" href="#what-it-does-not-do" title="Permanent link">&para;</a></h2>
 <p>There is no matchmaking or public list of games: players are on the same network, share a room
-code, or know the host's address. No relay is run for you. Every message passes through the host
-(or the relay), so there is no prediction or lag compensation: fine for co-op and casual
-games, not for competitive shooters. Messages are not encrypted, and players are not
-authenticated: play with people you trust.</p>
+code, or know the host's or the server's address. No relay or server is run for you: each game
+runs its own. Every message passes through the host (or the relay), over TCP: a packet lost on
+the way holds up the ones after it. Nothing rewinds time to judge a shot where its shooter saw the
+target (lag compensation), so the shooter's machine should decide its own hits, as in "Deciding
+things once": fine for co-op and casual games, not for competitive shooters. Messages are not
+encrypted. Players are not authenticated
+unless the game hosting asks for it (<a href="../online-services/">Online services</a>), in a room on a relay
+too.</p>
 
 
 
@@ -1278,13 +1447,13 @@ authenticated: play with people you trust.</p>
         
         
           
-          <a href="../api/" class="md-footer__link md-footer__link--next" aria-label="Next: API reference">
+          <a href="../online-services/" class="md-footer__link md-footer__link--next" aria-label="Next: Online services">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                API reference
+                Online services
               </div>
             </div>
             <div class="md-footer__button md-icon">
