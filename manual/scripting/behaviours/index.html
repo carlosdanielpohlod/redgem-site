@@ -6,12 +6,14 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="The manual of RedGem, a 3D game engine where games are written in Ruby.">
+        <meta name="description" content="Behaviours: Ruby classes attached to objects, their callbacks, settings and scene scripts.">
       
       
       
+        <link rel="canonical" href="https://carlosdanielpohlod.github.io/redgem-site/manual/scripting/behaviours/">
       
-        <link rel="prev" href="../../levels/">
+      
+        <link rel="prev" href="../../assistants/">
       
       
         <link rel="next" href="../gameplay/">
@@ -443,6 +445,62 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../command-line/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The command line
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../assistants/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Making games with an AI assistant
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -650,6 +708,23 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="When a script fails">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-script-that-never-returns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A script that never returns
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1113,6 +1188,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="When a script fails">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-script-that-never-returns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A script that never returns
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
@@ -1233,12 +1325,41 @@ the level file says what is there and where, and Ruby says what it does.</p>
 <h2 id="when-a-script-fails">When a script fails<a class="headerlink" href="#when-a-script-fails" title="Permanent link">&para;</a></h2>
 <p>An error in a behaviour does not stop the game. That behaviour is switched off, and the Console
 shows the error with the file and line. Fix it, press Play again.</p>
+<h3 id="a-script-that-never-returns">A script that never returns<a class="headerlink" href="#a-script-that-never-returns" title="Permanent link">&para;</a></h3>
+<p>Every call the engine makes into the scripts (a behaviour's <code>start</code> and <code>update</code>, a contact, a
+scene script, a network handler) has a budget of time: 1000 ms unless the game's <code>game.json</code> says
+otherwise. A call still running past it (a <code>loop {}</code> with no <code>break</code>, a <code>while true</code> waiting for
+something that never comes) is stopped with a <code>ScriptTimeout</code> error. The behaviour is switched
+off like one that raised, the Console says which behaviour and method it was and how long it ran,
+and the game goes on. The game freezes for the length of the budget, once.</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="w"> </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"com.mystudio.mygame"</span><span class="p">,</span><span class="w"> </span><span class="nt">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"My Game"</span><span class="p">,</span><span class="w"> </span><span class="nt">"script_budget_ms"</span><span class="p">:</span><span class="w"> </span><span class="mi">2000</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div>
+<p><code>script_budget_ms</code> is a whole number of milliseconds from 1 to 60000. It applies the same way to
+a game you play, to Play in the editor and to every room of a dedicated server, where each room
+has its own scripts and its own budget. Raise it for a scene script that builds a large level in
+one go; a frame's update should never come near it.</p>
+<p><code>ScriptTimeout</code> is not a <code>StandardError</code>, so <code>rescue =&gt; e</code> does not catch it. A call over its
+budget is stopped once, where it stands, and has 50 ms more to unwind: its <code>ensure</code> clauses run,
+so it can put back what it changed. If it is still running after that (an <code>ensure</code> that loops, a
+<code>rescue Exception</code> that carries on), it is stopped again at every step until it has returned.</p>
+<p>What counts is the time spent in the call's own Ruby. Not counted: the work of the engine known
+to take long (spawning objects, placing scatter copies), and the calls the engine makes into the
+scripts from inside it, such as the <code>start</code> of a behaviour a spawned object brings, which each
+have a budget of their own. Up to four budgets of that are forgiven in one call: a loop that does
+nothing but spawn is stopped after about five. The engine's methods are never cut off halfway: the call stops at its
+next line of Ruby.</p>
+<p>A recursion that never ends stops on its own, with <code>SystemStackError</code>, long before the program's
+stack runs out, and is handled the same way: its behaviour is switched off. <code>redgem-test</code> runs a
+file of Ruby tests with no budget, as one call.</p>
 
 
 
 
 
 
+
+  
+  
 
 
 
@@ -1262,7 +1383,7 @@ shows the error with the file and line. Fix it, press Play again.</p>
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../../levels/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Levels, lighting and Blender">
+          <a href="../../assistants/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Making games with an AI assistant">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1272,7 +1393,7 @@ shows the error with the file and line. Fix it, press Play again.</p>
                 Previous
               </span>
               <div class="md-ellipsis">
-                Levels, lighting and Blender
+                Making games with an AI assistant
               </div>
             </div>
           </a>

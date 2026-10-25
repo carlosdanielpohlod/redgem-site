@@ -1,0 +1,1411 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="The manual of RedGem, a 3D game engine where games are written in Ruby.">
+      
+      
+      
+        <link rel="canonical" href="https://carlosdanielpohlod.github.io/redgem-site/manual/water-coastal-validation/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/redgem-mark.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Coastal water validation - RedGem 3D Engine</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+    
+    
+      <link rel="stylesheet" href="../assets/manual.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#coastal-water-validation" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="RedGem 3D Engine" class="md-header__button md-logo" aria-label="RedGem 3D Engine" data-md-component="logo">
+      
+  <img src="../assets/redgem-mark.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            RedGem 3D Engine
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Coastal water validation
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="RedGem 3D Engine" class="md-nav__button md-logo" aria-label="RedGem 3D Engine" data-md-component="logo">
+      
+  <img src="../assets/redgem-mark.svg" alt="logo">
+
+    </a>
+    RedGem 3D Engine
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../install/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Install
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../first-game/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Your first game
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Using the editor
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Using the editor
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../editor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The editor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../levels/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Levels, lighting and Blender
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../command-line/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The command line
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../assistants/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Making games with an AI assistant
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scripting in Ruby
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Scripting in Ruby
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripting/behaviours/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Behaviours
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripting/gameplay/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Gameplay recipes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripting/multiplayer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Multiplayer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripting/online-services/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Online services
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripting/i18n/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Texts in several languages
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripting/api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Finishing a game
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Finishing a game
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../testing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing your game
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../shipping/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Building and sharing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dedicated-server/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dedicated server
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Limits and troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Working on the engine
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#broader-micro-detail" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Broader micro detail
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#horizontal-shore-band" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Horizontal shore band
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optical-validation-correction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Optical validation correction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#historical-four-carrier-optical-study" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Historical four-carrier optical study
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#correctness-controls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Correctness controls
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#smooth-specular-normalization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Smooth specular normalization
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#shore-band-cost" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Shore-band cost
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#historical-combined-cost" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Historical combined cost
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#assets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Assets
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="coastal-water-validation">Coastal water validation<a class="headerlink" href="#coastal-water-validation" title="Permanent link">&para;</a></h1>
+<p>The current coastal result combines guarded refraction, a horizontal shore band and a broader
+micro-wave field. The practical target is stable, detailed real-time water. Distant reflections
+remain more regular than the reference, and filtered-normal roughness is an approximation;
+passing geometric and temporal controls does not establish photographic fidelity.</p>
+<h2 id="broader-micro-detail">Broader micro detail<a class="headerlink" href="#broader-micro-detail" title="Permanent link">&para;</a></h2>
+<p>Twelve wavelengths spanning approximately 3 to 51 centimeters replace four dominant carriers.
+Directions and phases vary deterministically, reducing parallel streaks near the camera.
+Equal slope weights preserve the previous sum of squared coefficients, 0.30. Macro displacement,
+physical impact ripples, foam, lighting and the roughness mapping remain unchanged.
+This is a finite artistic height field, not a fluid or ocean-spectrum simulation.</p>
+<p>Both pictures below use the same new field, frozen camera, 0.5-second clock, exposure 0.8 and
+foam disabled. The Cycles control uses analytic, ray-facing macro/micro gradients and 96 samples.
+The older four-carrier references below remain as historical controls; changing the wave field
+also changes the reference, so scores across those two targets do not prove a general fidelity gain.</p>
+<table>
+<thead>
+<tr>
+<th>Runtime, twelve micro waves</th>
+<th>Matched analytic-normal Cycles control</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img alt="Runtime broadband detail" src="../images/water-coastal/engine-broadband.png" /></td>
+<td><img alt="Matched reference" src="../images/water-coastal/reference-broadband96.png" /></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Region</th>
+<th>Rectangle</th>
+<th style="text-align: right;">RGB MAE</th>
+<th style="text-align: right;">RGB SSIM</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Distant water</td>
+<td>[40, 260, 1560, 325]</td>
+<td style="text-align: right;">10.256</td>
+<td style="text-align: right;">0.5699</td>
+</tr>
+<tr>
+<td>Foreground water</td>
+<td>[200, 740, 1350, 880]</td>
+<td style="text-align: right;">28.602</td>
+<td style="text-align: right;">0.6621</td>
+</tr>
+</tbody>
+</table>
+<p>Four near-origin positions and animation times check resolved slopes against independent
+height finite differences. Separate controls cover wavelength/direction participation and transfer
+of unresolved micro energy to variance. Their tolerance is unchanged from the earlier energy probe.
+Both focused micro cases also pass on llvmpipe. These controls do not establish gradient accuracy
+at arbitrary large world coordinates.</p>
+<p>A render-only ABBA run at 1600 by 900 measured medians of 15.998 and 16.150 ms for the previous
+four-carrier version, versus 16.068 and 16.316 ms for twelve carriers. The pair averages are
+16.074 and 16.192 ms. The 0.118 ms difference is smaller than the candidate repeat spread;
+it is not a precise overhead estimate. Do not combine this thermal session with the earlier costs below.</p>
+<p>An internal fixed-step recording was checked at frames 0, 90, 180 and 239: eight seconds,
+30 fps, 240 frames, rendered at 3840 by 2160 and downsampled to 1920 by 1080.
+The complete render suite passes 84 cases and 655741 assertions with this detail field.</p>
+<h2 id="horizontal-shore-band">Horizontal shore band<a class="headerlink" href="#horizontal-shore-band" title="Permanent link">&para;</a></h2>
+<p>Optical path length previously placed foam across broad shallow terraces. The band now uses
+the horizontal distance to the intersection of visible bottom and water tangent planes.
+<code>foam_width</code> is a horizontal width in meters, with 15 percent spatial reach variation.
+Parallel shallow plateaus receive no foam. Centimeter pores fade to their expected mean
+coverage when unresolved; even dense coverage retains at least 28 percent of the transmitted light.</p>
+<p><img alt="Local shore band before the micro-detail update" src="../images/water-coastal/shore-band.png" /></p>
+<p>This is a local screen-space estimate, not a complete shoreline field. Discontinuous or
+missing depth suppresses coverage; curved terrain can produce gaps or differ from the nearest
+shore. The pattern is stationary and has no advection, accumulation or breaking-wave simulation.</p>
+<p>Physical controls require support inside 0.5 meters and none beyond 1.25 meters for a nominal
+one-meter band, across three bottom slopes and two camera angles. Separate controls cover a
+sloping water surface over flat ground, a vertical wall and a shallow plateau without a shore.
+Close-up pores retain the original minimum counts and transmission requirement. A separate
+frequency probe rejects decimeter clouds; minified coverage agrees with a resolved area quadrature.</p>
+<p>Before the micro-detail update, the complete render suite passed 83 cases and 655739 assertions. The ten initial foam
+cases also pass on NVIDIA and llvmpipe. The two additional geometry controls pass on both renderers.
+The new helpers received an independent correctness review; this does not establish photographic acceptance.</p>
+<p>Restoring optical-path coverage and decimeter pores makes all five selected negative controls fail:
+the flat plateau gains roughly 50000 changed pixels, the visible band edge moves by 0.5 to
+0.8 meters across slope/camera changes, and the fine-pore probe finds only 31 crossings instead
+of the required 100. These controls retain the same geometric and frequency thresholds.</p>
+<h2 id="optical-validation-correction">Optical validation correction<a class="headerlink" href="#optical-validation-correction" title="Permanent link">&para;</a></h2>
+<p>Earlier image metrics in this study are withdrawn: the preview helper changed the clock reset
+in recording shutdown instead of setting the clock before normal presentation. Those previews
+therefore used wall time. Automated render tests, internal video recordings and the frame-time
+benchmarks set their clocks independently and are unaffected. Replacement previews must pass
+a repeated-capture check before being used for image comparisons.</p>
+<h2 id="historical-four-carrier-optical-study">Historical four-carrier optical study<a class="headerlink" href="#historical-four-carrier-optical-study" title="Permanent link">&para;</a></h2>
+<p>Both views use the same scanned coast, camera, sun, sky, seven-component wave field and
+0.5-second clock at 1600 by 900 pixels. Foam is disabled in both optical views. Exposure is
+0.8 with the same display transform; there is no alignment or exposure fitting.
+The corrected runtime capture is repeated in a separate process: the distant-water rectangle
+is pixel-identical, while five foreground pixels differ by one RGB byte. Its clock is set
+before normal frame presentation, independently of elapsed loading or rendering time.
+The reference uses Cycles with 32 samples, denoising, IOR 1.333, roughness 0.07 and the same
+absorption coefficients. Its isotropic volume scattering is a physical approximation of the
+runtime body-light term; atmospheric fog and derivative filtering do not have identical models.
+The micro-height field is represented by bump shading in the reference.
+The reference's macro normals come from the displaced radial mesh, while the runtime uses
+analytic gradients. At a radius of 100 meters its radial and tangential edges are about
+1.58 and 1.64 meters, exceeding the shortest macro wavelength of 0.90 meters. Distant normal
+convergence must therefore be checked before attributing the image difference to shading alone.</p>
+<table>
+<thead>
+<tr>
+<th>Runtime</th>
+<th>Cycles reference</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img alt="Runtime optical study" src="../images/water-coastal/engine.png" /></td>
+<td><img alt="Cycles optical study" src="../images/water-coastal/reference.png" /></td>
+</tr>
+</tbody>
+</table>
+<p>The finite scan ends above a separate deeper substrate. Both pictures show that geometric
+edge; it must be distinguished from duplicated or displaced refraction samples.</p>
+<p>Fixed rectangles exclude the shore and sky. Coordinates are <code>[left, top, right, bottom]</code> in
+original pixels. MAE is the mean absolute RGB byte difference. SSIM uses an 11-pixel Gaussian
+window with sigma 1.5, population covariance, constants 0.01 and 0.03, and a five-pixel border
+removed from the result. Values below are computed from the lossless pictures above.</p>
+<table>
+<thead>
+<tr>
+<th>Region</th>
+<th>Rectangle</th>
+<th style="text-align: right;">RGB MAE</th>
+<th style="text-align: right;">RGB SSIM</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Distant water</td>
+<td>[40, 260, 1560, 325]</td>
+<td style="text-align: right;">10.213</td>
+<td style="text-align: right;">0.5131</td>
+</tr>
+<tr>
+<td>Foreground water</td>
+<td>[200, 740, 1350, 880]</td>
+<td style="text-align: right;">29.062</td>
+<td style="text-align: right;">0.6843</td>
+</tr>
+</tbody>
+</table>
+<p>These values replace the withdrawn wall-clock comparisons. They do not establish photographic
+acceptance or a causal improvement over earlier shader variants, which need fresh timed captures.</p>
+<p>A separate normal-field control keeps the camera, displaced mesh, material, illumination and
+display transform, but replaces smooth mesh normals plus bump with the analytic total macro/micro
+height gradient. Its normal is oriented per incoming ray, matching
+<a href="https://github.com/blender/blender/blob/v4.5.3/intern/cycles/kernel/geom/shader_data.h#L98-L104">Cycles' geometry-normal convention</a>.
+Independent finite differences check that gradient. This control addresses mesh normal
+undersampling; it does not make the runtime's BSDF, screen-space visibility or fog identical.</p>
+<p><img alt="Analytic-normal control, 96 samples" src="../images/water-coastal/reference-analytic96.png" /></p>
+<table>
+<thead>
+<tr>
+<th>Region</th>
+<th style="text-align: right;">Runtime versus analytic-normal control: RGB MAE</th>
+<th style="text-align: right;">RGB SSIM</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Distant water</td>
+<td style="text-align: right;">10.415</td>
+<td style="text-align: right;">0.5643</td>
+</tr>
+<tr>
+<td>Foreground water</td>
+<td style="text-align: right;">28.459</td>
+<td style="text-align: right;">0.7075</td>
+</tr>
+</tbody>
+</table>
+<p>The control's 32-versus-96 sample difference is 3.371 MAE / 0.9280 SSIM at distance and
+2.580 / 0.9482 in the foreground. Sampling error is not zero; small candidate deltas need
+further integration checks. Both the original reference and this control are retained.</p>
+<h2 id="correctness-controls">Correctness controls<a class="headerlink" href="#correctness-controls" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Isolate screen-space reflection from transmission using submerged and exposed emissive objects.</li>
+<li>Compare transmitted silhouettes with an independent CPU Snell-law intersection, including
+  supported interior coverage and false copies outside the postprocess footprint.</li>
+<li>Compare absorption outside a partially exposed object's silhouette against the identical
+  unobstructed flat or inclined floor.</li>
+<li>Reproduce a missed inclined-depth root when search and refinement use different samplers.</li>
+<li>Require a soft, irregular foam band, open water pockets and partial bottom transmission.</li>
+<li>Check displacement bounds, analytic gradients, stationary clocks and filtered normal energy.</li>
+</ul>
+<p>The current full render suite passed 84 cases and 655741 assertions. The previous full unit
+run passed 1215 cases; the current shader-generation checks pass 14 cases and 147 assertions.
+Local shader-validation binaries rebuild shader construction and changed tests while reusing
+unchanged CPU libraries. Clean builds remain a CI requirement.
+The actual GLES shader pairs for lighting, motion, depth, particle shadows and temporal resolve
+all compiled and linked on a native GLES context. This does not replace an Android package build.</p>
+<p>Negative controls remove micro-normal variance or restore the continuous foam coverage floor:
+they respectively lose energy at 4608 distant probe pixels and produce no open pockets in
+1089 shallow-shelf samples. Restoring nearest-depth bracketing makes the inclined-root probe
+return the wrong sample coordinate. The corrected versions pass those checks.</p>
+<h2 id="smooth-specular-normalization">Smooth specular normalization<a class="headerlink" href="#smooth-specular-normalization" title="Permanent link">&para;</a></h2>
+<p>The direct-light GGX distribution now preserves narrow specular lobes. Its previous additive
+denominator floor suppressed their energy: at roughness 0.07, the analytic peak is about
+13257, while the floored expression returned 0.24. The equivalent positive denominator is
+evaluated without that floor; callers already bound perceptual roughness to at least 0.045.
+This intentionally affects direct specular lighting on all materials, including water.
+It does not change the sky prefilter or establish agreement with the coastal reference.</p>
+<p>A GPU probe checks the production distribution against an independent double-precision
+reference at roughness 0.045, 0.07, 0.15 and 0.4, using 512 projected-distribution samples each.
+Both peak and projected mass checks pass on NVIDIA and software rendering. Restoring the
+old denominator fails all eight peak/mass checks. Foam envelope checks average 21 shoreline
+profiles so individual pores cannot determine band width; the existing width, softness and
+independent porosity requirements remain unchanged.
+The correction received a separate correctness review before publication.</p>
+<p>The historical four-carrier runtime pictures include both this correction and the horizontal shore band.
+Foam is disabled for the optical comparison and enabled for the separate shore-band picture.</p>
+<h2 id="shore-band-cost">Shore-band cost<a class="headerlink" href="#shore-band-cost" title="Permanent link">&para;</a></h2>
+<p>With the same RTX 4050 Laptop GPU, 1600 by 900 image, 0.5-second clock, 60 warmup frames and
+600 measured frames, a separate ABBA comparison isolates the horizontal shore band from
+the preceding normalized-specular version. Physical interaction detection and game logic are excluded.</p>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Run medians (ms)</th>
+<th style="text-align: right;">Mean of medians (ms)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Optical-path foam</td>
+<td>11.489, 11.585</td>
+<td style="text-align: right;">11.537</td>
+</tr>
+<tr>
+<td>Horizontal shore band</td>
+<td>11.695, 11.735</td>
+<td style="text-align: right;">11.715</td>
+</tr>
+</tbody>
+</table>
+<p>The new band adds about 0.18 ms, or 1.5 percent, in this coastal view.</p>
+<h2 id="historical-combined-cost">Historical combined cost<a class="headerlink" href="#historical-combined-cost" title="Permanent link">&para;</a></h2>
+<p>RTX 4050 Laptop GPU, 1600 by 900, clock 0.5, 60 warmup frames and 600 measured frames per run.
+One process runs at a time. Order is baseline, candidate, candidate, baseline.
+These are render-only frame times; physical interaction detection and game logic are excluded.</p>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Run medians (ms)</th>
+<th style="text-align: right;">Mean of medians (ms)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Main baseline</td>
+<td>9.812, 9.898</td>
+<td style="text-align: right;">9.855</td>
+</tr>
+<tr>
+<td>Water changes</td>
+<td>11.443, 11.520</td>
+<td style="text-align: right;">11.482</td>
+</tr>
+</tbody>
+</table>
+<p>This scene costs about 1.63 ms more, or 16.5 percent. The measurement includes the changed
+wave field, normal filtering, refraction and procedural foam together.</p>
+<h2 id="assets">Assets<a class="headerlink" href="#assets" title="Permanent link">&para;</a></h2>
+<p>The local study uses <a href="https://polyhaven.com/a/coast_rocks_01">Coast Rocks 01</a>, by Rico Cilliers
+and Rob Tuytel, and <a href="https://polyhaven.com/a/ballito_rocky_beach">Ballito Rocky Beach</a>, from
+Poly Haven under CC0. Only rendered validation pictures are included here; source assets and
+the demonstration project remain local.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.footer", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

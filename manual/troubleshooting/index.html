@@ -6,9 +6,11 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="The manual of RedGem, a 3D game engine where games are written in Ruby.">
+        <meta name="description" content="Known limits and what to do when something goes wrong.">
       
       
+      
+        <link rel="canonical" href="https://carlosdanielpohlod.github.io/redgem-site/manual/troubleshooting/">
       
       
         <link rel="prev" href="../dedicated-server/">
@@ -430,6 +432,62 @@
     
   
     Levels, lighting and Blender
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../command-line/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The command line
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../assistants/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Making games with an AI assistant
   
 
     
@@ -1046,6 +1104,22 @@ packages, <code>tools/setup/fetch_x11_headers.sh</code> extracts the headers int
 Look at the Console: a script with an error is switched off and reported there. Check that the
 class name matches the file name (<code>moving_door.rb</code> defines <code>MovingDoor</code>) and that it inherits
 from <code>Behaviour</code>.</p>
+<p><strong>The game freezes for a moment and a behaviour stops, with <code>ScriptTimeout</code> in the Console.</strong>
+A call into that behaviour ran longer than the scripts' budget (1000 ms unless <code>game.json</code> says
+otherwise): it is stuck in a loop, or does far too much in one go. See
+<a href="../scripting/behaviours/#a-script-that-never-returns">Behaviours</a>.</p>
+<p><strong>A built game closed by itself.</strong>
+A game that crashes writes a report and tells the player where it is (in a message box on
+Windows; on Linux and the Mac on its error stream, which a terminal shows). The report is a text
+file beside the game's save, in the player's home folder, in a folder named after the save:</p>
+<div class="highlight"><pre><span></span><code>.config/redgem/saves/by-id/&lt;id&gt;-crashes/crash-&lt;date&gt;-&lt;time&gt;.log                 Linux, Windows
+Library/Application Support/RedGem/saves/by-id/&lt;id&gt;-crashes/crash-&lt;date&gt;-&lt;time&gt;.log   macOS
+</code></pre></div>
+<p>(A game with no <code>id</code> uses <code>saves/&lt;folder&gt;-&lt;digits&gt;-crashes/</code>.) It says the game, the engine's
+version, the system, the time in UTC, what happened (the signal, such as <code>SIGSEGV</code>, or the
+exception and its message) and, where the system can say, the functions the program was in.
+Send it with a bug report. The save itself loses nothing: it is written to the disk on every
+change. A built game for Android writes no report yet: look in <code>adb logcat</code>.</p>
 <p><strong><code>on_trigger_enter</code> never fires.</strong>
 The object needs <em>Trigger</em> on, and the thing entering must be a character, a dynamic body or a
 kinematic body. Static scenery does not set triggers off.</p>
@@ -1069,6 +1143,9 @@ It reloads <code>scene.glb</code> by itself when you have no unsaved edits. With
 
 
 
+
+  
+  
 
 
 

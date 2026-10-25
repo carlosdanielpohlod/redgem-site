@@ -291,12 +291,18 @@
       <div class="card"><h3>Effects</h3><p>Particles that change size, color and transparency over their life, flipbooks, soft and lit particles, see-through materials, and lights scripts can change.</p></div>
       <div class="card"><h3>Video recording</h3><p><code>redgem mygame --record out.mp4</code> plays your game frame by frame into a video, at any size, for trailers and screenshots.</p></div>
       <div class="card"><h3>Translations</h3><p>Every text the editor and your game show comes from a translation file, so a game can speak its player's language.</p></div>
+      <div class="card"><h3>Settings and controls</h3><p>A settings screen your players reach from the title and pause menus: window mode, resolution, render scale, vsync, quality presets and volume, plus a controls page to rebind every action on the keyboard and up to four gamepads. Scripts read and change it all through <code>Settings</code> and <code>Input</code>.</p></div>
+      <div class="card"><h3>Positional audio</h3><p><code>Audio.play_at</code> places a sound in the world: it pans and fades with its distance from the listener, and scripts move it with whatever makes it.</p></div>
+      <div class="card"><h3>Text in any language</h3><p>UI text draws Greek, Cyrillic, Polish, Turkish, the euro sign and more, and a game can bring its own font from <code>fonts/</code>.</p></div>
+      <div class="card"><h3>Crash safety</h3><p>Saves are written whole and keep a backup, so a crash or a power cut never loses them. A script stuck in a loop is stopped and the game goes on, and a crash leaves a report beside the save.</p></div>
+      <div class="card"><h3>Ready to ship</h3><p>Give your game an icon, a version and a splash picture in <code>game.json</code>: each build turns them into the system's own. Mac apps, Android App Bundles for Google Play, and Android apps that ask for the network only when the game goes online.</p></div>
+      <div class="card"><h3>Make games with an AI assistant</h3><p>Every new game comes with a guide for coding assistants, and the command line gives them text instead of windows: read and change scenes, run the game, take a picture of it, check it, search the API. <a href="manual/assistants/">How it works</a>.</p></div>
       <div class="card"><h3>Terrain</h3><p>Ground you sculpt in the editor with a brush: raise, lower, smooth, flatten. Collisions follow its shape.</p></div>
       <div class="card"><h3>Physics</h3><p>Rigid bodies, character controllers, vehicles with wheels, triggers and raycasts.</p></div>
       <div class="card"><h3>Animation</h3><p>Skeletal animation from glTF, GPU skinning with up to 1024 bones, a clip per character with fades and mixing, crowds of copies out of step with each other, animations kept in step online.</p></div>
       <div class="card"><h3>Blender pipeline</h3><p>Model and lay out levels in Blender; custom properties carry gameplay data into the game.</p></div>
       <div class="card"><h3>Testable games</h3><p>System tests are Ruby scripts that play the game frame by frame and take screenshots.</p></div>
-      <div class="card"><h3>Builds for Linux, Windows and Android</h3><p>One click makes your game a Linux binary, a Windows .exe or an Android .apk, all built from Linux. On a phone, touch controls appear by themselves.</p></div>
+      <div class="card"><h3>Builds for Linux, Windows, Mac and Android</h3><p>One click makes your game a Linux binary, a Windows .exe or an Android .apk, all built from Linux; on a Mac, a Mac app. On a phone, touch controls appear by themselves.</p></div>
     </div>
   </section>
 
@@ -339,11 +345,11 @@
   <section id="start">
     <p class="eyebrow">How to install</p>
     <h2>Download, unpack, run.</h2>
-    <p class="lead">Version 0.3.0. Nothing to install. RedGem is experimental and free, under the MIT license. <a href="https://github.com/carlosdanielpohlod/redgem/releases/tag/v0.3.0">What is new</a>.</p>
+    <p class="lead">Version 0.4.0. Nothing to install. RedGem is experimental and free, under the MIT license. <a href="https://github.com/carlosdanielpohlod/redgem/releases/tag/v0.4.0">What is new</a>.</p>
     <div class="grid">
-      <div class="card"><h3>Linux</h3><p>x86_64, OpenGL 3.3, Ubuntu 24.04 or newer. The tested one: builds games for Linux, Windows and Android.</p><p><a class="button primary" href="https://github.com/carlosdanielpohlod/redgem/releases/download/v0.3.0/redgem-linux-x86_64.tar.gz">Download for Linux</a></p></div>
-      <div class="card"><h3>Windows</h3><p>x86_64. Compiled from Linux and only tried under Wine so far: tell us what breaks. Builds games for Windows.</p><p><a class="button" href="https://github.com/carlosdanielpohlod/redgem/releases/download/v0.3.0/redgem-windows-x86_64.zip">Download for Windows</a></p></div>
-      <div class="card"><h3>macOS</h3><p>macOS 11 or newer. Tested on GitHub's Macs, not yet on a real one: tell us what breaks. Not signed by Apple: right-click the app and choose Open the first time.</p><p><a class="button" href="https://github.com/carlosdanielpohlod/redgem/releases/download/v0.3.0/redgem-macos-arm64.zip">Apple Silicon</a> <a class="button" href="https://github.com/carlosdanielpohlod/redgem/releases/download/v0.3.0/redgem-macos-x86_64.zip">Intel</a></p></div>
+      <div class="card"><h3>Linux</h3><p>x86_64, OpenGL 3.3, Ubuntu 24.04 or newer. The tested one: builds games for Linux, Windows and Android.</p><p><a class="button primary" href="https://github.com/carlosdanielpohlod/redgem/releases/download/v0.4.0/redgem-linux-x86_64.tar.gz">Download for Linux</a></p></div>
+      <div class="card"><h3>Windows</h3><p>x86_64. Compiled from Linux and only tried under Wine so far: tell us what breaks. Builds games for Windows.</p><p><a class="button" href="https://github.com/carlosdanielpohlod/redgem/releases/download/v0.4.0/redgem-windows-x86_64.zip">Download for Windows</a></p></div>
+      <div class="card"><h3>macOS</h3><p>macOS 11 or newer. Tested on GitHub's Macs, not yet on a real one: tell us what breaks. Not signed by Apple: right-click the app and choose Open the first time.</p><p><a class="button" href="https://github.com/carlosdanielpohlod/redgem/releases/download/v0.4.0/redgem-macos-arm64.zip">Apple Silicon</a> <a class="button" href="https://github.com/carlosdanielpohlod/redgem/releases/download/v0.4.0/redgem-macos-x86_64.zip">Intel</a></p></div>
     </div>
     <div class="steps">
       <div><h3>1. Unpack</h3><p>Anywhere you like. To remove RedGem, delete the folder.</p></div>

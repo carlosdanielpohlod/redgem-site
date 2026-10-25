@@ -1,0 +1,1245 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="The manual of RedGem, a 3D game engine where games are written in Ruby.">
+      
+      
+      
+        <link rel="canonical" href="https://carlosdanielpohlod.github.io/redgem-site/manual/rendering-validation/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/redgem-mark.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Rendering regression validation - RedGem 3D Engine</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+    
+    
+      <link rel="stylesheet" href="../assets/manual.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#rendering-regression-validation" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="RedGem 3D Engine" class="md-header__button md-logo" aria-label="RedGem 3D Engine" data-md-component="logo">
+      
+  <img src="../assets/redgem-mark.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            RedGem 3D Engine
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Rendering regression validation
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="RedGem 3D Engine" class="md-nav__button md-logo" aria-label="RedGem 3D Engine" data-md-component="logo">
+      
+  <img src="../assets/redgem-mark.svg" alt="logo">
+
+    </a>
+    RedGem 3D Engine
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../install/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Install
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../first-game/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Your first game
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Using the editor
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Using the editor
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../editor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The editor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../levels/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Levels, lighting and Blender
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../command-line/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The command line
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../assistants/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Making games with an AI assistant
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scripting in Ruby
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Scripting in Ruby
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripting/behaviours/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Behaviours
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripting/gameplay/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Gameplay recipes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripting/multiplayer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Multiplayer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripting/online-services/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Online services
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripting/i18n/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Texts in several languages
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scripting/api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Finishing a game
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Finishing a game
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../testing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing your game
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../shipping/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Building and sharing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dedicated-server/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dedicated server
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Limits and troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Working on the engine
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#fast-camera" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fast camera
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#opening-edge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Opening edge
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#particle-shadows-and-water-refactoring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Particle shadows and water refactoring
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#validation-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validation environment
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#previous-frame-depth-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Previous-frame depth validation
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="rendering-regression-validation">Rendering regression validation<a class="headerlink" href="#rendering-regression-validation" title="Permanent link">&para;</a></h1>
+<p>These synthetic scenes isolate temporal detail and opening-edge rejection. They are renderer
+regressions, not a claim of photographic scene quality. The images come from the native renderer.</p>
+<h2 id="fast-camera">Fast camera<a class="headerlink" href="#fast-camera" title="Permanent link">&para;</a></h2>
+<p>A tracked subject travels with the camera while a striped roadside wall crosses the screen at
+more than 32 pixels per frame. The camera stays below the global camera-cut threshold. The
+reference uses the same final view and jitter phase without accumulated history.</p>
+<table>
+<thead>
+<tr>
+<th>Previous resolve</th>
+<th>Updated resolve</th>
+<th>Fresh reference</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img alt="Previous chase" src="../images/temporal-validation/chase-before.png" /></td>
+<td><img alt="Updated chase" src="../images/temporal-validation/chase-after.png" /></td>
+<td><img alt="Fresh chase" src="../images/temporal-validation/chase-reference.png" /></td>
+</tr>
+</tbody>
+</table>
+<p>The mean sum of absolute RGB byte differences per pixel in the wall region was 41.1073 with
+the previous shader. The updated resolve meets the regression threshold of 0.5, with both zero
+and four MSAA samples. Temporal antialiasing disabled produces the same final pixels as a fresh
+view. Existing static and slowly moving foliage tests still pass.</p>
+<h2 id="opening-edge">Opening edge<a class="headerlink" href="#opening-edge" title="Permanent link">&para;</a></h2>
+<p>A foreground card moves about 7.7 pixels while its background moves about 1.6 pixels. Both
+remain below the fast-motion threshold. The regression selects 51 freshly revealed black pixels
+next to the card. Their mean sum of absolute RGB byte errors falls from 588 to zero.</p>
+<table>
+<thead>
+<tr>
+<th>Previous resolve</th>
+<th>Updated resolve</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img alt="Previous opening edge" src="../images/temporal-validation/edge-before.png" /></td>
+<td><img alt="Updated opening edge" src="../images/temporal-validation/edge-after.png" /></td>
+</tr>
+</tbody>
+</table>
+<p>The previous shader fails both regressions. These original controls isolate current motion and
+neighbor disagreement; the additional depth validation below covers surfaces that disappear
+without leaving a motion discontinuity. Fine moving detail can still trade smear for shimmer.</p>
+<h2 id="particle-shadows-and-water-refactoring">Particle shadows and water refactoring<a class="headerlink" href="#particle-shadows-and-water-refactoring" title="Permanent link">&para;</a></h2>
+<p>Particle render tests distinguish receiver darkening from the visible sprite, compare circular
+and rectangular silhouettes, check transparent flipbook cells and lifetime alpha, clear expired
+casters, and require identical disabled frames before and after an enabled frame.</p>
+<p>The water shader is divided into small helpers for intersection, reflection, lighting,
+transmission, foam and composition. Each function body is at most 13 lines. All 28 water
+regression images remain pixel-identical across this refactoring. Across existing non-temporal
+scenes, 83 shared screenshots remain pixel-identical to the earlier renderer.</p>
+<h2 id="validation-environment">Validation environment<a class="headerlink" href="#validation-environment" title="Permanent link">&para;</a></h2>
+<p>On a GeForce RTX 4050 Laptop GPU, the combined change passed 1,193 C++ unit/integration cases
+(41,877 assertions), 23 Ruby suites and 52 render cases (655,490 assertions). Include-direction
+checks pass. The lit, depth, motion, particle-shadow and temporal programs also compile and link
+as GLSL ES 3.00 through native Mesa Intel EGL. This is not Android-device validation.</p>
+<p>With 60 warm-up frames and 600 measured frames at 1600 x 900, without vertical synchronization,
+the scatter field measured 3.107 ms average / 3.106 ms median and the local showcase scene
+5.091 ms average / 5.075 ms median. These are measurements of this run, not a controlled claim
+of speedup over another revision. Showcase assets are local and are not included here.</p>
+<h2 id="previous-frame-depth-validation">Previous-frame depth validation<a class="headerlink" href="#previous-frame-depth-validation" title="Permanent link">&para;</a></h2>
+<p>The temporal history stores logarithmic view distance in its existing alpha channel. The motion
+pass stores the expected previous view distance alongside its velocity, using the previous object
+and bone transforms. Color history is read where the surface was, without either frame's
+Halton shift: the history is the average over every shift, so a still view holds still. Only
+the depth lookup accounts for the current and previous shifts, because each stored depth is the
+previous frame's jittered sample. The pixel's own previous depth is looked for where its own
+motion takes it, even where its color follows the nearest surface's motion at an edge. Depth is
+checked over that texel and its eight neighbors, each with a slope margin for its own distance:
+one match keeps the history (the previous sample may have landed one texel over at a silhouette,
+against the sky or another surface), none rejects it. Where only some match (a depth edge), the
+filtered color is kept within the four nearest texels' colors, so the spline's outer taps add
+no color from across the edge. Where the pixel's own texel held another surface and the
+surfaces around it separate slowly (under two pixels a frame), the color is instead held to the
+colors of the matching texels: an object moving away leaves no ghost. An uninitialized frame cannot
+accumulate history; its output still initializes depth for the next frame. Sky (any depth below
+half the near plane's) and points behind the previous camera have distinct markers. Deliberately stochastic coverage (distance fades
+and dithered transparency) has signed depth metadata, allowing covered samples and sky holes
+to accumulate. An opaque center pixel still requires its own depth match; a neighboring
+stochastic surface cannot make unrelated opaque history valid.</p>
+<p>Logarithmic distance avoids overflowing half-float channels for distant geometry. A bounded
+comparison margin allows half-float rounding and the depth change across a subpixel footprint;
+it cannot grow without limit at a silhouette. The existing targets and render passes are reused.
+The first temporal frame now also draws the motion pass so its depth history starts initialized.</p>
+<p>Isolated resolve tests distinguish depth rejection from color clipping and velocity rejection.
+They cover zero-motion disocclusion, expected previous depth, invalid history, sky, jittered depth
+edges, colors beside a depth edge, a slow object moving away, a pixel whose neighbor moves
+differently, a sloped surface, a near plane of one millimeter and distant values. Scene regressions additionally exercise a stopped foreground object
+that disappears and approaching rigid and skinned geometry, with zero and four MSAA samples.
+The approaching surfaces use dithered coverage so discarding all history cannot pass as a fix.
+A still, turned cube in front of the sky and of a wall checks that the settled picture changes by
+less than 0.7 bytes per cube pixel from frame to frame (about 6 when the color lookup followed
+the jitter, about 1 when history was rejected at every silhouette) and that its silhouette
+gains partly covered pixels over a single sample.</p>
+<p>The opaque-neighbor control selects 51 newly revealed black edge pixels beside a surviving
+white surface. With four MSAA samples, the previous renderer retains a mean sum of absolute RGB
+byte errors of 732; depth validation reduces that selected-edge error to zero. This does not
+claim that every pixel in an accumulated frame matches a fresh frame. Both renderers produce
+pixel-identical fresh reference pictures.</p>
+<table>
+<thead>
+<tr>
+<th>Previous history</th>
+<th>Previous-depth validation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img alt="Previous edge crop" src="../images/temporal-depth-validation/adjacent-before.png" /></td>
+<td><img alt="Validated edge crop" src="../images/temporal-depth-validation/adjacent-after.png" /></td>
+</tr>
+</tbody>
+</table>
+<p>The crops cover [124, 100, 138, 156] in the original 256 by 256 picture and are enlarged eight
+times with nearest-neighbor sampling. The previous result retains a bright column from the
+removed opaque card. The corrected edge agrees with the freshly rendered background.</p>
+<p>The combined render suite passes 97 cases and 655778 assertions; the full unit suite passes
+1215 cases and 42068 assertions. The thirteen new depth/scene cases also pass on llvmpipe.
+The previous renderer fails eight of ten isolated depth cases
+and both disappearing-object scene cases (six failed assertions). The approaching rigid/skinned
+scene remains a positive history-preservation control. Five native GLES shader pairs compile
+and link; this does not replace Android packaging.</p>
+<p>A render-only ABBA comparison uses temporal anti-aliasing in both versions, a fixed 0.5-second
+animation clock, 1600 by 900 pixels, 60 warmup frames and 600 measured frames. The baseline uses
+the same twelve-wave water detail as the candidate. Physical interaction detection and game
+logic are excluded.</p>
+<table>
+<thead>
+<tr>
+<th>Scene</th>
+<th>Previous medians (ms)</th>
+<th>Depth-validation medians (ms)</th>
+<th>Pair averages (ms)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Scatter field</td>
+<td>3.913, 3.846</td>
+<td>3.876, 3.844</td>
+<td>3.880 to 3.860</td>
+</tr>
+<tr>
+<td>Coastal water</td>
+<td>12.573, 12.664</td>
+<td>12.659, 12.675</td>
+<td>12.619 to 12.667</td>
+</tr>
+</tbody>
+</table>
+<p>These small differences are comparable to repeat variation; they do not establish a speedup
+or a precise overhead. The added motion pass on the first temporal frame is outside the warmed
+measurement. No additional history texture or steady-state render pass is allocated.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.footer", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

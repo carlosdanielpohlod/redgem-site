@@ -1,0 +1,37 @@
+# RedGem 3D Engine
+
+> The manual of RedGem, a 3D game engine where games are written in Ruby.
+
+- [Home](https://carlosdanielpohlod.github.io/redgem-site/manual/): What RedGem is, where to start, and how a game's folder is organized.
+
+## Getting started
+
+- [Install](https://carlosdanielpohlod.github.io/redgem-site/manual/install/): Installing RedGem on Linux, Windows and macOS, or building it from source.
+- [Your first game](https://carlosdanielpohlod.github.io/redgem-site/manual/first-game/): From an empty folder to a playable game in about fifteen minutes.
+
+## Using the editor
+
+- [The editor](https://carlosdanielpohlod.github.io/redgem-site/manual/editor/): The editor's panels, tools and shortcuts: placing objects, the Inspector, playing.
+- [Levels, lighting and Blender](https://carlosdanielpohlod.github.io/redgem-site/manual/levels/): Levels made in Blender or the editor: custom properties, physics, lighting, environment, scatter.
+- [The command line](https://carlosdanielpohlod.github.io/redgem-site/manual/command-line/): redgem scene, run, shot and check: read and change scenes as text, play with no window, take pictures, check a game.
+- [Making games with an AI assistant](https://carlosdanielpohlod.github.io/redgem-site/manual/assistants/): Making games with a coding assistant: the guide every new game gets, the commands to use, and how to keep it cheap.
+
+## Scripting in Ruby
+
+- [Behaviours](https://carlosdanielpohlod.github.io/redgem-site/manual/scripting/behaviours/): Behaviours: Ruby classes attached to objects, their callbacks, settings and scene scripts.
+- [Gameplay recipes](https://carlosdanielpohlod.github.io/redgem-site/manual/scripting/gameplay/): Gameplay recipes: movement, cameras, triggers, spawning, UI, sound, menus and more.
+- [Multiplayer](https://carlosdanielpohlod.github.io/redgem-site/manual/scripting/multiplayer/): Multiplayer: hosting and joining, messages, synced objects, relays and rooms.
+- [Online services](https://carlosdanielpohlod.github.io/redgem-site/manual/scripting/online-services/): Web requests, connection approval and saving on a server.
+- [Texts in several languages](https://carlosdanielpohlod.github.io/redgem-site/manual/scripting/i18n/): Texts in several languages: locales files, I18n.t and the engine's own texts.
+- [API reference](https://carlosdanielpohlod.github.io/redgem-site/manual/scripting/api/): Every class and method of the scripting API, a line each (also: redgem api).
+
+## Finishing a game
+
+- [Testing your game](https://carlosdanielpohlod.github.io/redgem-site/manual/testing/): System tests that play the game, Ruby unit tests, and redgem-test.
+- [Building and sharing](https://carlosdanielpohlod.github.io/redgem-site/manual/shipping/): Building a standalone game for Linux, Windows, macOS and Android, and recording videos.
+- [Dedicated server](https://carlosdanielpohlod.github.io/redgem-site/manual/dedicated-server/): Running a game on a server with no window for players to join.
+
+## More
+
+- [Limits and troubleshooting](https://carlosdanielpohlod.github.io/redgem-site/manual/troubleshooting/): Known limits and what to do when something goes wrong.
+- [Working on the engine](https://carlosdanielpohlod.github.io/redgem-site/manual/contributing/): Working on the engine itself: building, testing, the rules of the code.

@@ -6,15 +6,17 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="The manual of RedGem, a 3D game engine where games are written in Ruby.">
+        <meta name="description" content="Levels made in Blender or the editor: custom properties, physics, lighting, environment, scatter.">
       
       
+      
+        <link rel="canonical" href="https://carlosdanielpohlod.github.io/redgem-site/manual/levels/">
       
       
         <link rel="prev" href="../editor/">
       
       
-        <link rel="next" href="../scripting/behaviours/">
+        <link rel="next" href="../command-line/">
       
       
         
@@ -517,6 +519,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#coated-materials" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Coated materials
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -530,6 +543,23 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Grass, forests and cities">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#scatter-distance-lods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scatter distance LODs
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -572,10 +602,77 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#water-surfaces" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Water surfaces
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../command-line/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The command line
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../assistants/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Making games with an AI assistant
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -1072,6 +1169,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#coated-materials" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Coated materials
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1085,6 +1193,23 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Grass, forests and cities">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#scatter-distance-lods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scatter distance LODs
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1124,6 +1249,17 @@
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#water-surfaces" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Water surfaces
+      
+    </span>
+  </a>
   
 </li>
       
@@ -1309,7 +1445,14 @@ out by distance turn from a fine pattern into an even shade. What moves is follo
 bones and swaying foliage included; what is no longer there (a lightning flash, a character
 running past, the camera cutting to another place) is not smeared over the picture; particles
 take less of the frames before. A new scene, a new window size and a camera that jumps start over.
-It works with <code>msaa</code> on or off and costs one more pass over the scene's opaque surfaces.</p>
+It works with <code>msaa</code> on or off and costs one more pass over the scene's opaque surfaces.
+History fades out locally between 16 and 32 pixels of motion per frame, and at large motion
+splits around opening edges. Fast scenery therefore favors current detail, while a tracked
+subject with little screen motion still accumulates samples. Reprojected previous-frame depth
+rejects hidden or newly revealed surfaces, including moving and skinned objects. A still view
+holds still and its edges, against the sky or other surfaces, settle smooth: depth is compared
+around where each pixel was, so a silhouette keeps its history. Thin cut-outs and very fast details can still
+shimmer as fewer temporal samples are retained.</p>
 <p><strong>Animated characters.</strong> glTF skeletons and animations are supported: skinned meshes are deformed on
 the GPU (up to 1024 bones per skeleton, 4 per vertex: a character with fingers has about 65) and every animation in the scene plays in a
 loop until a script says otherwise (see <a href="../scripting/gameplay/#control-animations">Control animations</a>). The editor keeps skeletons and animations when saving, reordering or importing models.
@@ -1331,6 +1474,15 @@ duplicates together by their names (Tree, Tree.001, Tree.002...); copies whose t
 other objects are drawn in that order, so that surfaces lying on each other look as they did. What still costs is the number of different meshes on
 screen, and of separate parts in each: join the parts of a model that share a material, and give
 heavy models lighter versions for far away with <code>visible_from</code> and <code>visible_to</code>.</p>
+<h3 id="coated-materials">Coated materials<a class="headerlink" href="#coated-materials" title="Permanent link">&para;</a></h3>
+<p>Blender's Principled BSDF coat is read through <code>KHR_materials_clearcoat</code>. A polished coating
+can sit above rough paint, wood or a textured base. Its weight and roughness have independent
+linear maps (red and green channels respectively), and its normal map does not change the base
+normal. The coating reflects the sun, point lights and the environment while attenuating the
+base layer and emission by Fresnel, rather than adding unlimited brightness.</p>
+<p>Export the coat with the material in glTF. A zero coat weight preserves the original shading.
+The editor keeps its factors, texture references and normal scale through import and saving.
+The layering follows the <a href="https://github.com/KhronosGroup/glTF/tree/main/extensions/2.0/Khronos/KHR_materials_clearcoat">glTF clearcoat extension</a>.</p>
 <h2 id="grass-forests-and-cities">Grass, forests and cities<a class="headerlink" href="#grass-forests-and-cities" title="Permanent link">&para;</a></h2>
 <p>Tens of thousands of copies (a meadow's grass, a forest) are too many to be objects: a script
 scatters them instead (<code>Scatter.place</code>, see the <a href="../scripting/api/">API reference</a>). Model one tuft
@@ -1362,6 +1514,21 @@ instead of popping away (and fade in after its <code>visible_from</code>, when i
 detail whose distances overlap by the fade cross over without a gap). <code>normals_up</code> bends the
 copies' normals toward their own up: grass cards are then lit as the ground they stand on, so a
 field does not show the cards' faces turning light and dark with the sun.</p>
+<h3 id="scatter-distance-lods">Scatter distance LODs<a class="headerlink" href="#scatter-distance-lods" title="Permanent link">&para;</a></h3>
+<p>Use lighter templates to keep vegetation visible far away without drawing the full mesh:</p>
+<div class="highlight"><pre><span></span><code><span class="n">forest</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">Scatter</span><span class="o">.</span><span class="n">place</span><span class="p">(</span><span class="s2">"Tree"</span><span class="p">,</span><span class="w"> </span><span class="ss">count</span><span class="p">:</span><span class="w"> </span><span class="mi">2_000</span><span class="p">,</span><span class="w"> </span><span class="ss">area</span><span class="p">:</span><span class="w"> </span><span class="o">[</span><span class="n">corner_a</span><span class="p">,</span><span class="w"> </span><span class="n">corner_b</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="ss">seed</span><span class="p">:</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span>
+<span class="w">                       </span><span class="ss">fade</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="o">.</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="ss">lods</span><span class="p">:</span><span class="w"> </span><span class="o">[[</span><span class="s2">"TreeMid"</span><span class="p">,</span><span class="w"> </span><span class="mi">40</span><span class="o">.</span><span class="mi">0</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="o">[</span><span class="s2">"TreeFar"</span><span class="p">,</span><span class="w"> </span><span class="mi">120</span><span class="o">.</span><span class="mi">0</span><span class="o">]]</span><span class="p">)</span>
+</code></pre></div>
+<p>All levels share the base template's placement, scale, tint, wind and shadow settings. Each
+replacement contributes only its mesh and materials; model it with the same origin, orientation
+and dimensions. The base template's <code>visible_from</code> and <code>visible_to</code> bound the whole chain.</p>
+<p>At 40 meters the middle mesh begins appearing; over the next 8 meters it replaces the near
+mesh through complementary dithered pixels. The far mesh takes over from 120 to 128 meters.
+A zero <code>fade</code> switches immediately. Up to three replacements are supported. Distances must
+increase, leaving more than <code>fade</code> meters between transitions and before <code>visible_to</code>.</p>
+<p><code>count</code> reports placed copies and <code>remove</code> removes the whole chain. Each representation uses
+one drawing record per copy: this example uses 6,000 of the scene's 262,144-record budget.
+An invalid chain or an exhausted budget adds nothing. Omitting <code>lods</code> keeps the original rendering.</p>
 <h2 id="terrain">Terrain<a class="headerlink" href="#terrain" title="Permanent link">&para;</a></h2>
 <p><strong>GameObject &gt; Terrain</strong> adds a square of ground, 100 m across, that you shape with a brush. It
 comes selected with the brush on: mountains, holes and plateaus are a drag of the mouse away.</p>
@@ -1502,12 +1669,146 @@ Wheels in front of the center (Blender <code>+Y</code>) steer, the rear ones get
 is driven. Wheel radius and width come from the wheel mesh. See <code>tools/blender/build_driving.py</code>.
 Blender is Z-up; the engine is Y-up like glTF: Blender <code>(x, y, z)</code> is engine <code>(x, z, -y)</code>
 (<code>Vector3.blender(x, y, z)</code> does the conversion). Forward is <code>-Z</code> (Blender <code>+Y</code>).</p>
+<h2 id="water-surfaces">Water surfaces<a class="headerlink" href="#water-surfaces" title="Permanent link">&para;</a></h2>
+<p>A horizontal, upward-facing mesh becomes water when its material has the Blender custom
+property <code>water = true</code>. Enable custom properties in the glTF export. The surface is drawn
+after opaque geometry: it refracts that picture, absorbs light through the depth behind it,
+and reflects on-screen objects with a sky and surroundings fallback. The material's base color is its deep-water
+color and roughness controls its reflections. Its alpha is ignored; transparency comes from
+water depth and absorption instead.</p>
+<table>
+<thead>
+<tr>
+<th>Material custom property</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>water</code></td>
+<td><code>false</code></td>
+<td>Use water shading.</td>
+</tr>
+<tr>
+<td><code>wave_height</code></td>
+<td><code>0.08</code></td>
+<td>Maximum vertical displacement in world meters, from 0 to 10.</td>
+</tr>
+<tr>
+<td><code>wavelength</code></td>
+<td><code>3</code></td>
+<td>Dominant wavelength in meters, from 0.05 to 1000.</td>
+</tr>
+<tr>
+<td><code>wave_speed</code></td>
+<td><code>1</code></td>
+<td>Wave clock multiplier, from 0 (still) to 10.</td>
+</tr>
+<tr>
+<td><code>absorption_red</code></td>
+<td><code>0.35</code></td>
+<td>Red light absorption per meter, from 0 to 10.</td>
+</tr>
+<tr>
+<td><code>absorption_green</code></td>
+<td><code>0.08</code></td>
+<td>Green light absorption per meter, from 0 to 10.</td>
+</tr>
+<tr>
+<td><code>absorption_blue</code></td>
+<td><code>0.035</code></td>
+<td>Blue light absorption per meter, from 0 to 10.</td>
+</tr>
+<tr>
+<td><code>foam_width</code></td>
+<td><code>0.12</code></td>
+<td>Nominal local horizontal width of a shore foam band, in meters; 0 disables it. World-space patches vary its reach from 0.85 to 1.15 times this value.</td>
+</tr>
+<tr>
+<td><code>refraction</code></td>
+<td><code>0.035</code></td>
+<td>Refraction strength, from 0 to 0.1; the default uses water's IOR of 1.333 and 0 keeps the bottom undistorted.</td>
+</tr>
+</tbody>
+</table>
+<p>The Blender helper <code>scene_kit.water_material("Pond", wave_height=0.04, wavelength=2.0)</code>
+creates the material and its custom properties. Optional keyword arguments override the table
+above. The material preview has water's IOR and transmission; runtime waves and depth-based
+color are applied by the engine after export.</p>
+<p>Use a subdivided mesh: vertex spacing at most one tenth of the smallest visible geometric
+wavelength avoids angular silhouettes. Three traveling waves displace geometry; finer ripples
+change normals. Smooth spatial phase variation curves the crests without changing the maximum height.
+The pattern is in world coordinates, so adjacent patches share phase and mesh
+scale does not change the wavelength. Wave displacement follows the renderer's clock, including
+fixed-step recordings, and the temporal coverage pass uses the same displaced geometry.
+Water does not cast an opaque shadow. Objects keep their authored collision shapes.</p>
+<p>Dynamic and kinematic physics bodies automatically disturb horizontal water meshes when they
+cross the surface or travel through it. Each contact sends a short, outward-moving wave packet;
+its strength follows motion and its initial width follows the body's footprint. No script call
+is needed. The visual effect displaces vertices and bends the lighting normal with the same
+radial wave, so use a subdivided surface when the silhouette needs to move.</p>
+<p>Impulses belong to one object and one original mesh primitive. Copies that share a mesh or
+material, and other water primitives in that mesh, remain independent. The simulation keeps at
+most 16 impulses for three seconds; drawing never advances their ages. Pausing simulation freezes
+them, and recording uses the same simulation steps. They reset when the world changes. Temporal
+motion uses the last snapshot actually drawn; a newly observed impulse starts with its current
+age in both poses to avoid an invented first-frame velocity. These ripples are a visual response:
+they do not apply buoyancy or forces to physics bodies and are not network-synchronized.</p>
+<p>Contact detection uses the actual water triangles with a cached spatial tree. It supports rigid,
+horizontal planar mesh primitives; skinned or tilted surfaces and Scatter copies do not generate
+contacts. Body footprints use conservative world-aligned collider bounds, including spheres and
+capsules. A small surface margin, emission cooldown and travel spacing suppress resting jitter.
+Scripted position changes of dynamic bodies, characters and vehicles are treated as teleports;
+scripted kinematic movement can create entry waves and wakes.</p>
+<p>Work is bounded to the first 128 eligible water objects, 128 valid water primitives and
+262,144 triangles per world, 256 moving bodies and 1,024 active body/surface pairs. Tilted or
+oversized candidates still occupy a water-object slot. A primitive that exceeds the remaining
+triangle budget is ignored as a whole. These bounds keep interaction work predictable for large scenes.</p>
+<p>This first water material is for views above a lake or sea surface. Refraction samples only
+opaque geometry visible on screen; transparent objects and other water layers are absent from
+that snapshot. Screen-space reflections miss off-screen and hidden geometry and use the environment capture
+when a ray misses. There is no planar reflection pass. Shore foam approximates the horizontal distance
+to the intersection of the local water and visible-bottom tangent planes, without breaking-wave simulation.
+Its world-space patches and softer pockets form an irregular band
+rather than a uniform intersection line. Low-density pockets leave water uncovered; even dense
+patches preserve some transmission instead of replacing the whole shallow surface with white.
+Coverage fades in over a short contact distance and
+fades out across the authored horizontal width; larger <code>foam_width</code> values broaden the band. The
+pattern stays fixed in world space and does not drift with the render clock. Fine pores are filtered
+by their projected footprint and converge to expected mean coverage when unresolved. Flat shallow
+plateaus with no local shore intersection receive no foam. The local plane estimate uses the primary
+opaque depth, not the refracted optical path. Occluded or off-screen bottom geometry, depth discontinuities,
+and degenerate or almost parallel tangent planes produce no foam; they do not invent a hidden shore.
+Curved terrain is only locally approximated, and rejected curvature can leave gaps. Nearly vertical
+bottom walls are supported without dividing by the bottom normal's vertical component.</p>
+<p>Traveling waves combine seven non-harmonic scales with distinct phases around one prevailing
+direction. Slow spatial envelopes vary crest height; displacement and shading use the same
+analytic gradient. Positive amplitude weights sum to one, and the envelopes never exceed one,
+so <code>wave_height</code> remains the maximum displacement used by visibility bounds. Fragment normals
+fade each traveling component when its phase becomes too fine for a pixel; discarded slope
+variance adds bounded reflection roughness. Geometry and motion retain the full wave shape. This is a
+procedural surface approximation, without wave interactions or a fluid spectrum simulation.
+Refraction traces the visible depth field. When the refracted surface is hidden or outside the screen,
+it keeps the undistorted opaque sample instead; this fallback cannot reveal geometry absent from the snapshot.
+Depth discontinuities use a guarded, texel-matched color sample. When a ray misses, the visible
+bottom's local tangent plane may estimate its absorption distance; this remains an approximation
+for hidden or curved geometry.
+Absorption filters the transmitted picture, but does not yet attenuate lighting on its way to submerged
+objects; a lit bottom can therefore be brighter than in a full participating-medium render.
+There is no underwater camera mode, buoyancy, fluid simulation, or wave collision. Use ordinary
+scene meshes for water surfaces rather than Scatter copies.</p>
+<p>The <a href="../water-validation/">optical comparison</a> records a fixed-camera Cycles reference and
+the remaining differences around refraction and incident lighting.</p>
 
 
 
 
 
 
+
+  
+  
 
 
 
@@ -1548,13 +1849,13 @@ Blender is Z-up; the engine is Y-up like glTF: Blender <code>(x, y, z)</code> is
         
         
           
-          <a href="../scripting/behaviours/" class="md-footer__link md-footer__link--next" aria-label="Next: Behaviours">
+          <a href="../command-line/" class="md-footer__link md-footer__link--next" aria-label="Next: The command line">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Behaviours
+                The command line
               </div>
             </div>
             <div class="md-footer__button md-icon">

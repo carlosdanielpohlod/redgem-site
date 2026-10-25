@@ -6,9 +6,11 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="The manual of RedGem, a 3D game engine where games are written in Ruby.">
+        <meta name="description" content="System tests that play the game, Ruby unit tests, and redgem-test.">
       
       
+      
+        <link rel="canonical" href="https://carlosdanielpohlod.github.io/redgem-site/manual/testing/">
       
       
         <link rel="prev" href="../scripting/api/">
@@ -430,6 +432,62 @@
     
   
     Levels, lighting and Blender
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../command-line/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The command line
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../assistants/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Making games with an AI assistant
   
 
     
@@ -1029,6 +1087,12 @@ and can take screenshots. It runs the real game, frame by frame, at the same pac
 <p>The command exits with an error when an assertion fails or a script raises, so it fits in any
 automated check. Add <code>--headless</code> to run without opening a window (no screenshots then);
 <code>redgem-test --help</code> lists every option.</p>
+<p>To run every test of a game at once, each system test with no window, and get a line per file
+(<code>PASS</code> or <code>FAIL</code> with the first error it said):</p>
+<div class="highlight"><pre><span></span><code>./build/src/redgem-test<span class="w"> </span>--all<span class="w"> </span>my_game
+</code></pre></div>
+<p><code>redgem check my_game --run-tests</code> does the same after looking the game over (see
+<a href="../command-line/">The command line</a>).</p>
 <p><code>redgem-test</code> is a development tool. It is not part of a built game: the program your players
 receive (what <code>redgem build</code> and the editor's Build make) contains no test code at all, and
 <code>SystemTest</code> and the rest of what tests are written with do not exist in the Ruby your game
@@ -1128,6 +1192,9 @@ scripts first, so the line reopens the game's <code>Fighter</code> instead of ma
 
 
 
+
+  
+  
 
 
 

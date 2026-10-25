@@ -6,9 +6,11 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="The manual of RedGem, a 3D game engine where games are written in Ruby.">
+        <meta name="description" content="Every class and method of the scripting API, a line each (also: redgem api).">
       
       
+      
+        <link rel="canonical" href="https://carlosdanielpohlod.github.io/redgem-site/manual/scripting/api/">
       
       
         <link rel="prev" href="../i18n/">
@@ -443,6 +445,62 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../command-line/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The command line
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../assistants/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Making games with an AI assistant
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -660,6 +718,24 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API reference
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -676,6 +752,410 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#behaviour" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Behaviour
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gameobject" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GameObject
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#transform" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Transform
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vector3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vector3
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scene" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scene
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scenescript" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SceneScript
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#input" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Input
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#time" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Time
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#physics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Physics
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#charactercontroller" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CharacterController
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rigidbody" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rigidbody
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vehicle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vehicle
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#camera" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Camera
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#light" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Light
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#animation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Animation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#animator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Animator
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#animationgraph" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Animation::Graph
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#audio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Audio
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ui" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UI
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#uifocus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UI::Focus
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#debug" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Debug
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#game" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Game
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Settings
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gamemenu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GameMenu
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gamemenuscreen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GameMenu::Screen
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#particles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Particles
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scatter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scatter
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#save" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Save
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#http" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HTTP
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#httpresponse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HTTP::Response
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#i18n" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        I18n
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#network" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Network
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#networkdecision" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Network::Decision
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#networksync" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        NetworkSync
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Notes
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -906,6 +1386,399 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#behaviour" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Behaviour
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gameobject" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GameObject
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#transform" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Transform
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vector3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vector3
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scene" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scene
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scenescript" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SceneScript
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#input" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Input
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#time" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Time
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#physics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Physics
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#charactercontroller" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CharacterController
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rigidbody" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rigidbody
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vehicle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vehicle
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#camera" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Camera
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#light" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Light
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#animation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Animation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#animator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Animator
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#animationgraph" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Animation::Graph
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#audio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Audio
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ui" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UI
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#uifocus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UI::Focus
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#debug" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Debug
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#game" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Game
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Settings
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gamemenu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GameMenu
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gamemenuscreen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GameMenu::Screen
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#particles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Particles
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scatter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scatter
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#save" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Save
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#http" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HTTP
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#httpresponse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HTTP::Response
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#i18n" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        I18n
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#network" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Network
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#networkdecision" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Network::Decision
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#networksync" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        NetworkSync
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Notes
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -922,137 +1795,663 @@
 
 
 <h1 id="api-reference">API reference<a class="headerlink" href="#api-reference" title="Permanent link">&para;</a></h1>
-<p>The classes and methods scripts use most. For how they fit together, see <a href="../behaviours/">Behaviours</a>
-and <a href="../gameplay/">Gameplay recipes</a>.</p>
+<p>The scripting API of RedGem games: the classes and methods scripts use. Generated from docs/scripting/api.json, which tests keep in step with the engine.</p>
 <table>
 <thead>
 <tr>
-<th>Object</th>
-<th>Highlights</th>
+<th>Class</th>
+<th>What it is</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>Behaviour</code></td>
-<td><code>start</code>, <code>update(dt)</code>, <code>fixed_update(dt)</code>, <code>on_trigger_enter/exit(other)</code>, <code>on_collision_enter/exit(other)</code>, <code>on_destroy</code>; helpers <code>game_object</code>, <code>name</code>, <code>transform</code>, <code>character</code>, <code>rigidbody</code>, <code>vehicle</code>, <code>props</code>, <code>prop</code>, <code>find</code>, <code>find_all</code>, <code>destroy</code>, <code>get_component</code>; timers <code>after(seconds) { }</code>, <code>every(seconds) { }</code>, <code>tween(seconds, ease: :smooth) { |t| }</code>, <code>cancel_timers</code></td>
+<td><a href="#behaviour"><code>Behaviour</code></a></td>
+<td>A Ruby class attached to an object: the engine calls its methods as the game runs.</td>
 </tr>
 <tr>
-<td><code>GameObject</code></td>
-<td><code>name</code>, <code>tag</code>, <code>tag?</code>, <code>props</code>, <code>alive?</code>, <code>destroy</code>, <code>visible</code> / <code>visible=</code>, <code>behaviours</code>, <code>parent</code>, <code>children</code>, <code>transform</code>, <code>character</code>, <code>rigidbody</code>, <code>vehicle</code>, <code>get_component(Klass)</code>, <code>add_component(Klass, speed: 2.0)</code>, <code>tint(=)</code> (multiplies its colors: <code>[1.0, 0.5, 0.5]</code>), <code>light</code> (the light it shines with, or <code>nil</code>), <code>animation</code> (its own clips, see <code>Animator</code>), <code>animation_offset(=)</code> (seconds a spawned copy's animations run ahead of the original's)</td>
+<td><a href="#gameobject"><code>GameObject</code></a></td>
+<td>An object of the scene, as scripts see it.</td>
 </tr>
 <tr>
-<td><code>Transform</code></td>
-<td><code>position(=)</code>, <code>local_position(=)</code>, <code>rotation(=)</code> (Euler degrees), <code>rotate</code>, <code>look_at</code>, <code>translate</code>, <code>scale(=)</code>, <code>forward</code>, <code>right</code>, <code>up</code></td>
+<td><a href="#transform"><code>Transform</code></a></td>
+<td>Where an object is, how it is turned and how big it is.</td>
 </tr>
 <tr>
-<td><code>CharacterController</code></td>
-<td><code>move(velocity)</code>, <code>jump(speed)</code>, <code>grounded?</code>, <code>velocity</code></td>
+<td><a href="#vector3"><code>Vector3</code></a></td>
+<td>A point or a direction in meters: x, y, z.</td>
 </tr>
 <tr>
-<td><code>Rigidbody</code></td>
-<td><code>velocity(=)</code>, <code>add_impulse(vector)</code></td>
+<td><a href="#scene"><code>Scene</code></a></td>
+<td>The objects of the running scene.</td>
 </tr>
 <tr>
-<td><code>Light</code></td>
-<td><code>game_object.light</code>: <code>intensity(=)</code> (watts for a point or spot light, lux for the sun, as in Blender), <code>color(=)</code> (<code>:orange</code> or <code>[r, g, b]</code> from 0 to 255); a change shows from the next frame (see <a href="../gameplay/#light-that-flickers-and-fades">Gameplay recipes</a>)</td>
+<td><a href="#scenescript"><code>SceneScript</code></a></td>
+<td>Sets a level up from Ruby when it loads: scripts/<scene>_scene.rb.</td>
 </tr>
 <tr>
-<td><code>Vehicle</code></td>
-<td><code>drive(throttle:, steering:, brake:, handbrake:)</code>, <code>stop</code>, <code>speed</code> (m/s, signed), <code>velocity</code></td>
+<td><a href="#input"><code>Input</code></a></td>
+<td>Keyboard, mouse, gamepad and touch, read every frame.</td>
 </tr>
 <tr>
-<td><code>Physics</code></td>
-<td><code>raycast(origin, direction, max_distance = 1000, ignore = nil)</code> → <code>{object:, point:, normal:, distance:}</code> or <code>nil</code></td>
+<td><a href="#time"><code>Time</code></a></td>
+<td>The game's clock (added to Ruby's Time).</td>
 </tr>
 <tr>
-<td><code>Input</code></td>
-<td><code>axis(:horizontal / :vertical)</code>, <code>down?(:space)</code>, <code>pressed?</code>, <code>released?</code>, <code>action?(:jump)</code>, <code>action_pressed?</code>; mouse: <code>mouse_x</code>, <code>mouse_y</code>, <code>mouse_dx</code>, <code>mouse_dy</code>, <code>mouse_wheel</code>, <code>mouse_down?(:left)</code>, <code>mouse_pressed?</code>, <code>mouse_released?</code>, <code>mouse_locked=</code>; gamepad: <code>gamepad?</code>, <code>gamepad_axis(:left_x)</code>, <code>gamepad_down?(:a)</code>, <code>gamepad_pressed?</code>, <code>gamepad_released?</code>; <code>text</code> (typed this frame); <code>touch_controls=</code> (the on-screen stick and buttons of a phone)</td>
+<td><a href="#physics"><code>Physics</code></a></td>
+<td>Questions to the physics world.</td>
 </tr>
 <tr>
-<td><code>Time</code></td>
-<td><code>delta</code>, <code>fixed_delta</code>, <code>elapsed</code>, <code>frame</code>, <code>scale(=)</code> (0 pauses the game)</td>
+<td><a href="#charactercontroller"><code>CharacterController</code></a></td>
+<td>The body of an object with body = "character": walks, jumps, climbs steps.</td>
 </tr>
 <tr>
-<td><code>Scene</code> / <code>Camera</code></td>
-<td><code>Scene.find(name)</code>, <code>Scene.find_all(tag)</code>, <code>Scene.objects</code>, <code>Camera.main</code>, <code>Camera.screen_ray(x, y)</code> → <code>[origin, direction]</code>, <code>Camera.fov(=)</code> (degrees), <code>Camera.motion_blur(=)</code> (0..1: the picture streaks away from its center, as when moving fast)</td>
+<td><a href="#rigidbody"><code>Rigidbody</code></a></td>
+<td>The body of an object with body = "dynamic" or "kinematic".</td>
 </tr>
 <tr>
-<td><code>SceneScript</code></td>
-<td><code>setup</code>, <code>find</code>, <code>find_all</code>, <code>find!</code> (see <a href="../behaviours/#setting-a-level-up-in-ruby">Setting a level up in Ruby</a>)</td>
+<td><a href="#vehicle"><code>Vehicle</code></a></td>
+<td>The body of an object with body = "vehicle" and wheels.</td>
 </tr>
 <tr>
-<td><code>Scene.spawn</code></td>
-<td><code>Scene.spawn("Bullet", position: v, rotation: euler, physics: true)</code> copies a <code>prefab = true</code> template (hidden and inert in the game) with its physics and scripts; copies of animated characters move like the original</td>
+<td><a href="#camera"><code>Camera</code></a></td>
+<td>The camera the game is seen through.</td>
 </tr>
 <tr>
-<td><code>Scatter</code></td>
-<td><code>Scatter.place("GrassTuft", count: 50_000, area: [corner, corner], ground: Scene.find("Ground"), seed: 7, scale: 0.7..1.4, align: true)</code> puts copies of an object's mesh (its scale, tint, drawing distances and <code>cast_shadow</code> too) in great numbers: only drawn, never objects of their own, the same places for the same seed on every machine. Each stands where a ray straight down meets <code>ground</code> (none where it misses it); without <code>ground</code>, on the area's bottom. <code>align: true</code> leans them with the slope. How they look: <code>tints: [[r, g, b], ...]</code> (each copy a color along the list), <code>tint_variation: 0.1</code> (brighter or darker by up to that share), <code>fade: 8.0</code> (meters over which they fade out before the template's <code>visible_to</code> instead of popping), <code>normals_up: 0.7</code> (grass lit as the ground it stands on). Returns a set: <code>count</code> (how many were placed), <code>remove</code>; <code>Scatter.clear</code> removes them all. A scene holds at most 262,144 (see <a href="../../levels/#grass-forests-and-cities">Levels</a>)</td>
+<td><a href="#light"><code>Light</code></a></td>
+<td>game_object.light: the light an object shines with.</td>
 </tr>
 <tr>
-<td><code>Particles</code></td>
-<td><code>Particles.burst(position, count:, color:, alpha:, glow:, lit:, soft:, direction:, spread:, speed:, life:, size:, gravity:, image:, frames: [columns, rows], fps:, spin:)</code> → how many were added (<code>size</code>, <code>color</code> and <code>alpha</code> may be lists of up to 4 values over the particles' life: see <a href="../gameplay/#over-their-life">Gameplay recipes</a>), <code>Particles.count</code>, <code>Particles.clear</code></td>
+<td><a href="#animation"><code>Animation</code></a></td>
+<td>The scene's own animations (exported from Blender), by name.</td>
 </tr>
 <tr>
-<td><code>Animation</code></td>
-<td><code>Animation.names</code>, <code>play(name, loop: true, speed: 1.0, restart: false)</code>, <code>pause(name)</code>, <code>stop(name)</code>, <code>playing?(name)</code>, <code>time(name)</code>, <code>duration(name)</code>, <code>seek(name, seconds)</code></td>
+<td><a href="#animator"><code>Animator</code></a></td>
+<td>game_object.animation (animation in a behaviour): an object's own clips.</td>
 </tr>
 <tr>
-<td><code>Animator</code></td>
-<td><code>game_object.animation</code> (or <code>animation</code> in a behaviour): <code>play(name, loop: true, speed: 1.0, fade: 0.0, restart: false)</code>, <code>mix(name, weight: 1.0, loop: true, speed: 1.0)</code>, <code>unmix</code>, <code>pause</code>, <code>follow_scene(fade: 0.0)</code>, <code>clip</code>, <code>playing?</code>, <code>time</code></td>
+<td><a href="#animationgraph"><code>Animation::Graph</code></a></td>
+<td>Named states and transitions for one character (animation.use(graph)).</td>
 </tr>
 <tr>
-<td><code>Network</code></td>
-<td><code>host(port: 7777, name:, visible: true, room: false)</code>, <code>join(address, port: 7777)</code> / <code>join(room: "K7QM3P")</code> / <code>join(address, room: "K7QM3P")</code> (a room on a dedicated server), <code>relay=</code>, <code>room</code>, <code>search</code>, <code>searching?</code>, <code>stop_search</code>, <code>games</code>, <code>discovery_port=</code>, <code>leave</code>, <code>online?</code>, <code>connecting?</code>, <code>host?</code>, <code>server?</code> (this machine is a dedicated server: it plays nobody), <code>id</code>, <code>peers</code>, <code>players</code> (the peers without a dedicated server), <code>port</code>, <code>emit(name, data = nil, to: :all / :host / id)</code>, <code>on(name) { \|data, from\| }</code>, <code>on_connect</code>, <code>on_disconnect</code>, <code>on_join { \|peer\| }</code>, <code>on_leave { \|peer\| }</code>, <code>join(address, auth: { token: })</code>, <code>authenticate { \|peer, auth, decide\| }</code> (<code>decide.accept(identity:, name:)</code>, <code>decide.deny(reason)</code>), <code>identity(peer)</code>, <code>player_name(peer)</code>, <code>on_fail { \|reason\| }</code> (see <a href="../online-services/">Online services</a>), <code>spawn(template, owner: Network.id, position:, rotation:)</code>, <code>allow_spawn(*templates)</code> (see <a href="../multiplayer/">Multiplayer</a>)</td>
+<td><a href="#audio"><code>Audio</code></a></td>
+<td>Sounds and music from the game's sounds/ folder.</td>
 </tr>
 <tr>
-<td><code>NetworkSync</code></td>
-<td>A behaviour: <code>add_component(NetworkSync, owner: peer_id, key: "name", interpolate: true, delay: nil, animation: true)</code> (its own animation goes along: the others see the same clips, from the same moment) (see <a href="../multiplayer/#objects-in-the-same-place-everywhere">Multiplayer</a>), <code>mine?</code>, <code>owner</code>, <code>key</code>, <code>assign(owner:, key:)</code></td>
+<td><a href="#ui"><code>UI</code></a></td>
+<td>What a script draws over the game this frame: texts, rectangles, pictures, buttons.</td>
 </tr>
 <tr>
-<td><code>Save</code></td>
-<td><code>Save.get(key, default = nil)</code>, <code>Save[key]</code>, <code>Save[key] = value</code> (numbers, texts, true/false, <code>Vector3</code>, arrays and hashes of those; hashes come back with string keys; <code>nil</code> removes the key), <code>Save.update(key, default = nil) { \|value\| new_value }</code> (reads and writes the key with nothing in between: on a dedicated server, what changes a value another room may change too), <code>Save.delete(key)</code>, <code>Save.clear</code>, <code>Save.keys</code>; on a dedicated server, the server's own (see <a href="../online-services/#saving-on-a-server">Online services</a>)</td>
+<td><a href="#uifocus"><code>UI::Focus</code></a></td>
+<td>Which widget of a screen the keyboard and a gamepad work: up and down move it, wrapping.</td>
 </tr>
 <tr>
-<td><code>HTTP</code></td>
-<td><code>HTTP.get/post/put/patch/delete(url, json:, body:, headers:, timeout: 15) { \|response\| }</code>; <code>response.ok?</code>, <code>status</code>, <code>headers</code>, <code>body</code>, <code>json</code>, <code>error</code> (see <a href="../online-services/#http">Online services</a>)</td>
+<td><a href="#debug"><code>Debug</code></a></td>
+<td>Messages to the console (and to redgem run).</td>
 </tr>
 <tr>
-<td><code>Audio</code></td>
-<td><code>Audio.play(:jump, volume:, pitch:)</code>, <code>Audio.music(:theme, loop: true, volume: 0.7)</code>, <code>Audio.stop_music</code>, <code>Audio.music_pitch = 1.2</code>, <code>Audio.music_volume = 0.5</code> (change them every frame for an engine's drone), <code>Audio.volume = 0.8</code> (files in <code>sounds/</code>)</td>
+<td><a href="#game"><code>Game</code></a></td>
+<td>The game itself.</td>
 </tr>
 <tr>
-<td><code>UI</code> / <code>Debug</code> / <code>Game</code></td>
-<td><code>UI.text(str, x:, y:, size:, color:, alpha:, align:)</code>, <code>UI.rect(x:, y:, width:, height:, color:, alpha:, radius:)</code>, <code>UI.image(name, x:, y:, width:, height:)</code>, <code>UI.button(label, x:, y:, width:, height:)</code> → clicked?, <code>UI.text_field(value, x:, y:, width:, height:, max_length:, secret:)</code> → the new value (<code>secret: true</code> shows stars), <code>UI.width</code>, <code>UI.height</code>, <code>UI.text_width(str, size:)</code>, <code>Debug.log/warn/error</code>, <code>Game.quit</code>, <code>Game.stop_recording</code> (ends a video being recorded with <code>--record</code>, see <a href="../../shipping/#recording-a-video">Building and sharing</a>; the game goes on), <code>Game.load_scene("level2")</code> (<code>scenes/level2.glb</code>; <code>"main"</code> is <code>scene.glb</code>; Ruby globals survive), <code>Game.scene_name</code>, <code>Game.title</code></td>
+<td><a href="#settings"><code>Settings</code></a></td>
+<td>How the player chose the game to be shown and heard; a change takes effect at once.</td>
 </tr>
 <tr>
-<td><code>GameMenu</code></td>
-<td>A behaviour: title screen, pause menu and end screen. <code>GameMenu.instance</code>, <code>show(:pause)</code>, <code>resume</code>, <code>restart</code>, <code>finish("You win!")</code>, <code>open?</code>, <code>screen</code>, <code>screens</code> (<code>:title</code>, <code>:pause</code>, <code>:over</code>, and the game's own), <code>button_box(index)</code>; <code>GameMenu::Screen.new(heading:, options:, back:)</code>, <code>add_option(label, index:) { }</code>; settings <code>title</code>, <code>start_open</code>; its labels are the engine's texts <code>game.menu.*</code>, which a game's <code>locales/</code> files may change (see <a href="../i18n/#the-engines-own-texts">Texts in several languages</a>); never opens on a dedicated server (see <a href="../gameplay/#pause-and-the-flow-between-screens">Gameplay recipes</a>)</td>
+<td><a href="#gamemenu"><code>GameMenu</code></a></td>
+<td>A behaviour: title screen, pause menu, end screen and settings screen with its controls page; arrows or the D-pad move the focus, Enter or A picks.</td>
 </tr>
 <tr>
-<td><code>I18n</code></td>
-<td><code>I18n.t("hud.coins", count: 3)</code> → the text of a key in the language in use, its <code>{count}</code> filled (see <a href="../i18n/">Texts in several languages</a>), <code>I18n.locale</code> (<code>:en</code>), <code>I18n.locale = :pt</code>, <code>I18n.available_locales</code> (the languages of the game's <code>locales/</code> files)</td>
+<td><a href="#gamemenuscreen"><code>GameMenu::Screen</code></a></td>
+<td>A screen of the GameMenu.</td>
 </tr>
 <tr>
-<td><code>Vector3</code></td>
-<td><code>Vector3.new(x, y, z)</code>, <code>Vector3.zero</code>, <code>one</code>, <code>up</code>, <code>down</code>, <code>left</code>, <code>right</code>, <code>forward</code>, <code>back</code>; arithmetic, <code>dot</code>, <code>cross</code>, <code>length</code>, <code>normalized</code>, <code>clamped(max_length = 1.0)</code>, <code>lerp</code>, <code>flat</code>, <code>with(y: 0)</code>, <code>distance_to</code>, <code>approx?</code>, <code>to_a</code>; in place, for math done thousands of times a frame: <code>set(x, y, z)</code>, <code>add!(v)</code>, <code>sub!(v)</code>, <code>scale!(k)</code>, <code>normalize!</code> (they change the vector and hand it back: <code>dup</code> one you got from someone else first)</td>
+<td><a href="#particles"><code>Particles</code></a></td>
+<td>Short-lived sparks, smoke and dust.</td>
+</tr>
+<tr>
+<td><a href="#scatter"><code>Scatter</code></a></td>
+<td>Great numbers of copies of a mesh (grass, trees, rocks), drawn only.</td>
+</tr>
+<tr>
+<td><a href="#save"><code>Save</code></a></td>
+<td>What the game keeps between runs.</td>
+</tr>
+<tr>
+<td><a href="#http"><code>HTTP</code></a></td>
+<td>Web requests; the answer comes to the block.</td>
+</tr>
+<tr>
+<td><a href="#httpresponse"><code>HTTP::Response</code></a></td>
+<td>What a web request's block is given.</td>
+</tr>
+<tr>
+<td><a href="#i18n"><code>I18n</code></a></td>
+<td>The game's texts in several languages (locales/*.json).</td>
+</tr>
+<tr>
+<td><a href="#network"><code>Network</code></a></td>
+<td>Games played together: on a local network, through a relay or on a dedicated server.</td>
+</tr>
+<tr>
+<td><a href="#networkdecision"><code>Network::Decision</code></a></td>
+<td>What an authenticate block decides with.</td>
+</tr>
+<tr>
+<td><a href="#networksync"><code>NetworkSync</code></a></td>
+<td>A behaviour: the same object in the same place on every machine.</td>
 </tr>
 </tbody>
 </table>
-<p>Script errors are logged with a backtrace and only disable the failing behaviour; the game keeps running.
-Every native takes finite numbers a float can hold: infinity, NaN (<code>0.0 / 0.0</code>) or a number too
-large (<code>1e300</code>) raises an <code>ArgumentError</code> instead of reaching the scene. So does <code>Vector3</code>
-arithmetic whose result would leave that range, and dividing a <code>Vector3</code> by zero; a vector changed
-in place (<code>add!</code>, <code>scale!</code>...) is left as it was when that happens. A setting with a range raises outside it and says the range
-(<code>Camera.motion_blur must be from 0 to 1, not 3</code>); nothing is quietly clamped, except
-<code>Vehicle#drive</code>'s inputs, which an analog stick may push a little past full.
-Assigning <code>transform.position</code> to a physics object teleports it (moving bodies also stop); changing
-its rotation keeps its velocity. Vehicle wheel meshes must have their rotation applied (axle along X).</p>
+<h2 id="behaviour">Behaviour<a class="headerlink" href="#behaviour" title="Permanent link">&para;</a></h2>
+<p>A Ruby class attached to an object: the engine calls its methods as the game runs. See <a href="../behaviours/">behaviours.md</a>.</p>
+<ul>
+<li><code>start</code>: called once, before the first update</li>
+<li><code>update(dt)</code>: called every frame; dt is the seconds since the last one</li>
+<li><code>fixed_update(dt)</code>: called 60 times a second, with the physics</li>
+<li><code>on_trigger_enter(other)</code>: something entered this object's trigger, or it entered one</li>
+<li><code>on_trigger_exit(other)</code>: something left this object's trigger</li>
+<li><code>on_collision_enter(other)</code>: this object's body touched another</li>
+<li><code>on_collision_exit(other)</code>: this object's body stopped touching another</li>
+<li><code>on_destroy</code>: the object is being destroyed</li>
+<li><code>game_object</code>: the object this behaviour is attached to</li>
+<li><code>name</code>: the object's name</li>
+<li><code>transform</code>: the object's Transform</li>
+<li><code>character</code>: the object's CharacterController, or nil</li>
+<li><code>rigidbody</code>: the object's Rigidbody, or nil</li>
+<li><code>vehicle</code>: the object's Vehicle, or nil</li>
+<li><code>animation</code>: the object's own Animator</li>
+<li><code>props</code>: the object's custom properties, as a Hash</li>
+<li><code>prop(key, default = nil)</code>: a setting: what add_component was given, else the object's property, else the default</li>
+<li><code>find(name)</code>: the object called name, or nil</li>
+<li><code>find!(name)</code>: find that stops with a clear error when the object is missing</li>
+<li><code>find_all(tag)</code>: every object with that tag</li>
+<li><code>destroy(target = game_object)</code>: removes an object (this one unless said) at the end of the step</li>
+<li><code>get_component(klass)</code>: another behaviour of this object, or nil</li>
+<li><code>after(seconds, &amp;block)</code>: runs the block once, that many seconds from now</li>
+<li><code>every(seconds, &amp;block)</code>: runs the block every that many seconds</li>
+<li><code>tween(seconds, ease: :smooth, &amp;block)</code>: calls the block with t from 0 to 1 over that many seconds</li>
+<li><code>cancel_timers</code>: stops every after, every and tween of this behaviour</li>
+</ul>
+<h2 id="gameobject">GameObject<a class="headerlink" href="#gameobject" title="Permanent link">&para;</a></h2>
+<p>An object of the scene, as scripts see it. See <a href="../behaviours/">behaviours.md</a>.</p>
+<ul>
+<li><code>name</code>: its name</li>
+<li><code>id</code>: its number in the running game</li>
+<li><code>tag</code>: its tag property</li>
+<li><code>tag?(value)</code>: whether its tag is value</li>
+<li><code>props</code>: its custom properties</li>
+<li><code>alive?</code>: false once it was destroyed</li>
+<li><code>destroy</code>: removes it at the end of the step</li>
+<li><code>visible</code>: whether it is drawn</li>
+<li><code>visible = value</code>: shows or hides it</li>
+<li><code>behaviours</code>: its behaviours</li>
+<li><code>parent</code>: the object it is under, or nil</li>
+<li><code>children</code>: the objects under it</li>
+<li><code>transform</code>: its Transform</li>
+<li><code>character</code>: its CharacterController, or nil</li>
+<li><code>rigidbody</code>: its Rigidbody, or nil</li>
+<li><code>vehicle</code>: its Vehicle, or nil</li>
+<li><code>light</code>: the Light it shines with, or nil</li>
+<li><code>animation</code>: its Animator</li>
+<li><code>animation_offset</code>: seconds its animations run ahead of the original's (a spawned copy)</li>
+<li><code>animation_offset = seconds</code>: sets that offset</li>
+<li><code>get_component(klass)</code>: one of its behaviours, or nil</li>
+<li><code>add_component(klass, **settings)</code>: attaches a behaviour; settings are what its prop reads</li>
+<li><code>tint</code>: the color its colors are multiplied by</li>
+<li><code>tint = color</code>: multiplies its colors: [1.0, 0.5, 0.5]</li>
+</ul>
+<h2 id="transform">Transform<a class="headerlink" href="#transform" title="Permanent link">&para;</a></h2>
+<p>Where an object is, how it is turned and how big it is.</p>
+<ul>
+<li><code>position</code>: its position in the world (Vector3)</li>
+<li><code>position = vector</code>: moves it; a physics object is teleported</li>
+<li><code>local_position</code>: its position relative to its parent</li>
+<li><code>local_position = vector</code>: moves it relative to its parent</li>
+<li><code>rotation</code>: its rotation, Euler degrees (Vector3)</li>
+<li><code>rotation = degrees</code>: turns it to those Euler degrees</li>
+<li><code>rotate(degrees)</code>: turns it by those Euler degrees</li>
+<li><code>look_at(target, up = Vector3.up)</code>: turns it to face a point</li>
+<li><code>translate(offset)</code>: moves it by an offset</li>
+<li><code>scale</code>: its scale (Vector3)</li>
+<li><code>scale = vector</code>: resizes it</li>
+<li><code>forward</code>: the direction it faces (-Z)</li>
+<li><code>right</code>: its right (+X)</li>
+<li><code>up</code>: its up (+Y)</li>
+</ul>
+<h2 id="vector3">Vector3<a class="headerlink" href="#vector3" title="Permanent link">&para;</a></h2>
+<p>A point or a direction in meters: x, y, z.</p>
+<ul>
+<li><code>Vector3.new(x, y, z)</code>: a vector</li>
+<li><code>Vector3[x, y, z]</code>: the same as new</li>
+<li><code>Vector3.zero</code>: (0, 0, 0)</li>
+<li><code>Vector3.one</code>: (1, 1, 1)</li>
+<li><code>Vector3.up</code>: (0, 1, 0)</li>
+<li><code>Vector3.down</code>: (0, -1, 0)</li>
+<li><code>Vector3.left</code>: (-1, 0, 0)</li>
+<li><code>Vector3.right</code>: (1, 0, 0)</li>
+<li><code>Vector3.forward</code>: (0, 0, -1)</li>
+<li><code>Vector3.back</code>: (0, 0, 1)</li>
+<li><code>Vector3.blender(x, y, z)</code>: a vector given in Blender's axes (Z up)</li>
+<li><code>x</code>: its x</li>
+<li><code>y</code>: its y</li>
+<li><code>z</code>: its z</li>
+<li><code>+ other</code>: sum</li>
+<li><code>- other</code>: difference</li>
+<li><code>-@</code>: the opposite vector</li>
+<li><code>* number</code>: scaled</li>
+<li><code>/ number</code>: divided</li>
+<li><code>== other</code>: whether the numbers are exactly the same</li>
+<li><code>dot(other)</code>: dot product</li>
+<li><code>cross(other)</code>: cross product</li>
+<li><code>length</code>: its length</li>
+<li><code>length_squared</code>: its length squared (faster)</li>
+<li><code>normalized</code>: the same direction, length 1</li>
+<li><code>clamped(max_length = 1.0)</code>: the same direction, no longer than max_length</li>
+<li><code>lerp(other, t)</code>: the point t of the way to other</li>
+<li><code>flat</code>: the same with y = 0</li>
+<li><code>with(x:, y:, z:)</code>: a copy with some parts changed: v.with(y: 0)</li>
+<li><code>distance_to(other)</code>: the distance to another point</li>
+<li><code>approx?(other, tolerance = 0.0001)</code>: whether two vectors are about the same</li>
+<li><code>to_a</code>: [x, y, z]</li>
+<li><code>set(x, y, z)</code>: changes it in place</li>
+<li><code>add!(other)</code>: adds in place</li>
+<li><code>sub!(other)</code>: subtracts in place</li>
+<li><code>scale!(number)</code>: scales in place</li>
+<li><code>normalize!</code>: normalizes in place</li>
+</ul>
+<p><code>==</code> compares the numbers exactly, and equal vectors are one key of a <code>Hash</code>. A vector used as a key must not be changed in place (<code>set</code>, <code>add!</code>...) while the <code>Hash</code> holds it: use a <code>dup</code> as the key. The scene keeps positions, rotations and scales in 32-bit floats, so a vector that goes through it comes back rounded: compare what comes back from the scene with <code>approx?(other, tolerance)</code>. The in-place methods change the vector and hand it back: <code>dup</code> one you got from someone else first. Arithmetic whose result would not fit a float, and dividing by zero, raise an <code>ArgumentError</code>; a vector changed in place is then left as it was.</p>
+<h2 id="scene">Scene<a class="headerlink" href="#scene" title="Permanent link">&para;</a></h2>
+<p>The objects of the running scene. See <a href="../gameplay/">gameplay.md</a>.</p>
+<ul>
+<li><code>Scene.find(name)</code>: the object called name, or nil</li>
+<li><code>Scene.find!(name)</code>: find that stops with a clear error when the object is missing</li>
+<li><code>Scene.find_all(tag)</code>: every object with that tag</li>
+<li><code>Scene.objects</code>: every object</li>
+<li><code>Scene.spawn(template, position: nil, rotation: nil, physics: true)</code>: copies a prefab = true template, with its physics and scripts; returns the copy</li>
+</ul>
+<h2 id="scenescript">SceneScript<a class="headerlink" href="#scenescript" title="Permanent link">&para;</a></h2>
+<p>Sets a level up from Ruby when it loads: scripts/<scene>_scene.rb. See <a href="../behaviours/#setting-a-level-up-in-ruby">behaviours.md#setting-a-level-up-in-ruby</a>.</p>
+<ul>
+<li><code>setup</code>: runs when the level loads, before any behaviour starts</li>
+<li><code>find(name)</code>: the object called name, or nil</li>
+<li><code>find!(name)</code>: find that stops with a clear error when the object is missing</li>
+<li><code>find_all(tag)</code>: every object with that tag</li>
+</ul>
+<h2 id="input">Input<a class="headerlink" href="#input" title="Permanent link">&para;</a></h2>
+<p>Keyboard, mouse, gamepad and touch, read every frame. See <a href="../gameplay/">gameplay.md</a>.</p>
+<ul>
+<li><code>Input.axis(name)</code>: :horizontal or :vertical, from -1 to 1 (keys, stick)</li>
+<li><code>Input.down?(key)</code>: whether a key is held</li>
+<li><code>Input.pressed?(key)</code>: whether a key went down this frame</li>
+<li><code>Input.released?(key)</code>: whether a key went up this frame</li>
+<li><code>Input.action?(name)</code>: whether a named action (game settings) is held</li>
+<li><code>Input.action_pressed?(name)</code>: whether a named action started this frame</li>
+<li><code>Input.action_released?(name, pad: 0)</code>: whether a named action ended this frame</li>
+<li><code>Input.define_action(name, *bindings, keys: [], buttons: [])</code>: adds an action of the game's own (besides game.json's input section)</li>
+<li><code>Input.define_axis(name, negative: [], positive: [], pad_axis: nil, invert: false)</code>: adds an axis of the game's own: define_axis(:steer, negative: ["key:a"], positive: ["key:d"])</li>
+<li><code>Input.actions</code>: the names of the actions</li>
+<li><code>Input.axes</code>: the names of the axes</li>
+<li><code>Input.axis_stick(name)</code>: the stick that moves an axis (:left_x), the game's for every player; nil when none does</li>
+<li><code>Input.bindings(name, pad: 0)</code>: what a player bound to an action: ["key:space", "pad:a"]</li>
+<li><code>Input.bindings_changes</code>: a count that goes up whenever actions, axes or bindings may have changed</li>
+<li><code>Input.bind(name, binding = nil, key: nil, button: nil, side: nil, pad: 0)</code>: binds a key or a button to an action; kept between runs</li>
+<li><code>Input.unbind(name, binding = nil, key: nil, button: nil, side: nil, pad: 0)</code>: takes a binding off an action</li>
+<li><code>Input.reset_bindings(name = nil, pad: nil)</code>: back to the game's own bindings (of one action, or all; of one pad, or all)</li>
+<li><code>Input.capture_next(cancel: ["key:escape", "pad:b", "pad:back"], &amp;block)</code>: the next key or button pressed, to the block: |binding, pad| (nil: called off)</li>
+<li><code>Input.capturing?</code>: whether a capture waits for a key</li>
+<li><code>Input.capturing_for?(block)</code>: whether a capture still waits to call that block (not once another took its place)</li>
+<li><code>Input.cancel_capture</code>: calls a capture off</li>
+<li><code>Input.mouse_x</code>: the pointer's x, in pixels</li>
+<li><code>Input.mouse_y</code>: the pointer's y, in pixels</li>
+<li><code>Input.mouse_dx</code>: how far the mouse moved this frame, across</li>
+<li><code>Input.mouse_dy</code>: how far the mouse moved this frame, up and down</li>
+<li><code>Input.mouse_wheel</code>: how far the wheel turned this frame</li>
+<li><code>Input.mouse_down?(button)</code>: whether a mouse button (:left, :right, :middle) is held</li>
+<li><code>Input.mouse_pressed?(button)</code>: whether a mouse button went down this frame</li>
+<li><code>Input.mouse_released?(button)</code>: whether a mouse button went up this frame</li>
+<li><code>Input.mouse_locked = locked</code>: hides the pointer and keeps it in the window (first-person cameras)</li>
+<li><code>Input.mouse_locked?</code>: whether the pointer is locked</li>
+<li><code>Input.pads</code>: the numbers of the gamepads plugged in</li>
+<li><code>Input.gamepad?</code>: whether a gamepad is connected</li>
+<li><code>Input.gamepad_axis(axis)</code>: :left_x, :left_y, :right_x, :right_y, :left_trigger, :right_trigger</li>
+<li><code>Input.gamepad_down?(button)</code>: whether a gamepad button (:a, :b, :x, :y...) is held</li>
+<li><code>Input.gamepad_pressed?(button)</code>: whether a gamepad button went down this frame</li>
+<li><code>Input.gamepad_released?(button)</code>: whether a gamepad button went up this frame</li>
+<li><code>Input.text</code>: what was typed this frame</li>
+<li><code>Input.touch_controls = on</code>: shows the on-screen stick and buttons of a phone</li>
+<li><code>Input.touch_controls?</code>: whether they are shown</li>
+</ul>
+<p>Every action, axis, binding and gamepad call takes <code>pad:</code> (0 to 3: the player; 0 when left out). Actions and axes come from <code>game.json</code>'s <code>input</code> section and <code>define_action</code>/<code>define_axis</code>; a player's bindings are kept between runs, beside the game's save. See <a href="../gameplay/#controls">Controls</a>.</p>
+<h2 id="time">Time<a class="headerlink" href="#time" title="Permanent link">&para;</a></h2>
+<p>The game's clock (added to Ruby's Time).</p>
+<ul>
+<li><code>Time.delta</code>: seconds since the last frame</li>
+<li><code>Time.fixed_delta</code>: seconds of a physics step (1/60)</li>
+<li><code>Time.elapsed</code>: seconds since the game started</li>
+<li><code>Time.frame</code>: how many frames have run</li>
+<li><code>Time.scale</code>: how fast game time runs (1 is normal)</li>
+<li><code>Time.scale = value</code>: slows or speeds the game; 0 pauses it</li>
+</ul>
+<h2 id="physics">Physics<a class="headerlink" href="#physics" title="Permanent link">&para;</a></h2>
+<p>Questions to the physics world. See <a href="../gameplay/">gameplay.md</a>.</p>
+<ul>
+<li><code>Physics.raycast(origin, direction, max_distance = 1000, ignore = nil)</code>: the first thing a ray hits: {object:, point:, normal:, distance:}, or nil</li>
+</ul>
+<h2 id="charactercontroller">CharacterController<a class="headerlink" href="#charactercontroller" title="Permanent link">&para;</a></h2>
+<p>The body of an object with body = "character": walks, jumps, climbs steps. See <a href="../gameplay/">gameplay.md</a>.</p>
+<ul>
+<li><code>move(velocity)</code>: walks with that velocity (m/s) this frame</li>
+<li><code>jump(speed)</code>: jumps up at that speed</li>
+<li><code>grounded?</code>: whether it stands on something</li>
+<li><code>velocity</code>: its velocity</li>
+</ul>
+<h2 id="rigidbody">Rigidbody<a class="headerlink" href="#rigidbody" title="Permanent link">&para;</a></h2>
+<p>The body of an object with body = "dynamic" or "kinematic".</p>
+<ul>
+<li><code>velocity</code>: its velocity</li>
+<li><code>velocity = vector</code>: sets its velocity</li>
+<li><code>add_impulse(vector)</code>: pushes it</li>
+</ul>
+<h2 id="vehicle">Vehicle<a class="headerlink" href="#vehicle" title="Permanent link">&para;</a></h2>
+<p>The body of an object with body = "vehicle" and wheels. See <a href="../gameplay/">gameplay.md</a>.</p>
+<ul>
+<li><code>drive(throttle: 0.0, steering: 0.0, brake: 0.0, handbrake: 0.0)</code>: drives it this frame (each from -1 or 0 to 1)</li>
+<li><code>stop</code>: brakes fully</li>
+<li><code>speed</code>: its speed in m/s, signed</li>
+<li><code>velocity</code>: its velocity</li>
+</ul>
+<p>Wheel meshes must have their rotation applied (the axle along X). <code>drive</code>'s inputs are the one setting the engine clamps, since an analog stick may push a little past full.</p>
+<h2 id="camera">Camera<a class="headerlink" href="#camera" title="Permanent link">&para;</a></h2>
+<p>The camera the game is seen through.</p>
+<ul>
+<li><code>Camera.main</code>: the object holding the camera</li>
+<li><code>Camera.screen_ray(x, y)</code>: [origin, direction] through a pixel of the screen</li>
+<li><code>Camera.fov</code>: its vertical field of view, in degrees</li>
+<li><code>Camera.fov = degrees</code>: sets the field of view</li>
+<li><code>Camera.motion_blur</code>: how much the picture streaks with speed, 0 to 1</li>
+<li><code>Camera.motion_blur = amount</code>: sets it</li>
+</ul>
+<h2 id="light">Light<a class="headerlink" href="#light" title="Permanent link">&para;</a></h2>
+<p>game_object.light: the light an object shines with. See <a href="../gameplay/#light-that-flickers-and-fades">gameplay.md#light-that-flickers-and-fades</a>.</p>
+<ul>
+<li><code>intensity</code>: watts for a point or spot light, lux for the sun</li>
+<li><code>intensity = value</code>: sets it; shows from the next frame</li>
+<li><code>color</code>: its color [r, g, b], 0 to 255</li>
+<li><code>color = color</code>: :orange or [r, g, b] from 0 to 255</li>
+</ul>
+<h2 id="animation">Animation<a class="headerlink" href="#animation" title="Permanent link">&para;</a></h2>
+<p>The scene's own animations (exported from Blender), by name. See <a href="../animation/">animation.md</a>.</p>
+<ul>
+<li><code>Animation.names</code>: the names of the scene's animations</li>
+<li><code>Animation.play(name, loop: true, speed: 1.0, restart: false)</code>: plays one</li>
+<li><code>Animation.pause(name)</code>: pauses one</li>
+<li><code>Animation.stop(name)</code>: stops one</li>
+<li><code>Animation.playing?(name)</code>: whether it plays</li>
+<li><code>Animation.time(name)</code>: where it is, in seconds</li>
+<li><code>Animation.duration(name)</code>: how long it is, in seconds</li>
+<li><code>Animation.seek(name, seconds)</code>: jumps to a moment</li>
+</ul>
+<h2 id="animator">Animator<a class="headerlink" href="#animator" title="Permanent link">&para;</a></h2>
+<p>game_object.animation (animation in a behaviour): an object's own clips. See <a href="../animation/">animation.md</a>.</p>
+<ul>
+<li><code>play(name, loop: true, speed: 1.0, fade: 0.0, restart: false)</code>: plays a clip, fading from the last one</li>
+<li><code>mix(name, weight: 1.0, loop: true, speed: 1.0)</code>: plays a clip over the one playing</li>
+<li><code>unmix</code>: stops the clip mixed over</li>
+<li><code>pause</code>: pauses its clips</li>
+<li><code>follow_scene(fade: 0.0)</code>: goes back to the scene's animations</li>
+<li><code>clip</code>: the clip playing</li>
+<li><code>playing?</code>: whether a clip plays</li>
+<li><code>time</code>: where the clip is, in seconds</li>
+<li><code>use(graph)</code>: installs an Animation::Graph</li>
+<li><code>set(parameter, value)</code>: sets a parameter of the graph</li>
+<li><code>state</code>: the graph's state, or nil</li>
+</ul>
+<h2 id="animationgraph">Animation::Graph<a class="headerlink" href="#animationgraph" title="Permanent link">&para;</a></h2>
+<p>Named states and transitions for one character (animation.use(graph)). See <a href="../animation/">animation.md</a>.</p>
+<ul>
+<li><code>Animation::Graph.new(initial:, parameters: {})</code>: a graph starting at a state, with its parameters and their defaults</li>
+<li><code>clip(name, clip, loop: true, speed: 1.0)</code>: a state that plays one clip</li>
+<li><code>blend_1d(name, parameter:, clips:, loop: true, speed: 1.0)</code>: a state that blends clips by a number: clips: [[0.0, :Idle], [5.0, :Run]]</li>
+<li><code>transition(from, to, parameter:, equals: nil, above: nil, below: nil, fade: 0.0)</code>: goes from one state to another when a parameter says so</li>
+</ul>
+<h2 id="audio">Audio<a class="headerlink" href="#audio" title="Permanent link">&para;</a></h2>
+<p>Sounds and music from the game's sounds/ folder.</p>
+<ul>
+<li><code>Audio.play(name, volume: 1.0, pitch: 1.0)</code>: plays a sound once</li>
+<li><code>Audio.music(name, loop: true, volume: 0.7)</code>: plays music</li>
+<li><code>Audio.stop_music</code>: stops the music</li>
+<li><code>Audio.music_pitch = pitch</code>: changes the music's pitch</li>
+<li><code>Audio.music_volume = volume</code>: changes the music's volume</li>
+<li><code>Audio.volume = volume</code>: the volume of everything</li>
+<li><code>Audio.play_at(name, position, loop: false, volume: 1.0, pitch: 1.0, reference_distance: 1.0, max_distance: 50.0)</code>: plays a sound at a place in the world; returns its id, or nil</li>
+<li><code>Audio.listener(position, forward, up)</code>: where the ears are (move it with the camera)</li>
+<li><code>Audio.move(id, position)</code>: moves a sound played with play_at</li>
+<li><code>Audio.playing?(id)</code>: whether that sound still plays</li>
+<li><code>Audio.stop(id)</code>: stops that sound</li>
+<li><code>Audio.stop_sources</code>: stops every sound played with play_at</li>
+</ul>
+<p><code>play_at</code> sources use stereo panning and inverse-distance volume, fading to silence at <code>max_distance</code>. <code>volume</code> must be 0 or more and <code>pitch</code> from 0.01 to 8; <code>0 &lt; reference_distance &lt; max_distance</code>. Positions and directions may be arrays or <code>Vector3</code>. Update <code>Audio.listener(position, forward, up)</code> when the camera moves: nothing follows an object by itself. At most 64 sources play at once; old ids are never reused.</p>
+<h2 id="ui">UI<a class="headerlink" href="#ui" title="Permanent link">&para;</a></h2>
+<p>What a script draws over the game this frame: texts, rectangles, pictures, buttons. See <a href="../gameplay/">gameplay.md</a>.</p>
+<ul>
+<li><code>UI.text(str, x:, y:, size:, color:, alpha:, align:)</code>: draws a text</li>
+<li><code>UI.rect(x:, y:, width:, height:, color:, alpha:, radius:)</code>: draws a rectangle</li>
+<li><code>UI.image(name, x:, y:, width:, height:)</code>: draws a picture of images/</li>
+<li><code>UI.button(label, x:, y:, width:, height:)</code>: draws a button; true the frame it is clicked</li>
+<li><code>UI.text_field(value, x:, y:, width:, height:, max_length:, secret:)</code>: a field to type in; returns the new value</li>
+<li><code>UI.width</code>: the width of the screen, in pixels</li>
+<li><code>UI.height</code>: the height of the screen, in pixels</li>
+<li><code>UI.text_width(str, size:)</code>: how wide a text is, in pixels (in the face selected)</li>
+<li><code>UI.toggle(label, on, x:, y:, width:, height:, focused: false)</code>: an on/off row of a settings screen; returns whether it is on</li>
+<li><code>UI.choice(label, choices, index, x:, y:, width:, height:, focused: false)</code>: a row that picks one of choices; returns the index chosen</li>
+<li><code>UI.slider(label, value, x:, y:, width:, height:, min: 0.0, max: 1.0, step: 0.05, focused: false)</code>: a row with a slider; returns the value</li>
+<li><code>UI.font</code>: the face texts are drawn with: a file name of fonts/, or nil for the built-in one</li>
+<li><code>UI.font = name</code>: draws the next texts with fonts/<name>.ttf or .otf (nil: the built-in face)</li>
+</ul>
+<p>A focused widget (<code>focused: true</code>) is worked by Enter or a gamepad's A, and left and right change it. The built-in face adds glyphs as they are asked for (Greek, Cyrillic, accented letters, <code>€</code>); for another face or script, put a <code>.ttf</code> or <code>.otf</code> in <code>fonts/</code> and set <code>UI.font</code>. A missing or unreadable face falls back to the built-in one, with a warning; glyphs a face lacks show as <code>?</code>; there is no bidirectional layout or complex-script shaping.</p>
+<h2 id="uifocus">UI::Focus<a class="headerlink" href="#uifocus" title="Permanent link">&para;</a></h2>
+<p>Which widget of a screen the keyboard and a gamepad work: up and down move it, wrapping. See <a href="../gameplay/">gameplay.md</a>.</p>
+<ul>
+<li><code>UI::Focus.new</code>: a focus on the first widget</li>
+<li><code>update(count)</code>: moves it among count widgets, as up or down was pressed this frame</li>
+<li><code>at?(index)</code>: whether the widget of that index has it: pass it as focused:</li>
+<li><code>move_to(index)</code>: puts it on a widget (one clicked, or the one a screen comes back to)</li>
+<li><code>index</code>: the widget that has it</li>
+<li><code>reset</code>: back to the first widget</li>
+</ul>
+<h2 id="debug">Debug<a class="headerlink" href="#debug" title="Permanent link">&para;</a></h2>
+<p>Messages to the console (and to redgem run).</p>
+<ul>
+<li><code>Debug.log(message)</code>: says something</li>
+<li><code>Debug.warn(message)</code>: warns</li>
+<li><code>Debug.error(message)</code>: reports an error</li>
+</ul>
+<h2 id="game">Game<a class="headerlink" href="#game" title="Permanent link">&para;</a></h2>
+<p>The game itself.</p>
+<ul>
+<li><code>Game.load_scene(name)</code>: switches to scenes/<name>.glb ("main" is scene.glb); Ruby globals survive</li>
+<li><code>Game.scene_name</code>: the scene running</li>
+<li><code>Game.title</code>: the game's title</li>
+<li><code>Game.quit</code>: ends the game</li>
+<li><code>Game.stop_recording</code>: ends a video recorded with --record; the game goes on</li>
+<li><code>Game.version</code>: the version in game.json ("1.2.0"), or nil</li>
+</ul>
+<h2 id="settings">Settings<a class="headerlink" href="#settings" title="Permanent link">&para;</a></h2>
+<p>How the player chose the game to be shown and heard; a change takes effect at once. See <a href="../../shipping/#notes">../shipping.md#notes</a>.</p>
+<ul>
+<li><code>Settings.window_mode</code>: :windowed, :fullscreen or :borderless</li>
+<li><code>Settings.window_mode = mode</code>: changes it</li>
+<li><code>Settings.fullscreen?</code>: whether the game fills the screen</li>
+<li><code>Settings.fullscreen = on</code>: fullscreen, or back to a window</li>
+<li><code>Settings.resolution</code>: [width, height] of the window, in pixels</li>
+<li><code>Settings.resolution = size</code>: resizes the window: one of resolutions</li>
+<li><code>Settings.resolutions</code>: the sizes the monitor offers: [[w, h], ...]</li>
+<li><code>Settings.render_scale</code>: the share of the window's size the world is drawn at (0.5 to 2)</li>
+<li><code>Settings.render_scale = scale</code>: changes it</li>
+<li><code>Settings.vsync</code>: whether frames wait for the screen</li>
+<li><code>Settings.vsync = on</code>: changes it</li>
+<li><code>Settings.fps_cap</code>: frames a second at most; nil for none</li>
+<li><code>Settings.fps_cap = cap</code>: changes it</li>
+<li><code>Settings.quality</code>: :low, :medium, :high, :ultra or :custom</li>
+<li><code>Settings.quality = quality</code>: the most a level's environment gets of what it asks for</li>
+<li><code>Settings.quality_details</code>: what the custom quality allows: {msaa:, antialias:, shadow_cascades:, ...}</li>
+<li><code>Settings.quality_details = details</code>: changes some of them, and makes the quality :custom</li>
+<li><code>Settings.volume</code>: the player's volume, 0 to 1 (it multiplies Audio.volume)</li>
+<li><code>Settings.volume = volume</code>: changes it</li>
+<li><code>Settings.save</code>: keeps them for the next runs; false where they last for the run only</li>
+</ul>
+<p>Until the player chooses, everything is what <code>game.json</code> says. <code>Settings.save</code> keeps them only in a built game a player plays: in the editor's Play, <code>redgem run</code>, a server's rooms and tests they last for the run, and <code>save</code> returns false.</p>
+<h2 id="gamemenu">GameMenu<a class="headerlink" href="#gamemenu" title="Permanent link">&para;</a></h2>
+<p>A behaviour: title screen, pause menu, end screen and settings screen with its controls page; arrows or the D-pad move the focus, Enter or A picks. See <a href="../gameplay/#pause-and-the-flow-between-screens">gameplay.md#pause-and-the-flow-between-screens</a>.</p>
+<ul>
+<li><code>GameMenu.instance</code>: the menu of the scene, or nil</li>
+<li><code>show(screen)</code>: opens a screen: :title, :pause, :over, :settings or one of the game's</li>
+<li><code>show_settings</code>: opens the settings screen (window, resolution, quality, volume...; its Controls button opens the controls page)</li>
+<li><code>resume</code>: closes the menu and goes on</li>
+<li><code>restart</code>: starts the scene again</li>
+<li><code>finish(message)</code>: opens the end screen with a message</li>
+<li><code>open?</code>: whether the menu is open</li>
+<li><code>screen</code>: the screen open</li>
+<li><code>screens</code>: the screens, by name (:title, :pause, :over, :settings, :controls and the game's own)</li>
+<li><code>button_box(index)</code>: where the menu's button of that index is: [x, y, width, height]</li>
+</ul>
+<h2 id="gamemenuscreen">GameMenu::Screen<a class="headerlink" href="#gamemenuscreen" title="Permanent link">&para;</a></h2>
+<p>A screen of the GameMenu. See <a href="../gameplay/#pause-and-the-flow-between-screens">gameplay.md#pause-and-the-flow-between-screens</a>.</p>
+<ul>
+<li><code>GameMenu::Screen.new(heading:, options:, back:)</code>: a screen with a heading and options: [[label, action], ...]</li>
+<li><code>add_option(label, index:, &amp;action)</code>: adds an option</li>
+<li><code>heading</code>: its heading</li>
+<li><code>heading = text</code>: changes its heading</li>
+<li><code>options</code>: its options</li>
+<li><code>back</code>: the screen Esc goes back to</li>
+<li><code>opened</code>: called when it is shown</li>
+<li><code>closed</code>: called when it is left</li>
+<li><code>draw(first_button)</code>: draws what else it shows</li>
+<li><code>space_above</code>: pixels kept between its heading and its buttons</li>
+<li><code>typing?</code>: whether letters are typed into it</li>
+<li><code>rows</code>: how many widgets it draws above its buttons that take the focus</li>
+<li><code>first_button_share</code>: where its first button sits, a share of the height (nil: the menu's)</li>
+<li><code>focus</code>: its UI::Focus, which the menu gives it</li>
+<li><code>focus = focus</code>: sets it</li>
+</ul>
+<h2 id="particles">Particles<a class="headerlink" href="#particles" title="Permanent link">&para;</a></h2>
+<p>Short-lived sparks, smoke and dust. See <a href="../gameplay/#over-their-life">gameplay.md#over-their-life</a>.</p>
+<ul>
+<li><code>Particles.burst(position, count:, color:, alpha:, glow:, lit:, cast_shadow:, soft:, direction:, spread:, speed:, life:, size:, gravity:, image:, frames:, fps:, spin:)</code>: adds particles; returns how many (size, color and alpha may be lists over their life)</li>
+<li><code>Particles.count</code>: how many are alive</li>
+<li><code>Particles.clear</code>: removes them all</li>
+</ul>
+<h2 id="scatter">Scatter<a class="headerlink" href="#scatter" title="Permanent link">&para;</a></h2>
+<p>Great numbers of copies of a mesh (grass, trees, rocks), drawn only. See <a href="../../levels/#grass-forests-and-cities">../levels.md#grass-forests-and-cities</a>.</p>
+<ul>
+<li><code>Scatter.place(template, count:, area:, ground: nil, seed: 0, scale: 1.0, align: false, tints:, tint_variation:, fade:, normals_up:, lods:)</code>: places copies; returns a set (count, remove)</li>
+<li><code>Scatter.clear</code>: removes every set</li>
+<li><code>count</code>: how many copies a set placed</li>
+<li><code>remove</code>: removes a set</li>
+</ul>
+<h2 id="save">Save<a class="headerlink" href="#save" title="Permanent link">&para;</a></h2>
+<p>What the game keeps between runs. See <a href="../online-services/#saving-on-a-server">online-services.md#saving-on-a-server</a>.</p>
+<ul>
+<li><code>Save.get(key, default = nil)</code>: a value, or the default</li>
+<li><code>Save.set(key, value)</code>: keeps a value (nil removes it)</li>
+<li><code>Save[key]</code>: the same as get</li>
+<li><code>Save[key] = value</code>: the same as set</li>
+<li><code>Save.update(key, default = nil, &amp;block)</code>: reads and writes a key with nothing in between</li>
+<li><code>Save.delete(key)</code>: removes a key</li>
+<li><code>Save.clear</code>: removes everything</li>
+<li><code>Save.keys</code>: every key</li>
+</ul>
+<p>Values are numbers, texts, true/false, <code>Vector3</code>, and arrays and hashes of those; hashes come back with string keys.</p>
+<h2 id="http">HTTP<a class="headerlink" href="#http" title="Permanent link">&para;</a></h2>
+<p>Web requests; the answer comes to the block. See <a href="../online-services/#http">online-services.md#http</a>.</p>
+<ul>
+<li><code>HTTP.get(url, headers: {}, timeout: 15, &amp;block)</code>: GET</li>
+<li><code>HTTP.post(url, json: nil, body: nil, headers: {}, timeout: 15, &amp;block)</code>: POST</li>
+<li><code>HTTP.put(url, json: nil, body: nil, headers: {}, timeout: 15, &amp;block)</code>: PUT</li>
+<li><code>HTTP.patch(url, json: nil, body: nil, headers: {}, timeout: 15, &amp;block)</code>: PATCH</li>
+<li><code>HTTP.delete(url, headers: {}, timeout: 15, &amp;block)</code>: DELETE</li>
+<li><code>HTTP.request(verb, url, json: nil, body: nil, headers: {}, timeout: 15, &amp;block)</code>: any verb</li>
+</ul>
+<h2 id="httpresponse">HTTP::Response<a class="headerlink" href="#httpresponse" title="Permanent link">&para;</a></h2>
+<p>What a web request's block is given. See <a href="../online-services/#http">online-services.md#http</a>.</p>
+<ul>
+<li><code>ok?</code>: whether it came back with a 2xx status</li>
+<li><code>status</code>: its status</li>
+<li><code>headers</code>: its headers</li>
+<li><code>body</code>: its body</li>
+<li><code>json</code>: its body read as JSON</li>
+<li><code>error</code>: why there was no answer, or nil</li>
+</ul>
+<h2 id="i18n">I18n<a class="headerlink" href="#i18n" title="Permanent link">&para;</a></h2>
+<p>The game's texts in several languages (locales/*.json). See <a href="../i18n/">i18n.md</a>.</p>
+<ul>
+<li><code>I18n.t(key, **values)</code>: the text of a key in the language in use, its {placeholders} filled</li>
+<li><code>I18n.locale</code>: the language in use (:en)</li>
+<li><code>I18n.locale = language</code>: changes the language</li>
+<li><code>I18n.available_locales</code>: the languages of the game's locales/ files</li>
+</ul>
+<h2 id="network">Network<a class="headerlink" href="#network" title="Permanent link">&para;</a></h2>
+<p>Games played together: on a local network, through a relay or on a dedicated server. See <a href="../multiplayer/">multiplayer.md</a>.</p>
+<ul>
+<li><code>Network.host(port: 7777, name: nil, visible: true, room: false)</code>: hosts a game</li>
+<li><code>Network.join(address = nil, port: 7777, room: nil, auth: nil)</code>: joins a game (an address, or a room code)</li>
+<li><code>Network.leave</code>: leaves the game</li>
+<li><code>Network.online?</code>: whether this machine is in a game</li>
+<li><code>Network.connecting?</code>: whether a join is on its way</li>
+<li><code>Network.host?</code>: whether this machine hosts</li>
+<li><code>Network.server?</code>: whether this machine is a dedicated server</li>
+<li><code>Network.id</code>: this machine's peer id</li>
+<li><code>Network.peers</code>: the peers of the game</li>
+<li><code>Network.players</code>: the peers without a dedicated server</li>
+<li><code>Network.port</code>: the port of the game</li>
+<li><code>Network.room</code>: the room code, on a relay</li>
+<li><code>Network.relay</code>: the relay's address</li>
+<li><code>Network.relay = address</code>: sets the relay's address</li>
+<li><code>Network.search</code>: looks for games on the local network</li>
+<li><code>Network.searching?</code>: whether it is looking</li>
+<li><code>Network.stop_search</code>: stops looking</li>
+<li><code>Network.games</code>: the games found</li>
+<li><code>Network.discovery_port</code>: the port games are looked for on</li>
+<li><code>Network.discovery_port = port</code>: changes it</li>
+<li><code>Network.emit(name, data = nil, to: :all)</code>: sends a message (:all, :host or a peer id)</li>
+<li><code>Network.on(name, &amp;block)</code>: receives a message: |data, from|</li>
+<li><code>Network.on_connect(&amp;block)</code>: this machine is in the game</li>
+<li><code>Network.on_disconnect(&amp;block)</code>: the game is gone</li>
+<li><code>Network.on_join(&amp;block)</code>: someone arrived: |peer|</li>
+<li><code>Network.on_leave(&amp;block)</code>: someone left: |peer|</li>
+<li><code>Network.on_fail(&amp;block)</code>: a join did not work out: |reason|</li>
+<li><code>Network.authenticate(&amp;block)</code>: decides who gets in: |peer, auth, decide|</li>
+<li><code>Network.identity(peer)</code>: who a peer was accepted as</li>
+<li><code>Network.player_name(peer)</code>: a peer's name</li>
+<li><code>Network.spawn(template, owner: Network.id, position:, rotation:)</code>: spawns a copy on every machine</li>
+<li><code>Network.allow_spawn(*templates)</code>: lets guests spawn those templates</li>
+</ul>
+<h2 id="networkdecision">Network::Decision<a class="headerlink" href="#networkdecision" title="Permanent link">&para;</a></h2>
+<p>What an authenticate block decides with. See <a href="../online-services/">online-services.md</a>.</p>
+<ul>
+<li><code>accept(identity:, name: nil)</code>: lets the peer in</li>
+<li><code>deny(reason = "not let in")</code>: keeps the peer out</li>
+</ul>
+<h2 id="networksync">NetworkSync<a class="headerlink" href="#networksync" title="Permanent link">&para;</a></h2>
+<p>A behaviour: the same object in the same place on every machine. See <a href="../multiplayer/#objects-in-the-same-place-everywhere">multiplayer.md#objects-in-the-same-place-everywhere</a>.</p>
+<ul>
+<li><code>mine?</code>: whether this machine owns it</li>
+<li><code>owner</code>: the peer that owns it</li>
+<li><code>owner = peer</code>: gives it to a peer</li>
+<li><code>key</code>: the name it is known by on every machine</li>
+<li><code>assign(owner:, key:)</code>: sets its owner and key</li>
+</ul>
+<h2 id="notes">Notes<a class="headerlink" href="#notes" title="Permanent link">&para;</a></h2>
+<p>Script errors are logged with a backtrace and only disable the failing behaviour; the game keeps running. Every method takes finite numbers a float can hold: infinity, NaN or a number too large raises an <code>ArgumentError</code> instead of reaching the scene. A setting with a range raises outside it and says the range; nothing is quietly clamped, except <code>Vehicle#drive</code>'s inputs. Assigning <code>transform.position</code> to a physics object teleports it (moving bodies also stop); changing its rotation keeps its velocity. Images may be PNG, JPEG or static WebP (a name without an extension looks for <code>.webp</code> last), at most 8192 pixels a side; animated WebP and KTX2/Basis are not read. Missing or unreadable images (scene textures, <code>UI.image</code>, particle images) show an opaque magenta-and-black checkerboard, with a warning; a material that never named a texture keeps its plain color, and no path reads outside the game's folder.</p>
 
 
 
 
 
 
+
+  
+  
 
 
 

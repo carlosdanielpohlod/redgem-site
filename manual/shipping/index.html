@@ -6,9 +6,11 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="The manual of RedGem, a 3D game engine where games are written in Ruby.">
+        <meta name="description" content="Building a standalone game for Linux, Windows, macOS and Android, and recording videos.">
       
       
+      
+        <link rel="canonical" href="https://carlosdanielpohlod.github.io/redgem-site/manual/shipping/">
       
       
         <link rel="prev" href="../testing/">
@@ -443,6 +445,62 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../command-line/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The command line
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../assistants/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Making games with an AI assistant
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -826,10 +884,43 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#icon-version-and-splash-picture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Icon, version and splash picture
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#for-windows" class="md-nav__link">
     <span class="md-ellipsis">
       
         For Windows
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#for-linux" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        For Linux
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#for-macos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        For macOS
       
     </span>
   </a>
@@ -847,6 +938,17 @@
   
     <nav class="md-nav" aria-label="For Android">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#for-google-play-an-app-bundle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        For Google Play: an App Bundle
+      
+    </span>
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#your-own-app-id-version-and-key" class="md-nav__link">
@@ -1022,10 +1124,43 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#icon-version-and-splash-picture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Icon, version and splash picture
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#for-windows" class="md-nav__link">
     <span class="md-ellipsis">
       
         For Windows
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#for-linux" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        For Linux
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#for-macos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        For macOS
       
     </span>
   </a>
@@ -1043,6 +1178,17 @@
   
     <nav class="md-nav" aria-label="For Android">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#for-google-play-an-app-bundle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        For Google Play: an App Bundle
+      
+    </span>
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#your-own-app-id-version-and-key" class="md-nav__link">
@@ -1124,8 +1270,42 @@ program that builds: <code>redgem-player</code> in the same folder for the syste
 <code>runtimes/&lt;system&gt;/</code> in that folder for the others (<code>runtimes/windows/redgem-player.exe</code>,
 <code>runtimes/android/&lt;abi&gt;/libredgem.so</code>). When one is missing the build says which file it looked
 for.</p>
+<h2 id="icon-version-and-splash-picture">Icon, version and splash picture<a class="headerlink" href="#icon-version-and-splash-picture" title="Permanent link">&para;</a></h2>
+<p>A game says in its <code>game.json</code> what it is shown by; all of it is optional:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"My Game"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.2.0"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"icon"</span><span class="p">:</span><span class="w"> </span><span class="s2">"images/icon.png"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"splash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"images/splash.png"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"network"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="p">}</span>
+</code></pre></div>
+<ul>
+<li><code>version</code> is a <a href="https://semver.org">semantic version</a>: three numbers, then optionally a
+  pre-release (<code>2.0.0-beta.1</code>) or build part (<code>1.0.0+build.5</code>). Scripts read it with
+  <code>Game.version</code> (<code>nil</code> when there is none). Android shows it as the app's version, and a Mac app
+  carries its three numbers. A game without one is version 1.0 there.</li>
+<li><code>icon</code> is a square PNG in the game's folder, 1024×1024 at best (it is scaled down to every size
+  a system wants; a smaller one is scaled up, and looks it). Every build turns it into its
+  system's own icon (see each system below). A game without one keeps the engine's icon on
+  Windows and has the system's default icon elsewhere.</li>
+<li><code>splash</code> is a PNG in the game's folder shown over the whole window, fitted with black bars
+  around it, from when the window opens until the first frame of the game is drawn: while the
+  world is built, the scripts start and the scene goes to the graphics card. (Reading the scene's
+  file happens before the window opens: a big level still takes that long with no window.) It is
+  shown by built games and <code>--play</code>, not by the editor.</li>
+<li><code>network</code> says whether the game plays online (<code>Network</code>) or makes web requests (<code>HTTP</code>): its
+  Android app asks for the network only when it does, since an app that asks for what it does not
+  use worries players and stores. When <code>game.json</code> does not say, a build looks at the scripts:
+  one that calls <code>Network.</code> or <code>HTTP.</code> gets the network, and the build warns to say
+  <code>"network": true</code>. <code>"network": false</code> keeps the app offline even then (with a warning). On
+  computers it changes nothing.</li>
+</ul>
+<p>A build refuses a <code>game.json</code> that says one of these and cannot be used (a version that is not
+one, a picture that is not a PNG in the game's folder, an icon that is not square), saying which.
+A game played that way logs it as a warning and plays as if the line were not there.</p>
 <h2 id="for-windows">For Windows<a class="headerlink" href="#for-windows" title="Permanent link">&para;</a></h2>
-<p>On Linux, RedGem builds games for Linux, Windows and Android (the experimental Windows download builds Windows games, the macOS one Mac games: <code>--target macos</code>). In the editor, <strong>Build</strong>
+<p>On Linux, RedGem builds games for Linux, Windows and Android (the experimental Windows download builds Windows games, the macOS one Mac games: <code>--target macos</code>, see <a href="#for-macos">For macOS</a>). In the editor, <strong>Build</strong>
 asks which one; from a terminal:</p>
 <div class="highlight"><pre><span></span><code>tools/windows/build_runtime.sh<span class="w">                                   </span><span class="c1"># once: builds the player for Windows</span>
 ./build/src/redgem<span class="w"> </span>build<span class="w"> </span>my_game<span class="w"> </span>dist/my_game_win<span class="w"> </span>--target<span class="w"> </span>windows
@@ -1133,8 +1313,35 @@ asks which one; from a terminal:</p>
 <p>The first command downloads a Windows compiler into the project (no administrator rights
 needed) and builds <code>redgem-player.exe</code> into <code>build/src/runtimes/windows/</code>; it takes a few minutes
 and is only needed once, or again after updating RedGem. The build then makes <code>dist/my_game_win/my_game.exe</code> next to its <code>game/</code> folder.
+The game's icon goes inside the <code>.exe</code> (at 16 to 256 pixels): the file manager, the taskbar and
+shortcuts show it. Nothing has to run on Windows for that: the build puts the pictures into its
+copy of the player, in place of the engine's. The player RedGem makes is not signed; a player
+that was would lose its signature there (it would no longer match), so a game you release is
+signed afterwards, by you. A player that cannot take the icon (one made without an icon of its
+own, or with no room left in its headers) is left as it is, and the icon goes beside it as
+<code>my_game.ico</code>, with a warning.
 It needs 64-bit Windows 10 or later and a graphics card with OpenGL 3.3; nothing has to be
 installed with it.</p>
+<h2 id="for-linux">For Linux<a class="headerlink" href="#for-linux" title="Permanent link">&para;</a></h2>
+<p>A build for Linux also writes <code>my_game.desktop</code>, a menu entry, and the icon as <code>my_game.png</code>
+(256 pixels) beside the executable. The entry names the program and its icon by name
+(<code>Exec=my_game</code>, <code>Icon=my_game</code>), the way a package installs them: an AppImage, a Flatpak or a
+distribution's package takes both files as they are. On its own, the folder runs from a file
+manager or a terminal; the entry needs installing to show up in a menu.</p>
+<h2 id="for-macos">For macOS<a class="headerlink" href="#for-macos" title="Permanent link">&para;</a></h2>
+<p>On a Mac, <code>--target macos</code> (the default there) makes an app: <code>dist/my_game/My Game.app</code>, named
+after the game's title. It holds everything, so it can be moved and opened like any Mac app:</p>
+<div class="highlight"><pre><span></span><code>My Game.app/Contents/Info.plist              its name, id, version and icon
+My Game.app/Contents/MacOS/my_game           the player
+My Game.app/Contents/Resources/game/         the game's files
+My Game.app/Contents/Resources/my_game.icns  the icon (16 to 1024 pixels)
+My Game.app/Contents/Resources/licenses/
+</code></pre></div>
+<p>The app's id is the game's <code>id</code> (with <code>_</code> written as <code>-</code>), or <code>com.redgem.</code> and its name. The
+build signs the app ad hoc (with no identity), which an Apple Silicon Mac requires to open it.
+That is not a developer's signature: a Mac that downloads the app warns that its developer cannot
+be verified until it is signed with a paid Apple Developer ID and notarized, which the build does
+not do.</p>
 <h2 id="for-android">For Android<a class="headerlink" href="#for-android" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code>tools/android/build_runtime.sh<span class="w">                                   </span><span class="c1"># once: builds the player for Android</span>
 ./build/src/redgem<span class="w"> </span>build<span class="w"> </span>my_game<span class="w"> </span>dist/my_game_android<span class="w"> </span>--target<span class="w"> </span>android
@@ -1162,10 +1369,29 @@ emulator that <code>adb</code> sees, and shows its log.</p>
 <li>There is no on-screen keyboard yet, so text fields cannot be typed in.</li>
 <li>Phones are slower than computers: keep levels light (few lights, modest textures) and test on
   a real device. It needs Android 8 or later with OpenGL ES 3.</li>
-<li>The APK is signed with a key the engine makes on your machine the first time
+<li>
+<p>The APK is signed with a key the engine makes on your machine the first time
   (<code>~/.config/redgem/android-debug.keystore</code>). It never leaves your machine and is different on
-  everyone's; it is good for your own devices and for sharing the file.</li>
+  everyone's; it is good for your own devices and for sharing the file.</p>
+</li>
+<li>
+<p>The app's launcher icon is made from the game's <code>icon</code>, at every screen density (48 to 192
+  pixels). Its version is the game's <code>version</code> unless the <code>android</code> section gives another.</p>
+</li>
+<li>The app asks for the network (the <code>INTERNET</code> permission) when <code>game.json</code> says
+  <code>"network": true</code>, or says nothing and the scripts call <code>Network.</code> or <code>HTTP.</code> (see above).
+  Without it, <code>Network</code> and <code>HTTP</code> cannot reach anything on a phone.</li>
 </ul>
+<h3 id="for-google-play-an-app-bundle">For Google Play: an App Bundle<a class="headerlink" href="#for-google-play-an-app-bundle" title="Permanent link">&para;</a></h3>
+<p>Google Play takes App Bundles (<code>.aab</code>), not APKs. <code>--bundle</code> makes one:</p>
+<div class="highlight"><pre><span></span><code>./build/src/redgem<span class="w"> </span>build<span class="w"> </span>my_game<span class="w"> </span>dist/my_game_play<span class="w"> </span>--target<span class="w"> </span>android<span class="w"> </span>--bundle
+</code></pre></div>
+<p>It makes <code>dist/my_game_play/my_game.aab</code>, signed with the same key an APK would be (for Google
+Play, your own: see below). An App Bundle is made with Google's
+<a href="https://github.com/google/bundletool/releases">bundletool</a>, which is not part of the SDK: put a
+<code>bundletool</code> program on the <code>PATH</code>, or download <code>bundletool-all-&lt;version&gt;.jar</code> and point
+<code>REDGEM_BUNDLETOOL</code> at it (it runs with Java). <code>zip</code> and <code>unzip</code> must be installed too.
+A bundle is not installed on a phone by itself: <code>bundletool build-apks</code> makes the APKs Play would.</p>
 <h3 id="your-own-app-id-version-and-key">Your own app id, version and key<a class="headerlink" href="#your-own-app-id-version-and-key" title="Permanent link">&para;</a></h3>
 <p>A game says these in the <code>android</code> section of its <code>game.json</code>; all are optional:</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
@@ -1183,6 +1409,8 @@ emulator that <code>adb</code> sees, and shows its log.</p>
 <li><code>package</code> is the app's id on the phone. Without it the app goes by the game's <code>id</code> (see below),
   and a game with no <code>id</code> by its folder name.</li>
 <li><code>version_code</code> goes up with every release: a phone only updates to a higher one.</li>
+<li><code>version_name</code> is the version players see; without it, the game's own <code>version</code> (1.0 when it
+  has none).</li>
 <li><code>keystore</code> and <code>key_alias</code> sign the app with a key of your own, which is what a release needs:
   players can only update a game signed with the same key as the one they have. Make it once with
   Java's <code>keytool</code> and keep it safe (and backed up): there is no getting it back.</li>
@@ -1219,13 +1447,18 @@ emulator that <code>adb</code> sees, and shows its log.</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span><span class="w"> </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"com.mystudio.mygame"</span><span class="p">,</span><span class="w"> </span><span class="nt">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"My Game"</span><span class="p">,</span><span class="w"> </span><span class="nt">"window_width"</span><span class="p">:</span><span class="w"> </span><span class="mi">1280</span><span class="p">,</span><span class="w"> </span><span class="nt">"window_height"</span><span class="p">:</span><span class="w"> </span><span class="mi">720</span><span class="w"> </span><span class="p">}</span>
 </code></pre></div>
 <ul>
-<li>
-<p><code>id</code> is what the game is known by: its save follows it when the folder is moved or renamed, and
+<li><code>id</code> is what the game is known by: its save follows it when the folder is moved or renamed, and
   its Android app is named after it. <code>redgem new</code> writes one (<code>my-game-3fa2c1b0</code>); change it to
   your own before the first release and leave it alone after. It is small letters, digits, <code>.</code>,
   <code>-</code> and <code>_</code>, starting and ending with a letter or a digit. Two games with the same <code>id</code> share
   a save: a game started as a copy of another needs a new one. A game with no <code>id</code> keeps its
-  save by where its folder is, and starts a new save when it is given one.</p>
+  save by where its folder is, and starts a new save when it is given one.</li>
+<li>
+<p><code>game.json</code> may also say how the game is shown until its player chooses otherwise:
+  <code>"fullscreen": true</code>, <code>"vsync": false</code>, <code>"fps_cap": 144</code> (<code>0</code> for no cap), <code>"render_scale": 0.75</code>
+  (the world drawn at 75% of the window's size) and <code>"quality": "medium"</code> (<code>low</code>, <code>medium</code>, <code>high</code>,
+  <code>ultra</code>). What the player chooses (see <code>Settings</code> in the <a href="../scripting/api/">API reference</a>) is
+  kept in the user's settings file, by the game's <code>id</code>.</p>
 </li>
 <li>
 <p>Everything in the game folder is copied, including the scripts as plain <code>.rb</code> files.</p>
@@ -1249,6 +1482,9 @@ build folder, laid out the way builds expect:</p>
 
 
 
+
+  
+  
 
 
 

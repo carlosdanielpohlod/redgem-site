@@ -6,9 +6,11 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="The manual of RedGem, a 3D game engine where games are written in Ruby.">
+        <meta name="description" content="Multiplayer: hosting and joining, messages, synced objects, relays and rooms.">
       
       
+      
+        <link rel="canonical" href="https://carlosdanielpohlod.github.io/redgem-site/manual/scripting/multiplayer/">
       
       
         <link rel="prev" href="../gameplay/">
@@ -430,6 +432,62 @@
     
   
     Levels, lighting and Blender
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../command-line/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The command line
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../assistants/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Making games with an AI assistant
   
 
     
@@ -1190,6 +1248,10 @@
 <p>Games can be played together over a local network or the internet. One machine <strong>hosts</strong> the game
 and the others <strong>join</strong> it; every machine has an id (the host is 1, then 2, 3... as players arrive).
 Up to 16 machines play together.</p>
+<p>A game that plays online says so in its <code>game.json</code> with <code>"network": true</code>: its Android app
+then asks the phone for the network, which an app without it does not get (a build of a game
+that says nothing guesses it from its scripts, and warns; see
+<a href="../../shipping/#icon-version-and-splash-picture">Building and sharing</a>).</p>
 <p>There are three ways for the others to get to the host, from the easiest, and a fourth where
 nobody hosts:</p>
 <table>
@@ -1281,11 +1343,16 @@ address (a campus, some mobile networks), raise them: <code>--per-address &lt;nu
 <p>While nobody talks to it the relay sleeps: it wakes when a machine connects or says something,
 and about once a second to let go of machines that went silent.</p>
 <p>The relay expects strangers: one address can only open a few rooms and hold a few connections,
-guessing room codes gets it kept out for a while, and a machine that goes silent is let go.</p>
+guessing room codes gets it kept out for a while, and a machine that goes silent is let go, as is
+one that sends far more than a game does (each message counts for 64 bytes on top of its own, so
+floods of tiny messages count too).</p>
 <h2 id="by-the-hosts-address">By the host's address<a class="headerlink" href="#by-the-hosts-address" title="Permanent link">&para;</a></h2>
 <p>Without a relay, players anywhere can still join the host's public address
 (<code>Network.join("203.0.113.7")</code>) if the host's router forwards the game's port (7777, TCP) to the
 host's machine.</p>
+<p>A host reached directly, whether it is a player or a dedicated server, lets go of a machine that
+sends far more than a game does: more than 256 KB a second over time (and a burst of 2 MB), or
+more than 8192 messages a second (and a burst of 16384), however short they are.</p>
 <h2 id="on-a-dedicated-server">On a dedicated server<a class="headerlink" href="#on-a-dedicated-server" title="Permanent link">&para;</a></h2>
 <p>A dedicated server runs the game itself, with no player, and everyone joins it
 (see <a href="../../dedicated-server/">Dedicated server</a>):</p>
@@ -1407,6 +1474,9 @@ too.</p>
 
 
 
+
+  
+  
 
 
 

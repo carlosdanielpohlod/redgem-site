@@ -6,9 +6,11 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="The manual of RedGem, a 3D game engine where games are written in Ruby.">
+        <meta name="description" content="Web requests, connection approval and saving on a server.">
       
       
+      
+        <link rel="canonical" href="https://carlosdanielpohlod.github.io/redgem-site/manual/scripting/online-services/">
       
       
         <link rel="prev" href="../multiplayer/">
@@ -430,6 +432,62 @@
     
   
     Levels, lighting and Blender
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../command-line/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The command line
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../assistants/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Making games with an AI assistant
   
 
     
@@ -1116,6 +1174,9 @@ letting in only the players who logged in (connection approval) and keeping thei
 (<code>Save</code> on a <a href="../../dedicated-server/">dedicated server</a>, or a database behind a web service).
 No service is built into the engine and none is required: below are two ways to do it, a hosted
 service (Supabase) and a backend of your own.</p>
+<p>A game that makes web requests says <code>"network": true</code> in its <code>game.json</code> (a build of one that
+says nothing guesses it from its scripts, and warns; <code>"network": false</code> keeps its Android app off
+the network; see <a href="../../shipping/#icon-version-and-splash-picture">Building and sharing</a>).</p>
 <p>The player's password only ever goes from their device to the service, over HTTPS. The game
 connection carries the token the service gave, then gameplay.</p>
 <h2 id="http">HTTP<a class="headerlink" href="#http" title="Permanent link">&para;</a></h2>
@@ -1137,7 +1198,11 @@ connection carries the token the service gave, then gameplay.</p>
 <li><code>response.json</code> gives hash keys as symbols when your scripts use that symbol, as strings
   otherwise (as messages do).</li>
 <li>Addresses are <code>https://</code>, checked against the certificates the system trusts, or <code>http://</code> to
-  this machine or the local network only (a backend you run beside the game).</li>
+  this machine or the local network only (a backend you run beside the game): 127.x, 10.x,
+  172.16.x to 172.31.x, 192.168.x and 169.254.x. No request goes to a cloud's metadata address
+  (169.254.169.254, 100.100.100.200), over <code>http://</code> or <code>https://</code>. Over <code>https://</code>, an answer
+  whose end only the connection's end marks must end with the server's TLS goodbye
+  (close_notify), or it is taken as cut short.</li>
 <li>An answer is at most 8 MB; 16 requests may be on their way at once; each gives up after 15
   seconds unless <code>timeout:</code> says otherwise (at most 120). Redirects are not followed.</li>
 <li>When a level is loaded, the blocks of requests still on their way are not called (the requests
@@ -1337,6 +1402,9 @@ and the server keeps their coins all the same. See <code>scripts/accounts.rb</co
 
 
 
+
+  
+  
 
 
 

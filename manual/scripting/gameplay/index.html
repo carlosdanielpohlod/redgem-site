@@ -6,9 +6,11 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="The manual of RedGem, a 3D game engine where games are written in Ruby.">
+        <meta name="description" content="Gameplay recipes: movement, cameras, triggers, spawning, UI, sound, menus and more.">
       
       
+      
+        <link rel="canonical" href="https://carlosdanielpohlod.github.io/redgem-site/manual/scripting/gameplay/">
       
       
         <link rel="prev" href="../behaviours/">
@@ -443,6 +445,62 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../command-line/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The command line
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../assistants/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Making games with an AI assistant
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -621,6 +679,45 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#controls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Controls
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Controls">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#letting-players-rebind" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Letting players rebind
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-controls-page" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The controls page
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#read-the-mouse" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -724,6 +821,17 @@
     <span class="md-ellipsis">
       
         Pause, and the flow between screens
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#a-settings-screen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A settings screen
       
     </span>
   </a>
@@ -1242,6 +1350,45 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#controls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Controls
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Controls">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#letting-players-rebind" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Letting players rebind
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-controls-page" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The controls page
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#read-the-mouse" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1345,6 +1492,17 @@
     <span class="md-ellipsis">
       
         Pause, and the flow between screens
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#a-settings-screen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A settings screen
       
     </span>
   </a>
@@ -1516,7 +1674,8 @@
 <span class="no">Input</span><span class="o">.</span><span class="n">down?</span><span class="p">(</span><span class="ss">:e</span><span class="p">)</span><span class="w">                </span><span class="c1"># any key: held</span>
 <span class="no">Input</span><span class="o">.</span><span class="n">pressed?</span><span class="p">(</span><span class="ss">:e</span><span class="p">)</span><span class="w">             </span><span class="c1"># any key: went down this frame</span>
 </code></pre></div>
-<p>Built-in actions: <code>:jump</code> (Space), <code>:fire</code> (Left Ctrl or Enter), <code>:run</code> (Left Shift).</p>
+<p>Built-in actions: <code>:jump</code> (Space), <code>:fire</code> (Left Ctrl or Enter), <code>:run</code> (Left Shift). A game
+declares its own and lets players change them: see <a href="#controls">Controls</a>.</p>
 <h2 id="read-a-gamepad">Read a gamepad<a class="headerlink" href="#read-a-gamepad" title="Permanent link">&para;</a></h2>
 <p>A game written with axes and actions already works with a gamepad: the left stick moves
 <code>:horizontal</code> and <code>:vertical</code> (by as much as it is pushed), and A, X and B are <code>:jump</code>, <code>:fire</code>
@@ -1531,6 +1690,114 @@ and <code>:run</code>. For the rest, ask the gamepad itself:</p>
 <code>:right_stick</code>. To walk slowly with a half-pushed stick, use <code>clamped</code> instead of <code>normalized</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="n">direction</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">Vector3</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="no">Input</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="ss">:horizontal</span><span class="p">),</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="no">Input</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="ss">:vertical</span><span class="p">))</span><span class="o">.</span><span class="n">clamped</span>
 </code></pre></div>
+<p>Up to four gamepads are read at once, numbered from 0. Each is a player: <code>pad:</code> picks whose
+actions, axes or buttons to read, and leaving it out reads the first.</p>
+<div class="highlight"><pre><span></span><code><span class="no">Input</span><span class="o">.</span><span class="n">pads</span><span class="w">                              </span><span class="c1"># [0, 1]: the gamepads plugged in</span>
+<span class="no">Input</span><span class="o">.</span><span class="n">action_pressed?</span><span class="p">(</span><span class="ss">:jump</span><span class="p">,</span><span class="w"> </span><span class="ss">pad</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w">    </span><span class="c1"># the second player jumped</span>
+<span class="no">Input</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="ss">:horizontal</span><span class="p">,</span><span class="w"> </span><span class="ss">pad</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w">         </span><span class="c1"># the second player's stick</span>
+<span class="no">Input</span><span class="o">.</span><span class="n">gamepad_down?</span><span class="p">(</span><span class="ss">:start</span><span class="p">,</span><span class="w"> </span><span class="ss">pad</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div>
+<p>The keyboard belongs to the first player (pad 0). The other players start with the gamepad's
+bindings only, unless a player binds keys of their own (two players sharing one keyboard).</p>
+<p>Gamepads cannot rumble: the window library the engine uses on desktops has no vibration, and
+neither does Android's.</p>
+<h2 id="controls">Controls<a class="headerlink" href="#controls" title="Permanent link">&para;</a></h2>
+<p>A game names what its players do (actions, which are on or off, and axes, from -1 to 1) and says
+what triggers them. Scripts then read the names, never the keys, so players can change the keys.
+The built-in <code>:jump</code>, <code>:fire</code>, <code>:run</code>, <code>:horizontal</code> and <code>:vertical</code> are always there; a game adds
+its own, or binds one of those anew, in the <code>input</code> section of its <code>game.json</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">"input"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"actions"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"dash"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"key:e"</span><span class="p">,</span><span class="w"> </span><span class="s2">"pad:b"</span><span class="p">],</span>
+<span class="w">      </span><span class="nt">"jump"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"key:space"</span><span class="p">,</span><span class="w"> </span><span class="s2">"key:w"</span><span class="p">,</span><span class="w"> </span><span class="s2">"pad:a"</span><span class="p">]</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">"axes"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"steer"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">"negative"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"key:a"</span><span class="p">,</span><span class="w"> </span><span class="s2">"pad:dpad_left"</span><span class="p">],</span><span class="w"> </span><span class="nt">"positive"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"key:d"</span><span class="p">,</span><span class="w"> </span><span class="s2">"pad:dpad_right"</span><span class="p">],</span><span class="w"> </span><span class="nt">"pad_axis"</span><span class="p">:</span><span class="w"> </span><span class="s2">"left_x"</span><span class="p">},</span>
+<span class="w">      </span><span class="nt">"climb"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">"pad_axis"</span><span class="p">:</span><span class="w"> </span><span class="s2">"right_y"</span><span class="p">,</span><span class="w"> </span><span class="nt">"invert"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>A binding is <code>key:</code> with a key's name (<code>key:space</code>, <code>key:left_shift</code>, <code>key:7</code>) or <code>pad:</code> with a
+gamepad button's (<code>pad:a</code>, <code>pad:dpad_up</code>). An axis' <code>pad_axis</code> is a stick that moves it too, by as
+much as it is pushed; <code>invert</code> runs that stick the other way (up is negative on a stick). A
+binding the engine does not know is left out with a warning, and the game plays on. Scripts can
+declare names too, before using them. There, a binding may also be a Symbol (a key) or
+<code>{keys: [...], buttons: [...]}</code>, mixed as one likes:</p>
+<div class="highlight"><pre><span></span><code><span class="no">Input</span><span class="o">.</span><span class="n">define_action</span><span class="p">(</span><span class="ss">:dash</span><span class="p">,</span><span class="w"> </span><span class="ss">keys</span><span class="p">:</span><span class="w"> </span><span class="o">[</span><span class="ss">:e</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="ss">buttons</span><span class="p">:</span><span class="w"> </span><span class="o">[</span><span class="ss">:b</span><span class="o">]</span><span class="p">)</span><span class="w">     </span><span class="c1"># or define_action(:dash, :e, "pad:b")</span>
+<span class="no">Input</span><span class="o">.</span><span class="n">define_axis</span><span class="p">(</span><span class="ss">:steer</span><span class="p">,</span><span class="w"> </span><span class="ss">negative</span><span class="p">:</span><span class="w"> </span><span class="o">[</span><span class="ss">:a</span><span class="p">,</span><span class="w"> </span><span class="s2">"pad:dpad_left"</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="ss">positive</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="ss">keys</span><span class="p">:</span><span class="w"> </span><span class="o">[</span><span class="ss">:d</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="ss">buttons</span><span class="p">:</span><span class="w"> </span><span class="o">[</span><span class="ss">:dpad_right</span><span class="o">]</span><span class="p">},</span>
+<span class="w">                  </span><span class="ss">pad_axis</span><span class="p">:</span><span class="w"> </span><span class="ss">:left_x</span><span class="p">)</span>
+<span class="no">Input</span><span class="o">.</span><span class="n">actions</span><span class="w">                   </span><span class="c1"># [:dash, :fire, :jump, :run]</span>
+<span class="no">Input</span><span class="o">.</span><span class="n">action_released?</span><span class="p">(</span><span class="ss">:dash</span><span class="p">)</span><span class="w">   </span><span class="c1"># true on the frame the last of its keys and buttons lets go</span>
+</code></pre></div>
+<p>Declaring a name again binds it anew; declaring it as the other kind (an axis that was an action)
+also takes away what players had bound to the old one.</p>
+<h3 id="letting-players-rebind">Letting players rebind<a class="headerlink" href="#letting-players-rebind" title="Permanent link">&para;</a></h3>
+<p>Each player (a gamepad's number, <code>pad:</code>, 0 when left out or <code>nil</code>) has bindings of their own:</p>
+<div class="highlight"><pre><span></span><code><span class="no">Input</span><span class="o">.</span><span class="n">bindings</span><span class="p">(</span><span class="ss">:jump</span><span class="p">)</span><span class="w">                         </span><span class="c1"># ["key:space", "pad:a"]</span>
+<span class="no">Input</span><span class="o">.</span><span class="n">bindings</span><span class="p">(</span><span class="ss">:horizontal</span><span class="p">)</span><span class="w">                   </span><span class="c1"># {negative: ["key:a", "key:left"], positive: [...]}</span>
+<span class="no">Input</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="ss">:jump</span><span class="p">,</span><span class="w"> </span><span class="ss">key</span><span class="p">:</span><span class="w"> </span><span class="ss">:k</span><span class="p">)</span><span class="w">                    </span><span class="c1"># Space and K both jump now</span>
+<span class="no">Input</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="ss">:jump</span><span class="p">,</span><span class="w"> </span><span class="ss">key</span><span class="p">:</span><span class="w"> </span><span class="ss">:j</span><span class="p">,</span><span class="w"> </span><span class="ss">button</span><span class="p">:</span><span class="w"> </span><span class="ss">:y</span><span class="p">)</span><span class="w">        </span><span class="c1"># both given: both bound (unbind takes both away too)</span>
+<span class="no">Input</span><span class="o">.</span><span class="n">unbind</span><span class="p">(</span><span class="ss">:jump</span><span class="p">,</span><span class="w"> </span><span class="ss">key</span><span class="p">:</span><span class="w"> </span><span class="ss">:space</span><span class="p">)</span><span class="w">              </span><span class="c1"># only K</span>
+<span class="no">Input</span><span class="o">.</span><span class="n">unbind</span><span class="p">(</span><span class="ss">:jump</span><span class="p">)</span><span class="w">                           </span><span class="c1"># nothing: every key and button taken away</span>
+<span class="no">Input</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="ss">:fire</span><span class="p">,</span><span class="w"> </span><span class="ss">button</span><span class="p">:</span><span class="w"> </span><span class="ss">:y</span><span class="p">,</span><span class="w"> </span><span class="ss">pad</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w">         </span><span class="c1"># the second player's Y fires</span>
+<span class="no">Input</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="ss">:horizontal</span><span class="p">,</span><span class="w"> </span><span class="ss">key</span><span class="p">:</span><span class="w"> </span><span class="ss">:j</span><span class="p">,</span><span class="w"> </span><span class="ss">side</span><span class="p">:</span><span class="w"> </span><span class="ss">:negative</span><span class="p">)</span><span class="w">   </span><span class="c1"># an axis says which way the key pushes it</span>
+<span class="no">Input</span><span class="o">.</span><span class="n">reset_bindings</span><span class="p">(</span><span class="ss">:jump</span><span class="p">)</span><span class="w">                   </span><span class="c1"># back to the game's, for every player</span>
+<span class="no">Input</span><span class="o">.</span><span class="n">reset_bindings</span><span class="p">(</span><span class="ss">pad</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w">                  </span><span class="c1"># all of the second player's, back to the game's</span>
+</code></pre></div>
+<p>What players bind is kept between runs in the user's RedGem folder, under <code>bindings/</code>, named as
+the game's save is (<code>by-id/&lt;game id&gt;.json</code>, or after the game's folder for a game with no <code>id</code>).
+It is written at the end of the frame in which it changed, once however many calls changed it,
+and not at all when it ends up as the file already says. A player binds an axis' keys and
+buttons only: its stick, and whether the stick is inverted, are always the game's, so a game's
+"invert Y" option (declaring the axis again with <code>invert:</code>) reaches every player.</p>
+<p>One key may be bound to several actions, and every action it is bound to sees it: Enter can both
+<code>:fire</code> in the game and <code>:confirm</code> in a menu. A settings screen that wants each key to do one
+thing checks <code>Input.bindings</code> of the other actions before binding it.</p>
+<p>A "press a key" screen asks for the next key or button pressed. The block gets the binding as
+text, and the gamepad's number (<code>nil</code> for a key); a key already held when it asks does not count.
+Escape, or a gamepad's B or Back, calls the capture off instead: the block gets <code>nil</code> for the
+binding, so the player can back out (<code>cancel:</code> lists other bindings for that, <code>cancel: []</code> none).
+Whatever went down on the frame a capture ends is the capture's: no action fires and no menu opens
+with it.</p>
+<div class="highlight"><pre><span></span><code><span class="no">Input</span><span class="o">.</span><span class="n">capture_next</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="o">|</span><span class="nb">binding</span><span class="p">,</span><span class="w"> </span><span class="n">pad</span><span class="o">|</span>
+<span class="w">  </span><span class="k">next</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nb">binding</span><span class="o">.</span><span class="n">nil?</span><span class="w">   </span><span class="c1"># called off: jump stays as it was</span>
+
+<span class="w">  </span><span class="no">Input</span><span class="o">.</span><span class="n">unbind</span><span class="p">(</span><span class="ss">:jump</span><span class="p">,</span><span class="w"> </span><span class="ss">pad</span><span class="p">:</span><span class="w"> </span><span class="n">pad</span><span class="p">)</span>
+<span class="w">  </span><span class="no">Input</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="ss">:jump</span><span class="p">,</span><span class="w"> </span><span class="nb">binding</span><span class="p">,</span><span class="w"> </span><span class="ss">pad</span><span class="p">:</span><span class="w"> </span><span class="n">pad</span><span class="p">)</span>
+<span class="k">end</span>
+<span class="no">Input</span><span class="o">.</span><span class="n">capture_next</span><span class="p">(</span><span class="ss">cancel</span><span class="p">:</span><span class="w"> </span><span class="o">[</span><span class="s2">"key:backspace"</span><span class="o">]</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="o">|</span><span class="nb">binding</span><span class="p">,</span><span class="w"> </span><span class="n">pad</span><span class="o">|</span><span class="w"> </span><span class="o">...</span><span class="w"> </span><span class="p">}</span><span class="w">   </span><span class="c1"># Escape can be bound</span>
+<span class="no">Input</span><span class="o">.</span><span class="n">capturing?</span><span class="w">       </span><span class="c1"># still waiting</span>
+<span class="no">Input</span><span class="o">.</span><span class="n">capturing_for?</span><span class="p">(</span><span class="n">block</span><span class="p">)</span><span class="w">   </span><span class="c1"># still waiting to call that block (not once another capture took its place)</span>
+<span class="no">Input</span><span class="o">.</span><span class="n">cancel_capture</span><span class="w">   </span><span class="c1"># stop waiting (the block is never called)</span>
+<span class="no">Input</span><span class="o">.</span><span class="n">bindings_changes</span><span class="w"> </span><span class="c1"># a count that goes up whenever actions, axes or bindings may have changed</span>
+</code></pre></div>
+<p>Sticks and triggers are not caught, only keys and buttons. <code>Input.axis_stick(:horizontal)</code> says
+which stick moves an axis (<code>:left_x</code>, or <code>nil</code>): it is the game's, the same for every player.</p>
+<h3 id="the-controls-page">The controls page<a class="headerlink" href="#the-controls-page" title="Permanent link">&para;</a></h3>
+<p><code>GameMenu</code>'s settings screen has a Controls button that opens a ready-made controls page (the
+<code>:controls</code> screen). At its top, a choice of the player whose bindings it shows (1 to 4: the first
+also has the keyboard). Under it, a row for each action and one for each side of each axis, every
+one the game declared, in two cells: the player's keys, and their gamepad buttons (an axis' stick
+shows among them, though no player rebinds it). Up and down move between the rows, left and
+right between a row's two cells.</p>
+<p>Enter, a gamepad's A or a click on a cell (which also moves the focus there) waits for the next
+key (the keys' cell) or button (the buttons' cell): that one takes the place of everything the cell
+had, and the row's other cell keeps its own. A button pressed for the keys' cell (or a key for the
+buttons'), or a button of another player's gamepad, is not for it, and it waits on; any keyboard
+key is taken for any player. Escape or a gamepad's Back calls the wait off (and B too, for a keys' cell), so those
+are never bound there.
+A key bound to two rows is allowed, as above, and both cells show it in orange with a <code>!</code>. "Reset to
+defaults" puts all of the shown player's bindings back to the game's; Back (or Esc) goes back to the
+settings, on their Controls button (the settings were kept on the way in). What players bind is
+kept for the next runs as it changes. A game adds options to both screens as to any other
+(<code>add_option</code>): they come after the engine's buttons unless an <code>index:</code> says otherwise.</p>
+<p>A row is named by the game's translation files, as <code>game.controls.action_&lt;name&gt;</code> (an axis' sides
+as <code>game.controls.action_&lt;name&gt;_negative</code> and <code>_positive</code>); without one, its name is made readable (<code>:air_dash</code>
+is "Air dash", the sides of <code>:steer</code> "Steer -" and "Steer +"). The engine names its own (<code>:jump</code> is
+"Jump", the negative side of <code>:horizontal</code> "Move left") and the keys and buttons ("Space", "Left
+Shift", "A button", "Left stick X"), as <code>game.controls.*</code> texts a game may change too.</p>
 <h2 id="read-the-mouse">Read the mouse<a class="headerlink" href="#read-the-mouse" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><span class="no">Input</span><span class="o">.</span><span class="n">mouse_x</span><span class="p">,</span><span class="w"> </span><span class="no">Input</span><span class="o">.</span><span class="n">mouse_y</span><span class="w">        </span><span class="c1"># pixels from the top-left corner</span>
 <span class="no">Input</span><span class="o">.</span><span class="n">mouse_dx</span><span class="p">,</span><span class="w"> </span><span class="no">Input</span><span class="o">.</span><span class="n">mouse_dy</span><span class="w">      </span><span class="c1"># how far it moved since the last frame</span>
@@ -1641,7 +1908,8 @@ again (<code>Input.text</code> is what was typed this frame, for anything else):
   <code>Game.load_scene(Game.scene_name)</code> to restart the current one.</li>
 </ul>
 <p><code>GameMenu</code> is all of this, ready made: a title screen, a pause menu on Esc, P or a gamepad's
-Start, and an end screen. Put it on an object from the scene's script, and end the game from
+Start, an end screen, and a settings screen (see <a href="#a-settings-screen">A settings screen</a>). Up and
+down move the focus between its buttons; Enter or a gamepad's A picks the focused one. Put it on an object from the scene's script, and end the game from
 anywhere:</p>
 <div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">MainScene</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="no">SceneScript</span>
 <span class="w">  </span><span class="k">def</span><span class="w"> </span><span class="nf">setup</span>
@@ -1651,15 +1919,40 @@ anywhere:</p>
 
 <span class="no">GameMenu</span><span class="o">.</span><span class="n">instance</span><span class="o">.</span><span class="n">finish</span><span class="p">(</span><span class="s2">"You win!"</span><span class="p">)</span>
 </code></pre></div>
-<p>Its screens are <code>:title</code>, <code>:pause</code> and <code>:over</code>. A game adds options and screens of its own:</p>
+<p>Its screens are <code>:title</code>, <code>:pause</code>, <code>:over</code>, <code>:settings</code> and <code>:controls</code>. A game adds options and screens of its own:</p>
 <div class="highlight"><pre><span></span><code><span class="n">menu</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">GameMenu</span><span class="o">.</span><span class="n">instance</span>
 <span class="n">menu</span><span class="o">.</span><span class="n">screens</span><span class="o">[</span><span class="ss">:credits</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">GameMenu</span><span class="o">::</span><span class="no">Screen</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">heading</span><span class="p">:</span><span class="w"> </span><span class="s2">"Made by Ana"</span><span class="p">,</span><span class="w"> </span><span class="ss">back</span><span class="p">:</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">menu</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="ss">:pause</span><span class="p">)</span><span class="w"> </span><span class="p">})</span>
 <span class="n">menu</span><span class="o">.</span><span class="n">screens</span><span class="o">[</span><span class="ss">:pause</span><span class="o">].</span><span class="n">add_option</span><span class="p">(</span><span class="s2">"Credits"</span><span class="p">,</span><span class="w"> </span><span class="ss">index</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">menu</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="ss">:credits</span><span class="p">)</span><span class="w"> </span><span class="p">}</span>
 </code></pre></div>
 <p><code>back</code> is what the pause keys do on that screen. A label or a heading may also be a lookup,
 <code>-&gt; { I18n.t("menu.credits") }</code>, made each time it is shown (see <a href="../i18n/">Texts in several languages</a>). A screen that draws more than buttons is a
-subclass of <code>GameMenu::Screen</code> (<code>draw</code>, <code>space_above</code>, <code>opened</code>, <code>closed</code>, <code>typing?</code>): the
+subclass of <code>GameMenu::Screen</code> (<code>draw</code>, <code>space_above</code>, <code>opened</code>, <code>closed</code>, <code>typing?</code>, and <code>rows</code>
+for widgets of its own that take the focus before its buttons, with <code>focus</code>): the
 platformer's multiplayer screen, <code>games/platformer/scripts/multiplayer_screen.rb</code>, is one.</p>
+<h2 id="a-settings-screen">A settings screen<a class="headerlink" href="#a-settings-screen" title="Permanent link">&para;</a></h2>
+<p><code>GameMenu</code> has one ready, reached from its title and pause screens: window mode, resolution,
+render scale, vsync, frame-rate cap, quality and master volume, with a button to its controls page
+(see <a href="#the-controls-page">The controls page</a>). A game builds its own with
+<code>Settings</code> and the widgets of <code>UI</code>, which the keyboard and a gamepad work through a focus:</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="n">_dt</span><span class="p">)</span>
+<span class="w">  </span><span class="vi">@focus</span><span class="w"> </span><span class="o">||=</span><span class="w"> </span><span class="no">UI</span><span class="o">::</span><span class="no">Focus</span><span class="o">.</span><span class="n">new</span>
+<span class="w">  </span><span class="vi">@focus</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="w">   </span><span class="c1"># up and down (arrows, D-pad) move it among three widgets</span>
+<span class="w">  </span><span class="n">box</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="ss">x</span><span class="p">:</span><span class="w"> </span><span class="mi">40</span><span class="p">,</span><span class="w"> </span><span class="ss">width</span><span class="p">:</span><span class="w"> </span><span class="mi">480</span><span class="p">,</span><span class="w"> </span><span class="ss">height</span><span class="p">:</span><span class="w"> </span><span class="mi">44</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span><span class="n">on</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">UI</span><span class="o">.</span><span class="n">toggle</span><span class="p">(</span><span class="s2">"VSync"</span><span class="p">,</span><span class="w"> </span><span class="no">Settings</span><span class="o">.</span><span class="n">vsync</span><span class="p">,</span><span class="w"> </span><span class="ss">y</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w"> </span><span class="ss">focused</span><span class="p">:</span><span class="w"> </span><span class="vi">@focus</span><span class="o">.</span><span class="n">at?</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span><span class="w"> </span><span class="o">**</span><span class="n">box</span><span class="p">)</span>
+<span class="w">  </span><span class="no">Settings</span><span class="o">.</span><span class="n">vsync</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">on</span><span class="w"> </span><span class="k">unless</span><span class="w"> </span><span class="n">on</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="no">Settings</span><span class="o">.</span><span class="n">vsync</span>
+<span class="w">  </span><span class="n">names</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sx">%w[Low Medium High Ultra]</span>
+<span class="w">  </span><span class="n">index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">Settings</span><span class="o">::</span><span class="no">QUALITIES</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="no">Settings</span><span class="o">.</span><span class="n">quality</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="mi">3</span>
+<span class="w">  </span><span class="n">picked</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">UI</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="s2">"Quality"</span><span class="p">,</span><span class="w"> </span><span class="n">names</span><span class="p">,</span><span class="w"> </span><span class="n">index</span><span class="p">,</span><span class="w"> </span><span class="ss">y</span><span class="p">:</span><span class="w"> </span><span class="mi">152</span><span class="p">,</span><span class="w"> </span><span class="ss">focused</span><span class="p">:</span><span class="w"> </span><span class="vi">@focus</span><span class="o">.</span><span class="n">at?</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="o">**</span><span class="n">box</span><span class="p">)</span>
+<span class="w">  </span><span class="no">Settings</span><span class="o">.</span><span class="n">quality</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">Settings</span><span class="o">::</span><span class="no">QUALITIES</span><span class="o">[</span><span class="n">picked</span><span class="o">]</span><span class="w"> </span><span class="k">unless</span><span class="w"> </span><span class="n">picked</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">index</span>
+<span class="w">  </span><span class="n">volume</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">UI</span><span class="o">.</span><span class="n">slider</span><span class="p">(</span><span class="s2">"Volume"</span><span class="p">,</span><span class="w"> </span><span class="no">Settings</span><span class="o">.</span><span class="n">volume</span><span class="p">,</span><span class="w"> </span><span class="ss">y</span><span class="p">:</span><span class="w"> </span><span class="mi">204</span><span class="p">,</span><span class="w"> </span><span class="ss">focused</span><span class="p">:</span><span class="w"> </span><span class="vi">@focus</span><span class="o">.</span><span class="n">at?</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span><span class="w"> </span><span class="o">**</span><span class="n">box</span><span class="p">)</span>
+<span class="w">  </span><span class="no">Settings</span><span class="o">.</span><span class="n">volume</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">volume</span><span class="w"> </span><span class="k">unless</span><span class="w"> </span><span class="n">volume</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="no">Settings</span><span class="o">.</span><span class="n">volume</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>Each change shows at once; <code>Settings.save</code> keeps them for the game's next runs. A quality caps
+what the level's environment asks for (samples a pixel, temporal anti-aliasing, shadow cascades
+and distance, scattered copies and how far they show, the sky picture's size, ambient occlusion,
+bloom): <code>:ultra</code> draws the level as it was made, and nothing ever gets more than it asked for.
+What the graphics card cannot do is left out whatever the quality.</p>
 <h2 id="play-sounds-and-music">Play sounds and music<a class="headerlink" href="#play-sounds-and-music" title="Permanent link">&para;</a></h2>
 <p>Files go in the game's <code>sounds/</code> folder.</p>
 <div class="highlight"><pre><span></span><code><span class="no">Audio</span><span class="o">.</span><span class="n">play</span><span class="p">(</span><span class="ss">:jump</span><span class="p">)</span><span class="w">                      </span><span class="c1"># sounds/jump.wav (or .ogg, .mp3, .flac)</span>
@@ -1780,6 +2073,13 @@ or alpha does what particles always did: it holds for half the life, then the si
 <span class="no">Particles</span><span class="o">.</span><span class="n">burst</span><span class="p">(</span><span class="n">chimney</span><span class="p">,</span><span class="w"> </span><span class="ss">count</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="ss">image</span><span class="p">:</span><span class="w"> </span><span class="ss">:smoke</span><span class="p">,</span><span class="w"> </span><span class="ss">lit</span><span class="p">:</span><span class="w"> </span><span class="kp">true</span><span class="p">,</span><span class="w"> </span><span class="ss">soft</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="ss">size</span><span class="p">:</span><span class="w"> </span><span class="o">[</span><span class="mi">0</span><span class="o">.</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="o">.</span><span class="mi">5</span><span class="o">]</span><span class="p">,</span>
 <span class="w">                </span><span class="ss">alpha</span><span class="p">:</span><span class="w"> </span><span class="o">[</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">120</span><span class="p">,</span><span class="w"> </span><span class="mi">90</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="ss">gravity</span><span class="p">:</span><span class="w"> </span><span class="o">-</span><span class="mi">0</span><span class="o">.</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="ss">life</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="o">.</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="ss">spin</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="p">)</span>
 </code></pre></div>
+<p><code>cast_shadow: true</code> includes a particle in the directional sun's shadow cascades; it defaults to
+<code>false</code>. Its shadow is an alpha-cutout sprite facing the sun, using its current size, rotation,
+alpha and flipbook cell (or the circular dot mask without an image). Fragments whose combined
+texture and particle alpha is below 0.5 cast no shadow. Fading can therefore shrink or remove a
+shadow abruptly. This is a sprite approximation, not volumetric smoke: overlapping particles do
+not accumulate density, particles do not receive shadows, and <code>soft:</code> only fades the color pass
+against the camera's scene depth. Point lights do not cast particle shadows.</p>
 <p>Lit particles are lit at their corners by the sun, the sky and the nearest lights, as a puff lit
 on about half of it; they take no shadows yet.</p>
 <h2 id="light-that-flickers-and-fades">Light that flickers and fades<a class="headerlink" href="#light-that-flickers-and-fades" title="Permanent link">&para;</a></h2>
@@ -1836,6 +2136,12 @@ home folder, where <code>&lt;id&gt;</code> is the game's <code>id</code> from it
 when its folder is moved or renamed. A game with no <code>id</code> saves to
 <code>.config/redgem/saves/&lt;folder&gt;-&lt;digits&gt;.json</code>, with digits made from where its folder is. Tests
 get a save file of their own, empty at the start of each test.</p>
+<p>Each change is flushed to the disk before it replaces the file, and the save before it is kept
+beside it as <code>&lt;name&gt;.json.bak</code>, written the same way. A save found damaged (cut short by a crash
+or a bad disk) is moved aside to <code>&lt;name&gt;.json.damaged</code>, never written over, and the backup takes its
+place; the log says so, naming both files. When the backup is damaged too, it is moved aside as
+well and the game starts from nothing. A save that cannot be read at all (another program holds
+it, say) is left alone: the game runs without saving, and the log says why.</p>
 <h2 id="keep-score-across-objects">Keep score across objects<a class="headerlink" href="#keep-score-across-objects" title="Permanent link">&para;</a></h2>
 <p>Put a manager behaviour on one object and let the others find it:</p>
 <div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">GameManager</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="no">Behaviour</span>
@@ -1858,6 +2164,9 @@ get a save file of their own, empty at the start of each test.</p>
 
 
 
+
+  
+  
 
 
 

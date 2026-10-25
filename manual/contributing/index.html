@@ -6,9 +6,11 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="The manual of RedGem, a 3D game engine where games are written in Ruby.">
+        <meta name="description" content="Working on the engine itself: building, testing, the rules of the code.">
       
       
+      
+        <link rel="canonical" href="https://carlosdanielpohlod.github.io/redgem-site/manual/contributing/">
       
       
         <link rel="prev" href="../troubleshooting/">
@@ -428,6 +430,62 @@
     
   
     Levels, lighting and Blender
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../command-line/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The command line
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../assistants/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Making games with an AI assistant
   
 
     
@@ -1154,9 +1212,10 @@ ctest<span class="w"> </span>-L<span class="w"> </span>system<span class="w">   
 <p>Tests are run by a program of their own, <code>redgem-test</code>, built beside <code>redgem</code> (see
 <a href="#libraries-and-programs">Libraries and programs</a>). A system test is
 a Ruby file run against a game:
-<code>redgem-test &lt;game_dir&gt; &lt;file.rb&gt; [--screenshots &lt;dir&gt;] [--headless] [--work &lt;dir&gt;]</code> (<code>--headless</code>
-runs without a window, <code>--work</code> gives the run a folder of its own for its save file and notes;
-<code>redgem-test --help</code> lists every option).</p>
+<code>redgem-test &lt;game_dir&gt; &lt;file.rb&gt; [--screenshots &lt;dir&gt;] [--headless] [--work &lt;dir&gt;] [--after &lt;test.rb&gt;]</code>
+(<code>--headless</code> runs without a window, <code>--work</code> gives the run a folder of its own for its save file
+and notes, <code>--after</code> goes on from an earlier test's run in that folder as if the game were started
+again; <code>redgem-test --help</code> lists every option).</p>
 <p>The engine knows nothing of tests. Neither <code>redgem</code> nor <code>redgem-player</code>, which is what every
 built game ships as, has test code in it: what tests are written with (<code>TestInput</code>, <code>SystemTest</code>,
 <code>RedGemTest</code>, the runners and their command line) lives in <code>src/testing</code> and <code>ruby/testing</code>, a library that only
@@ -1186,6 +1245,11 @@ into the built <code>redgem-player</code> and <code>redgem</code> and fails when
 </code></pre></div>
 <p>A template is tested as the game it makes: <code>tests/system_templates/&lt;template&gt;/*_test.rb</code> run
 against a game created from it by <code>redgem new</code>. Every template needs at least one.</p>
+<p>What a game keeps between runs is tested by starting it again:
+<code>tests/system_restarts/&lt;game&gt;/&lt;name&gt;_restarted_test.rb</code> plays <code>games/&lt;game&gt;</code> after
+<code>tests/system/&lt;game&gt;/&lt;name&gt;_test.rb</code> did, on copies of the save, display settings and bindings that
+run left. The first run is a ctest fixture of the second (<code>redgem-test --work &lt;dir&gt;</code>, then
+<code>--work &lt;dir&gt; --after &lt;first_test.rb&gt;</code>), so asking for the second runs the first once before it.</p>
 <p>Test fixtures are regenerated with
 <code>tools/blender/run.sh build_test_fixtures.py tests/fixtures</code>.</p>
 <h2 id="layout">Layout<a class="headerlink" href="#layout" title="Permanent link">&para;</a></h2>
@@ -1358,6 +1422,9 @@ and every text of theirs is shown.</p>
 
 
 
+
+  
+  
 
 
 

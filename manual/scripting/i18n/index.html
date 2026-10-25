@@ -6,9 +6,11 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="The manual of RedGem, a 3D game engine where games are written in Ruby.">
+        <meta name="description" content="Texts in several languages: locales files, I18n.t and the engine's own texts.">
       
       
+      
+        <link rel="canonical" href="https://carlosdanielpohlod.github.io/redgem-site/manual/scripting/i18n/">
       
       
         <link rel="prev" href="../online-services/">
@@ -430,6 +432,62 @@
     
   
     Levels, lighting and Blender
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../command-line/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The command line
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../assistants/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Making games with an AI assistant
   
 
     
@@ -1127,15 +1185,17 @@ is given as a lookup rather than a text:</p>
 <span class="no">GameMenu</span><span class="o">::</span><span class="no">Screen</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">heading</span><span class="p">:</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="no">I18n</span><span class="o">.</span><span class="n">t</span><span class="p">(</span><span class="s2">"credits.heading"</span><span class="p">)</span><span class="w"> </span><span class="p">})</span>
 </code></pre></div>
 <h2 id="the-engines-own-texts">The engine's own texts<a class="headerlink" href="#the-engines-own-texts" title="Permanent link">&para;</a></h2>
-<p>The labels of <code>GameMenu</code> (Play, Quit, Play again, Resume, Restart, Paused) come from the engine,
-in the player's language. A game's files may change them or translate them, with the same keys:</p>
+<p>The labels of <code>GameMenu</code> (Play, Quit, Play again, Resume, Restart, Paused, and those of its
+settings screen and controls page) come from the engine, in the player's language. A game's files may change them or translate them, with the same keys:</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
 <span class="w">  </span><span class="nt">"game.menu.play"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Start"</span><span class="p">,</span>
 <span class="w">  </span><span class="nt">"game.menu.resume"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Continuar"</span>
 <span class="p">}</span>
 </code></pre></div>
 <p>The keys are <code>game.menu.play</code>, <code>game.menu.quit</code>, <code>game.menu.play_again</code>, <code>game.menu.resume</code>,
-<code>game.menu.restart</code> and <code>game.menu.paused</code>. A text is looked for in the game's files in the
+<code>game.menu.restart</code> and <code>game.menu.paused</code>; the settings screen's are <code>game.settings.*</code>, and the
+controls page's <code>game.controls.*</code> (its rows, and the names of keys and buttons: see
+<a href="../gameplay/#the-controls-page">The controls page</a>). A text is looked for in the game's files in the
 language in use, then among the engine's texts in that language, then in the game's English, then
 in the engine's English; else the key itself is shown. (So a game whose English changes a label
 still shows the engine's translation of it to a player who reads another language.)</p>
@@ -1155,6 +1215,9 @@ player's sends a key and lets the player's machine look it up.</p>
 
 
 
+
+  
+  
 
 
 
