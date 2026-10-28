@@ -501,6 +501,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mcp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MCP tools
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -744,6 +772,28 @@
     <span class="md-ellipsis">
       
         Push things around
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#doors-ropes-and-chains-joints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Doors, ropes and chains: joints
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#collision-layers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Collision layers
       
     </span>
   </a>
@@ -1422,6 +1472,28 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#doors-ropes-and-chains-joints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Doors, ropes and chains: joints
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#collision-layers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Collision layers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#drive-a-car" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1838,6 +1910,61 @@ physics. A character walks on floors, climbs slopes and is stopped by walls.</p>
 </code></pre></div>
 <p>A <strong>kinematic</strong> body is moved by your script (set <code>transform.position</code>) and carries what stands
 on it: platforms, lifts, doors.</p>
+<p>Forces push for one physics step, so a steady push goes in <code>fixed_update</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">fixed_update</span><span class="p">(</span><span class="n">_dt</span><span class="p">)</span>
+<span class="w">  </span><span class="n">rigidbody</span><span class="o">.</span><span class="n">add_force</span><span class="p">(</span><span class="no">Vector3</span><span class="o">.</span><span class="n">up</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">30</span><span class="o">.</span><span class="mi">0</span><span class="p">)</span><span class="w">                                  </span><span class="c1"># newtons: a hovering crate</span>
+<span class="w">  </span><span class="n">rigidbody</span><span class="o">.</span><span class="n">add_force</span><span class="p">(</span><span class="n">transform</span><span class="o">.</span><span class="n">forward</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">5</span><span class="o">.</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="ss">at</span><span class="p">:</span><span class="w"> </span><span class="n">transform</span><span class="o">.</span><span class="n">position</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="no">Vector3</span><span class="o">.</span><span class="n">up</span><span class="p">)</span><span class="w">   </span><span class="c1"># also tips it</span>
+<span class="w">  </span><span class="n">rigidbody</span><span class="o">.</span><span class="n">add_torque</span><span class="p">(</span><span class="no">Vector3</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">))</span><span class="w">                              </span><span class="c1"># spins it around y</span>
+<span class="k">end</span>
+</code></pre></div>
+<p><code>rigidbody.mass</code>, <code>gravity_scale</code> (0 floats), <code>angular_velocity</code> (degrees per second) can be read
+and changed while the game runs. <code>rigidbody.kinematic = true</code> hands a falling crate to your script
+(a crane picks it up); <code>rigidbody.dynamic = true</code> drops it again, at rest. <code>rigidbody.sleep</code> keeps
+a body still until something bumps it or <code>wake</code> is called.</p>
+<h2 id="doors-ropes-and-chains-joints">Doors, ropes and chains: joints<a class="headerlink" href="#doors-ropes-and-chains-joints" title="Permanent link">&para;</a></h2>
+<p>A joint holds two bodies together, or one to the world (give <code>nil</code> as the other). Points and axes
+are in world space.</p>
+<p>A door on a hinge that pushes open up to 110 degrees, and that its motor pulls shut (back to the
+0 degrees it started at, its other limit):</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Door</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="no">Behaviour</span>
+<span class="w">  </span><span class="k">def</span><span class="w"> </span><span class="nf">start</span>
+<span class="w">    </span><span class="n">pin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">transform</span><span class="o">.</span><span class="n">position</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="no">Vector3</span><span class="o">.</span><span class="n">left</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">0</span><span class="o">.</span><span class="mi">5</span><span class="w">            </span><span class="c1"># its left edge</span>
+<span class="w">    </span><span class="vi">@hinge</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">Physics</span><span class="o">.</span><span class="n">joint</span><span class="p">(</span><span class="ss">:hinge</span><span class="p">,</span><span class="w"> </span><span class="n">game_object</span><span class="p">,</span><span class="w"> </span><span class="kp">nil</span><span class="p">,</span><span class="w"> </span><span class="ss">anchor</span><span class="p">:</span><span class="w"> </span><span class="n">pin</span><span class="p">,</span><span class="w"> </span><span class="ss">axis</span><span class="p">:</span><span class="w"> </span><span class="no">Vector3</span><span class="o">.</span><span class="n">up</span><span class="p">,</span><span class="w"> </span><span class="ss">limits</span><span class="p">:</span><span class="w"> </span><span class="o">[</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">110</span><span class="o">]</span><span class="p">)</span>
+<span class="w">  </span><span class="k">end</span>
+
+<span class="w">  </span><span class="k">def</span><span class="w"> </span><span class="nf">close</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="vi">@hinge</span><span class="o">.</span><span class="n">motor</span><span class="p">(</span><span class="o">-</span><span class="mi">60</span><span class="p">,</span><span class="w"> </span><span class="mi">50</span><span class="p">)</span><span class="w">                           </span><span class="c1"># degrees per second, newton meters</span>
+<span class="w">  </span><span class="k">def</span><span class="w"> </span><span class="nf">let_go</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="vi">@hinge</span><span class="o">.</span><span class="n">motor</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>A rope of distance joints: each link may come closer to the one above it, never farther.</p>
+<div class="highlight"><pre><span></span><code><span class="n">hook</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">Vector3</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<span class="n">above</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kp">nil</span>
+<span class="n">links</span><span class="o">.</span><span class="n">each</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="o">|</span><span class="n">link</span><span class="o">|</span><span class="w">                                          </span><span class="c1"># dynamic spheres, top to bottom</span>
+<span class="w">  </span><span class="no">Physics</span><span class="o">.</span><span class="n">joint</span><span class="p">(</span><span class="ss">:distance</span><span class="p">,</span><span class="w"> </span><span class="n">link</span><span class="p">,</span><span class="w"> </span><span class="n">above</span><span class="p">,</span><span class="w"> </span><span class="ss">other_anchor</span><span class="p">:</span><span class="w"> </span><span class="n">above</span><span class="w"> </span><span class="p">?</span><span class="w"> </span><span class="kp">nil</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">hook</span><span class="p">)</span>
+<span class="w">  </span><span class="n">above</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">link</span>
+<span class="k">end</span>
+</code></pre></div>
+<p><code>spring: 2, damping: 0.3</code> makes it a bungee. Other kinds: <code>:fixed</code> glues two bodies as they are,
+<code>:slider</code> lets one slide along an axis (<code>limits:</code> in meters), <code>:point</code> lets it turn every way (a
+ball and socket). <code>break_force: 500</code> breaks a joint pulled harder than 500 newtons, or twisted
+harder than 500 newton meters (<code>joint.broken?</code> then says so); <code>joint.remove</code> lets go; destroying either object removes it.</p>
+<h2 id="collision-layers">Collision layers<a class="headerlink" href="#collision-layers" title="Permanent link">&para;</a></h2>
+<p>Bullets that fly through pickups, ghosts that walk through walls: give each body a <strong>layer</strong> and
+say in <code>game.json</code> which layers meet. Up to 16 layers; <code>default</code> is always there.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">"physics"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nt">"layers"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"default"</span><span class="p">,</span><span class="w"> </span><span class="s2">"player"</span><span class="p">,</span><span class="w"> </span><span class="s2">"enemy"</span><span class="p">,</span><span class="w"> </span><span class="s2">"bullet"</span><span class="p">,</span><span class="w"> </span><span class="s2">"pickup"</span><span class="p">],</span>
+<span class="w">  </span><span class="nt">"collides"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">"bullet"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"enemy"</span><span class="p">,</span><span class="w"> </span><span class="s2">"default"</span><span class="p">],</span><span class="w"> </span><span class="nt">"pickup"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"player"</span><span class="p">]}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>A layer with no <code>collides</code> entry meets every layer; two layers meet only when each lets the other
+in, so above bullets hit enemies and walls but pass through players, pickups and other bullets,
+and pickups only notice players. Put an object on a layer with the <code>layer</code> custom property (in
+Blender or the Inspector), or from a script:</p>
+<div class="highlight"><pre><span></span><code><span class="n">bullet</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">Scene</span><span class="o">.</span><span class="n">spawn</span><span class="p">(</span><span class="s2">"Bullet"</span><span class="p">,</span><span class="w"> </span><span class="ss">position</span><span class="p">:</span><span class="w"> </span><span class="n">muzzle</span><span class="p">,</span><span class="w"> </span><span class="ss">rotation</span><span class="p">:</span><span class="w"> </span><span class="n">transform</span><span class="o">.</span><span class="n">rotation</span><span class="p">)</span>
+<span class="n">bullet</span><span class="o">.</span><span class="n">rigidbody</span><span class="o">.</span><span class="n">layer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">:bullet</span>
+<span class="n">bullet</span><span class="o">.</span><span class="n">rigidbody</span><span class="o">.</span><span class="n">velocity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">transform</span><span class="o">.</span><span class="n">forward</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">40</span><span class="o">.</span><span class="mi">0</span>
+</code></pre></div>
+<p>Triggers only notice bodies whose layer meets theirs, and queries look at the layers they are given.</p>
 <h2 id="drive-a-car">Drive a car<a class="headerlink" href="#drive-a-car" title="Permanent link">&para;</a></h2>
 <p>Give the chassis a <strong>vehicle</strong> body and mark its wheel children with <code>wheel = true</code>.</p>
 <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">fixed_update</span><span class="p">(</span><span class="n">_dt</span><span class="p">)</span>
@@ -1870,7 +1997,21 @@ and becomes something to copy:</p>
 <div class="highlight"><pre><span></span><code><span class="n">hit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">Physics</span><span class="o">.</span><span class="n">raycast</span><span class="p">(</span><span class="n">transform</span><span class="o">.</span><span class="n">position</span><span class="p">,</span><span class="w"> </span><span class="n">transform</span><span class="o">.</span><span class="n">forward</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="o">.</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">game_object</span><span class="p">)</span>
 <span class="no">Debug</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">"I see </span><span class="si">#{</span><span class="n">hit</span><span class="o">[</span><span class="ss">:object</span><span class="o">].</span><span class="n">name</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="n">hit</span><span class="o">[</span><span class="ss">:distance</span><span class="o">]</span><span class="si">}</span><span class="s2"> m away"</span><span class="p">)</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">hit</span>
 </code></pre></div>
-<p>The last argument is an object the ray ignores (usually the one casting it).</p>
+<p>The last argument is an object the ray ignores (usually the one casting it). Every query also takes
+<code>layers:</code> (a layer or a list) and <code>ignore:</code> (an object or a list):</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Everything a laser goes through, nearest first.</span>
+<span class="no">Physics</span><span class="o">.</span><span class="n">raycast_all</span><span class="p">(</span><span class="n">eye</span><span class="p">,</span><span class="w"> </span><span class="n">forward</span><span class="p">,</span><span class="w"> </span><span class="mi">50</span><span class="o">.</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="ss">layers</span><span class="p">:</span><span class="w"> </span><span class="o">[</span><span class="ss">:enemy</span><span class="p">,</span><span class="w"> </span><span class="ss">:default</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="ss">ignore</span><span class="p">:</span><span class="w"> </span><span class="o">[</span><span class="n">game_object</span><span class="p">,</span><span class="w"> </span><span class="n">gun</span><span class="o">]</span><span class="p">)</span>
+
+<span class="c1"># Would a ball of radius 0.4 get from here to there? (nil: the way is clear)</span>
+<span class="n">blocked</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">Physics</span><span class="o">.</span><span class="n">sphere_cast</span><span class="p">(</span><span class="n">transform</span><span class="o">.</span><span class="n">position</span><span class="p">,</span><span class="w"> </span><span class="n">target</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="o">.</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="ss">ignore</span><span class="p">:</span><span class="w"> </span><span class="n">game_object</span><span class="p">)</span>
+
+<span class="c1"># An explosion: everything on the enemy layer within 5 m.</span>
+<span class="no">Physics</span><span class="o">.</span><span class="n">overlap_sphere</span><span class="p">(</span><span class="n">transform</span><span class="o">.</span><span class="n">position</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="o">.</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="ss">layers</span><span class="p">:</span><span class="w"> </span><span class="ss">:enemy</span><span class="p">)</span><span class="o">.</span><span class="n">each</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="o">|</span><span class="n">hit</span><span class="o">|</span>
+<span class="w">  </span><span class="n">hit</span><span class="o">[</span><span class="ss">:object</span><span class="o">].</span><span class="n">rigidbody</span><span class="o">&amp;.</span><span class="n">add_impulse</span><span class="p">((</span><span class="n">hit</span><span class="o">[</span><span class="ss">:point</span><span class="o">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">transform</span><span class="o">.</span><span class="n">position</span><span class="p">)</span><span class="o">.</span><span class="n">normalized</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">20</span><span class="o">.</span><span class="mi">0</span><span class="p">)</span>
+<span class="k">end</span>
+</code></pre></div>
+<p><code>box_cast</code>, <code>capsule_cast</code>, <code>overlap_box</code> and <code>overlap_capsule</code> work the same way. Hits come
+nearest first, each object once, at most 64.</p>
 <h2 id="show-text-on-screen">Show text on screen<a class="headerlink" href="#show-text-on-screen" title="Permanent link">&para;</a></h2>
 <p>Call it every frame from <code>update</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="no">UI</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="s2">"Coins </span><span class="si">#{</span><span class="vi">@coins</span><span class="si">}</span><span class="s2">/</span><span class="si">#{</span><span class="vi">@total</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span><span class="w"> </span><span class="ss">x</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="ss">y</span><span class="p">:</span><span class="w"> </span><span class="mi">40</span><span class="p">,</span><span class="w"> </span><span class="ss">size</span><span class="p">:</span><span class="w"> </span><span class="mi">28</span><span class="p">,</span><span class="w"> </span><span class="ss">color</span><span class="p">:</span><span class="w"> </span><span class="ss">:gold</span><span class="p">)</span>
@@ -1986,12 +2127,28 @@ with them.</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># A coin picked up: gold sparks in every direction.</span>
 <span class="no">Particles</span><span class="o">.</span><span class="n">burst</span><span class="p">(</span><span class="n">transform</span><span class="o">.</span><span class="n">position</span><span class="p">,</span><span class="w"> </span><span class="ss">count</span><span class="p">:</span><span class="w"> </span><span class="mi">24</span><span class="p">,</span><span class="w"> </span><span class="ss">color</span><span class="p">:</span><span class="w"> </span><span class="ss">:gold</span><span class="p">,</span><span class="w"> </span><span class="ss">glow</span><span class="p">:</span><span class="w"> </span><span class="kp">true</span><span class="p">)</span>
 
-<span class="c1"># Smoke from an exhaust: a few gray puffs a second, drifting up in a narrow cone.</span>
-<span class="n">every</span><span class="p">(</span><span class="mi">0</span><span class="o">.</span><span class="mo">05</span><span class="p">)</span><span class="w"> </span><span class="k">do</span>
-<span class="w">  </span><span class="no">Particles</span><span class="o">.</span><span class="n">burst</span><span class="p">(</span><span class="n">exhaust</span><span class="p">,</span><span class="w"> </span><span class="ss">count</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="ss">color</span><span class="p">:</span><span class="w"> </span><span class="ss">:gray</span><span class="p">,</span><span class="w"> </span><span class="ss">direction</span><span class="p">:</span><span class="w"> </span><span class="no">Vector3</span><span class="o">.</span><span class="n">up</span><span class="p">,</span><span class="w"> </span><span class="ss">spread</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span>
-<span class="w">                  </span><span class="ss">speed</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="ss">life</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="o">.</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="ss">size</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="o">.</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="ss">gravity</span><span class="p">:</span><span class="w"> </span><span class="o">-</span><span class="mi">0</span><span class="o">.</span><span class="mo">05</span><span class="p">)</span>
-<span class="k">end</span>
+<span class="c1"># Smoke follows this object, from a local exhaust offset. Old puffs stay in the world.</span>
+<span class="vi">@smoke</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">Particles</span><span class="o">.</span><span class="n">emitter</span><span class="p">(</span><span class="n">game_object</span><span class="p">,</span><span class="w"> </span><span class="ss">rate</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="ss">offset</span><span class="p">:</span><span class="w"> </span><span class="o">[</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="o">.</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="ss">color</span><span class="p">:</span><span class="w"> </span><span class="ss">:gray</span><span class="p">,</span>
+<span class="w">                           </span><span class="ss">direction</span><span class="p">:</span><span class="w"> </span><span class="no">Vector3</span><span class="o">.</span><span class="n">up</span><span class="p">,</span><span class="w"> </span><span class="ss">spread</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="ss">speed</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="ss">life</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="o">.</span><span class="mi">5</span><span class="p">,</span>
+<span class="w">                           </span><span class="ss">size</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="o">.</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="ss">gravity</span><span class="p">:</span><span class="w"> </span><span class="o">-</span><span class="mi">0</span><span class="o">.</span><span class="mo">05</span><span class="p">)</span>
 </code></pre></div>
+<p><code>Particles.emitter(object, rate: 24, offset: Vector3.zero, **settings)</code> returns a handle with
+<code>active?</code> and <code>stop</code>. It takes the burst settings below except <code>count</code>: <code>rate</code> is particles per
+game second, greater than zero and at most 4096. Offset uses the object's full world transform;
+direction follows its world rotation. Birth positions are spread along the object's movement
+between frames. Movement over 10 meters in one update is treated as a teleport: new particles
+start at the destination. Each birth is aged and advanced by the time since its birth within
+the frame. Emitted particles move independently in world space, without inheriting the
+object's velocity. <code>Time.scale = 0</code> pauses emission.</p>
+<p>Destroying the object or changing scenes ends its emitters; stopping one leaves its existing
+particles to finish their lives. <code>Particles.clear</code> removes particles and emitters together. Up to
+256 emitters share the existing limit of 4096 live particles. When that limit is full, missed
+births are dropped rather than saved for a later burst. Priority passes to the next emitter
+that is waiting for space, so a full pool cannot permanently favor the first one. Emitter
+handles are never reused.</p>
+<p>These are local visual effects, not replicated by <code>NetworkSync</code>. Start matching effects on
+each client through gameplay events. A game running without a presenter, including a dedicated
+server, returns inactive emitter handles and does not allocate or simulate emitters.</p>
 <table>
 <thead>
 <tr>
@@ -2078,10 +2235,12 @@ or alpha does what particles always did: it holds for half the life, then the si
 alpha and flipbook cell (or the circular dot mask without an image). Fragments whose combined
 texture and particle alpha is below 0.5 cast no shadow. Fading can therefore shrink or remove a
 shadow abruptly. This is a sprite approximation, not volumetric smoke: overlapping particles do
-not accumulate density, particles do not receive shadows, and <code>soft:</code> only fades the color pass
+not accumulate density, and <code>soft:</code> only fades the color pass
 against the camera's scene depth. Point lights do not cast particle shadows.</p>
 <p>Lit particles are lit at their corners by the sun, the sky and the nearest lights, as a puff lit
-on about half of it; they take no shadows yet.</p>
+on about half of it. <code>lit: true</code> also receives the scene's filtered sun shadows, using the same
+shadow cascades as surfaces. Sun shadowing leaves sky and point-light contributions intact.
+Unlit particles, including unlit glowing ones, keep their own color in shadows.</p>
 <h2 id="light-that-flickers-and-fades">Light that flickers and fades<a class="headerlink" href="#light-that-flickers-and-fades" title="Permanent link">&para;</a></h2>
 <p>An object with a light (a lamp, a fire's glow, made in Blender like any light) can change how
 bright it shines and in what color while the game runs:</p>

@@ -499,6 +499,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mcp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MCP tools
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -992,6 +1020,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#continuous-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Continuous integration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Continuous integration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fuzzing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fuzzing
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#layout" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1049,6 +1105,23 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Not there yet">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#reading-the-process-event-history" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reading the process event history
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1109,6 +1182,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#continuous-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Continuous integration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Continuous integration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fuzzing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fuzzing
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#layout" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1166,6 +1267,23 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Not there yet">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#reading-the-process-event-history" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reading the process event history
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1252,6 +1370,59 @@ run left. The first run is a ctest fixture of the second (<code>redgem-test --wo
 <code>--work &lt;dir&gt; --after &lt;first_test.rb&gt;</code>), so asking for the second runs the first once before it.</p>
 <p>Test fixtures are regenerated with
 <code>tools/blender/run.sh build_test_fixtures.py tests/fixtures</code>.</p>
+<h2 id="continuous-integration">Continuous integration<a class="headerlink" href="#continuous-integration" title="Permanent link">&para;</a></h2>
+<p>Every pull request runs these workflows (<code>.github/workflows/</code>), side by side:</p>
+<ul>
+<li><strong>Linux</strong> (<code>linux.yml</code>): the build, every test (the system tests in windows drawn by Mesa's
+  software renderer on a virtual display) and every linter.</li>
+<li><strong>Windows</strong> (<code>windows.yml</code>): the build with llvm-mingw and the tests that open no window.</li>
+<li><strong>macOS</strong> (<code>macos.yml</code>): the build and the tests that open no window on Apple Silicon and Intel,
+  and the editor system test.</li>
+<li><strong>Android</strong> (<code>android.yml</code>): the player built for arm64-v8a and x86_64 by
+  <code>tools/android/build_runtime.sh</code>, with the NDK <code>tools/android/fetch_toolchain.sh</code> pins (kept
+  between runs). Nothing runs on Android there: it catches code that only breaks that build.</li>
+<li>
+<p><strong>Sanitizers</strong> (<code>sanitizers.yml</code>): the tests that open no window (unit and integration, the
+  testing library, Ruby, the command lines of the relay and the server) in a build with
+  AddressSanitizer, LeakSanitizer and UndefinedBehaviorSanitizer and in one with ThreadSanitizer,
+  stopping at the first finding; and a build with coverage, whose report of <code>src/</code> is the run's
+  <code>coverage</code> artifact. The system tests are not run there: drawn by a software renderer, they
+  would take hours with sanitizers on.</p>
+</li>
+<li>
+<p><strong>Fuzzing</strong> (<code>fuzz.yml</code>): the fuzz targets below, a minute each on a pull request, ten minutes
+  each every night.</p>
+</li>
+</ul>
+<p>Every workflow builds with <code>-DREDGEM_WARNINGS_AS_ERRORS=ON</code>: a compiler warning in <code>src/</code> or
+<code>tests/</code> fails it (the dependencies keep theirs). Build the same way before pushing to see them
+first. A sanitized build is made and tested the same way as CI does:</p>
+<div class="highlight"><pre><span></span><code>cmake<span class="w"> </span>-S<span class="w"> </span>.<span class="w"> </span>-B<span class="w"> </span>build-asan<span class="w"> </span>-G<span class="w"> </span>Ninja<span class="w"> </span>-DCMAKE_BUILD_TYPE<span class="o">=</span>RelWithDebInfo<span class="w"> </span>-DREDGEM_SANITIZERS<span class="o">=</span>address,undefined
+cmake<span class="w"> </span>--build<span class="w"> </span>build-asan
+tools/sanitizers/run_tests.sh<span class="w"> </span>build-asan<span class="w"> </span>address<span class="w">     </span><span class="c1"># thread: -DREDGEM_SANITIZERS=thread</span>
+</code></pre></div>
+<p>A finding in the engine's code is fixed. One inside a library the engine is built from goes into
+the suppression file of its sanitizer (<code>tools/sanitizers/*.supp</code>), with a line saying why.</p>
+<p>Every archive <code>cmake/Dependencies.cmake</code> fetches is pinned by its SHA-256, as is the Android NDK
+(<code>tools/android/fetch_toolchain.sh</code>); a dependency fetched from git is pinned by its tag or commit. <code>THIRD_PARTY_LICENSES.md</code> is generated: after adding or
+updating a dependency, run <code>python3 -I tools/licenses/collect_notices.py</code> (after a build) and
+commit what it writes. The test <code>tools.license_notices_are_up_to_date</code> fails when it is stale.</p>
+<h3 id="fuzzing">Fuzzing<a class="headerlink" href="#fuzzing" title="Permanent link">&para;</a></h3>
+<p>The parsers of what comes from outside have fuzz targets in <code>tests/fuzz/</code> (<code>fuzz_&lt;target&gt;.cpp</code>):
+<code>gltf</code> (the glTF loader), <code>image_header</code> (PNG, JPEG, WebP and Radiance headers, Radiance and small
+WebP pictures decoded), <code>wire</code> (MessagePack messages and the frames they travel in),
+<code>http_response</code> (answers of web servers, in pieces) and <code>json_scanner</code> (the custom properties of
+a scene's objects). With clang, libFuzzer makes up inputs for them:</p>
+<div class="highlight"><pre><span></span><code>cmake<span class="w"> </span>-S<span class="w"> </span>.<span class="w"> </span>-B<span class="w"> </span>build-fuzz<span class="w"> </span>-G<span class="w"> </span>Ninja<span class="w"> </span>-DCMAKE_C_COMPILER<span class="o">=</span>clang<span class="w"> </span>-DCMAKE_CXX_COMPILER<span class="o">=</span>clang++<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-DCMAKE_BUILD_TYPE<span class="o">=</span>RelWithDebInfo<span class="w"> </span>-DREDGEM_FUZZ<span class="o">=</span>ON<span class="w"> </span>-DREDGEM_SANITIZERS<span class="o">=</span>address,undefined
+cmake<span class="w"> </span>--build<span class="w"> </span>build-fuzz<span class="w"> </span>--target<span class="w"> </span>redgem_fuzz_targets
+tests/fuzz/run_fuzzers.sh<span class="w"> </span>build-fuzz<span class="w"> </span><span class="m">60</span><span class="w"> </span>fuzz-work<span class="w">      </span><span class="c1"># seconds each; what it finds is in fuzz-work/findings</span>
+</code></pre></div>
+<p>Each target's seeds are in <code>tests/fuzz/corpus/&lt;target&gt;/</code>, and every build replays them
+(<code>redgem_fuzz_&lt;target&gt;_replay</code>, the ctest test <code>fuzz.&lt;target&gt;</code>). When a target finds an input that
+crashes it, fix the code and add the input to the target's corpus: its replay keeps it tested. A
+new parser of untrusted input gets a target of its own (<code>redgem_add_fuzz_target</code> in
+<code>tests/fuzz/CMakeLists.txt</code>).</p>
 <h2 id="layout">Layout<a class="headerlink" href="#layout" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code>src/core      what everything shares: math, logging, the fixed timestep clock, files, the platform
               layer (the only place, with the sockets of src/net, that asks which system this is),
@@ -1416,6 +1587,17 @@ and every text of theirs is shown.</p>
 <li>More vehicle options from Blender properties (drive layout, engine torque); hot reload of
   scripts while playing.</li>
 </ul>
+<h3 id="reading-the-process-event-history">Reading the process event history<a class="headerlink" href="#reading-the-process-event-history" title="Permanent link">&para;</a></h3>
+<p>The native tooling API can read logs without replacing the console sink. Include
+<code>core/event_journal.hpp</code>, take <code>log::event_cursor()</code> before an operation, then read
+<code>log::events_since(cursor, limit, minimum_level)</code>. Pass the returned <code>cursor</code> to the next read,
+including when the level filter matched nothing. Read another page while <code>more</code> is true.</p>
+<p>The process retains 512 messages, each limited to 2 KiB plus a truncation marker, and returns
+at most 128 messages per page. Text keeps whole UTF-8 characters and removes terminal control
+characters while retaining line breaks. <code>dropped</code> counts messages overwritten since the supplied
+cursor. <code>cursor_ahead</code> reports a cursor beyond this process's latest event; reset the reader to
+the returned cursor. Cursors belong to the process that issued them and do not survive a restart.
+Writes and reads are synchronized; installing a custom log sink does not disable this history.</p>
 
 
 

@@ -898,18 +898,138 @@
     },
     {
       "name": "Physics",
-      "about": "Questions to the physics world.",
+      "about": "Questions to the physics world: rays, moving shapes and shapes in place.",
       "methods": [
         {
           "name": "raycast",
           "static": true,
-          "args": "origin, direction, max_distance = 1000, ignore = nil",
-          "about": "the first thing a ray hits: {object:, point:, normal:, distance:}, or nil",
+          "args": "origin, direction, max_distance = 1000, skip = nil, layers: nil, ignore: nil",
+          "about": "the first thing a ray hits: {object:, point:, normal:, distance:}, or nil (skip: an object it sees through)",
           "top": 22,
           "example": "hit = Physics.raycast(transform.position, Vector3.down, 2.0, game_object)"
+        },
+        {
+          "name": "raycast_all",
+          "static": true,
+          "args": "origin, direction, max_distance = 1000, layers: nil, ignore: nil",
+          "about": "everything a ray hits, nearest first",
+          "example": "Physics.raycast_all(eye, forward, 50.0, layers: [:enemy]).each { |hit| hit[:object].destroy }"
+        },
+        {
+          "name": "sphere_cast",
+          "static": true,
+          "args": "from, to, radius, layers: nil, ignore: nil",
+          "about": "the first thing a ball moving from `from` to `to` touches, or nil"
+        },
+        {
+          "name": "box_cast",
+          "static": true,
+          "args": "from, to, size, rotation: nil, layers: nil, ignore: nil",
+          "about": "the same for a box (its whole size; rotation in degrees)"
+        },
+        {
+          "name": "capsule_cast",
+          "static": true,
+          "args": "from, to, radius, height, rotation: nil, layers: nil, ignore: nil",
+          "about": "the same for an upright capsule (height end to end)"
+        },
+        {
+          "name": "overlap_sphere",
+          "static": true,
+          "args": "center, radius, layers: nil, ignore: nil",
+          "about": "the hits of everything inside a ball, nearest first",
+          "example": "Physics.overlap_sphere(transform.position, 4.0, layers: :enemy).each { |hit| hit[:object].destroy }"
+        },
+        {
+          "name": "overlap_box",
+          "static": true,
+          "args": "center, size, rotation: nil, layers: nil, ignore: nil",
+          "about": "the same inside a box"
+        },
+        {
+          "name": "overlap_capsule",
+          "static": true,
+          "args": "center, radius, height, rotation: nil, layers: nil, ignore: nil",
+          "about": "the same inside a capsule"
+        },
+        {
+          "name": "layers",
+          "static": true,
+          "about": "the game's collision layers, as Symbols (game.json's physics layers)"
+        },
+        {
+          "name": "joint",
+          "static": true,
+          "args": "kind, object, other = nil, anchor: nil, other_anchor: nil, axis: nil, limits: nil, motor_speed: nil, motor_torque: nil, min: nil, max: nil, spring: nil, damping: nil, break_force: nil",
+          "about": "joins two objects, or one to the world (other nil): :fixed, :hinge, :slider, :point or :distance",
+          "example": "Physics.joint(:hinge, door, nil, anchor: pin, axis: Vector3.up, limits: [0, 110])"
         }
       ],
-      "guide": "gameplay.md"
+      "guide": "gameplay.md",
+      "notes": "`layers:` is a layer's name or a list of them (every layer when nil); `ignore:` is an object or a list of objects to see through. Hits are `{object:, point:, normal:, distance:}`, each object once, nearest first, at most 64; triggers are never hit. A cast that starts inside something hits it at distance 0."
+    },
+    {
+      "name": "Joint",
+      "about": "What holds two bodies together, or one to the world (made by Physics.joint).",
+      "methods": [
+        {
+          "name": "kind",
+          "about": ":fixed, :hinge, :slider, :point or :distance"
+        },
+        {
+          "name": "object",
+          "about": "the object it holds"
+        },
+        {
+          "name": "other",
+          "about": "the other object it holds, or nil for the world"
+        },
+        {
+          "name": "alive?",
+          "about": "whether it still holds them"
+        },
+        {
+          "name": "broken?",
+          "about": "whether it was pulled past its break force"
+        },
+        {
+          "name": "remove",
+          "about": "lets go"
+        },
+        {
+          "name": "enabled?",
+          "about": "whether it holds right now"
+        },
+        {
+          "name": "enabled=",
+          "args": "flag",
+          "about": "lets go for a while, or holds again"
+        },
+        {
+          "name": "break_force",
+          "about": "the pull (newtons) or twist (newton meters) it breaks at; 0 never breaks"
+        },
+        {
+          "name": "break_force=",
+          "args": "newtons",
+          "about": "sets the pull it breaks at"
+        },
+        {
+          "name": "motor",
+          "args": "speed, torque",
+          "about": "a hinge turns at that speed (degrees per second) with at most that torque; 0 torque lets it go"
+        },
+        {
+          "name": "angle",
+          "about": "how far a hinge turned from where it started, in degrees"
+        }
+      ],
+      "internal": [
+        "inspect",
+        "to_s"
+      ],
+      "guide": "gameplay.md",
+      "notes": "Points and axes are in world space; `anchor:` defaults to the object's position, `other_anchor:` (a distance joint's other end) to the other object's, `axis:` to up. A hinge's `limits:` are degrees [low, high] from where it starts (low -180 to 0, high 0 to 180), a slider's are meters along its axis; a hinge's `motor_speed:` needs a `motor_torque:`. A distance joint keeps between `min:` (0) and `max:` (how far apart the ends are) apart, springy with `spring:` (hertz) and `damping:`. Each kind refuses options it has no use for, and `motor` and `angle` raise for anything but a hinge. A joint needs a dynamic body at one end (one whose bodies were all made kinematic since holds nothing until one is dynamic again); it goes when either object is destroyed or the scene changes."
     },
     {
       "name": "CharacterController",
@@ -932,13 +1052,22 @@
         {
           "name": "velocity",
           "about": "its velocity"
+        },
+        {
+          "name": "layer",
+          "about": "its collision layer, a Symbol"
+        },
+        {
+          "name": "layer=",
+          "args": "name",
+          "about": "moves it to another collision layer"
         }
       ],
       "guide": "gameplay.md"
     },
     {
       "name": "Rigidbody",
-      "about": "The body of an object with body = \"dynamic\" or \"kinematic\".",
+      "about": "The body of an object with body = \"dynamic\" or \"kinematic\" (or a vehicle's chassis).",
       "methods": [
         {
           "name": "velocity",
@@ -953,8 +1082,88 @@
           "name": "add_impulse",
           "args": "vector",
           "about": "pushes it"
+        },
+        {
+          "name": "add_force",
+          "args": "force, at: nil",
+          "about": "pushes it during the next step (newtons); at a point (world space), it also turns it",
+          "example": "def fixed_update(_dt) = rigidbody.add_force(Vector3.up * 30.0)"
+        },
+        {
+          "name": "add_torque",
+          "args": "torque",
+          "about": "turns it during the next step (newton meters)"
+        },
+        {
+          "name": "angular_velocity",
+          "about": "how fast it spins, degrees per second around each axis"
+        },
+        {
+          "name": "angular_velocity=",
+          "args": "vector",
+          "about": "sets how fast it spins"
+        },
+        {
+          "name": "mass",
+          "about": "its mass in kilograms"
+        },
+        {
+          "name": "mass=",
+          "args": "kilograms",
+          "about": "changes its mass (more than 0)"
+        },
+        {
+          "name": "kinematic?",
+          "about": "whether scripts move it (instead of forces)"
+        },
+        {
+          "name": "kinematic=",
+          "args": "flag",
+          "about": "turns a dynamic body kinematic, or back"
+        },
+        {
+          "name": "dynamic?",
+          "about": "whether forces move it"
+        },
+        {
+          "name": "dynamic=",
+          "args": "flag",
+          "about": "turns a kinematic body dynamic, or back"
+        },
+        {
+          "name": "gravity_scale",
+          "about": "how much gravity pulls it (1 is normal)"
+        },
+        {
+          "name": "gravity_scale=",
+          "args": "scale",
+          "about": "0 floats, 2 falls twice as hard"
+        },
+        {
+          "name": "sleep",
+          "about": "stops simulating it until something touches it"
+        },
+        {
+          "name": "wake",
+          "about": "simulates it again"
+        },
+        {
+          "name": "sleeping?",
+          "about": "whether it sleeps"
+        },
+        {
+          "name": "layer",
+          "about": "its collision layer, a Symbol"
+        },
+        {
+          "name": "layer=",
+          "args": "name",
+          "about": "moves it to another collision layer",
+          "example": "rigidbody.layer = :bullet"
         }
-      ]
+      ],
+      "guide": "gameplay.md",
+      "notes": "Forces and torques act during the next physics step only: add them every `fixed_update` to keep pushing. A body made dynamic again starts at rest. `kinematic=` and `dynamic=` raise for a vehicle."
     },
     {
       "name": "Vehicle",
@@ -1179,6 +1388,11 @@
           "name": "blend_1d",
           "args": "name, parameter:, clips:, loop: true, speed: 1.0",
           "about": "a state that blends clips by a number: clips: [[0.0, :Idle], [5.0, :Run]]"
+        },
+        {
+          "name": "blend_2d",
+          "args": "name, parameters:, clips:, loop: true, speed: 1.0",
+          "about": "a rectangular two-dimensional grid: parameters: [:x, :y], clips: [[[x, y], :Clip], ...]"
         },
         {
           "name": "transition",
@@ -1736,6 +1950,12 @@
           "about": "adds particles; returns how many (size, color and alpha may be lists over their life)"
         },
         {
+          "name": "emitter",
+          "static": true,
+          "args": "object, rate: 24, offset: Vector3.zero, **settings",
+          "about": "starts a continuous local effect; returns a Particles::Emitter handle; uses burst settings except count"
+        },
+        {
           "name": "count",
           "static": true,
           "about": "how many are alive"
@@ -1743,15 +1963,32 @@
         {
           "name": "clear",
           "static": true,
-          "about": "removes them all"
+          "about": "removes all particles and stops every emitter"
         }
       ],
       "internal": [
         "colors",
         "list_of_colors?",
-        "numbers"
+        "numbers",
+        "parameters"
       ],
-      "guide": "gameplay.md#over-their-life"
+      "guide": "gameplay.md#sparks-dust-and-smoke",
+      "notes": "Emitters follow game time and stop on object destruction or scene changes. They are local visual effects, not replicated. Without a presenter, creation returns an inactive handle and no emitter is allocated or simulated. Births follow ordinary movement; movement over 10 meters per update starts them at the destination. Up to 256 emitters fairly share 4096 live particles; missed births are dropped."
+    },
+    {
+      "name": "Particles::Emitter",
+      "about": "A continuous particle effect attached to an object, returned by Particles.emitter.",
+      "methods": [
+        {
+          "name": "active?",
+          "about": "whether this emitter is still emitting from a live object"
+        },
+        {
+          "name": "stop",
+          "about": "stops new births; existing particles finish their lives"
+        }
+      ],
+      "guide": "gameplay.md#sparks-dust-and-smoke"
     },
     {
       "name": "Scatter",

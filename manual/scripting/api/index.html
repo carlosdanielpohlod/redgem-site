@@ -501,6 +501,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mcp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MCP tools
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -868,6 +896,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#joint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Joint
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#charactercontroller" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1048,6 +1087,17 @@
     <span class="md-ellipsis">
       
         Particles
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#particlesemitter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Particles::Emitter
       
     </span>
   </a>
@@ -1492,6 +1542,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#joint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Joint
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#charactercontroller" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1679,6 +1740,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#particlesemitter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Particles::Emitter
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#scatter" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1838,7 +1910,11 @@
 </tr>
 <tr>
 <td><a href="#physics"><code>Physics</code></a></td>
-<td>Questions to the physics world.</td>
+<td>Questions to the physics world: rays, moving shapes and shapes in place.</td>
+</tr>
+<tr>
+<td><a href="#joint"><code>Joint</code></a></td>
+<td>What holds two bodies together, or one to the world (made by Physics.joint).</td>
 </tr>
 <tr>
 <td><a href="#charactercontroller"><code>CharacterController</code></a></td>
@@ -1846,7 +1922,7 @@
 </tr>
 <tr>
 <td><a href="#rigidbody"><code>Rigidbody</code></a></td>
-<td>The body of an object with body = "dynamic" or "kinematic".</td>
+<td>The body of an object with body = "dynamic" or "kinematic" (or a vehicle's chassis).</td>
 </tr>
 <tr>
 <td><a href="#vehicle"><code>Vehicle</code></a></td>
@@ -1907,6 +1983,10 @@
 <tr>
 <td><a href="#particles"><code>Particles</code></a></td>
 <td>Short-lived sparks, smoke and dust.</td>
+</tr>
+<tr>
+<td><a href="#particlesemitter"><code>Particles::Emitter</code></a></td>
+<td>A continuous particle effect attached to an object, returned by Particles.emitter.</td>
 </tr>
 <tr>
 <td><a href="#scatter"><code>Scatter</code></a></td>
@@ -2133,10 +2213,37 @@
 <li><code>Time.scale = value</code>: slows or speeds the game; 0 pauses it</li>
 </ul>
 <h2 id="physics">Physics<a class="headerlink" href="#physics" title="Permanent link">&para;</a></h2>
-<p>Questions to the physics world. See <a href="../gameplay/">gameplay.md</a>.</p>
+<p>Questions to the physics world: rays, moving shapes and shapes in place. See <a href="../gameplay/">gameplay.md</a>.</p>
 <ul>
-<li><code>Physics.raycast(origin, direction, max_distance = 1000, ignore = nil)</code>: the first thing a ray hits: {object:, point:, normal:, distance:}, or nil</li>
+<li><code>Physics.raycast(origin, direction, max_distance = 1000, skip = nil, layers: nil, ignore: nil)</code>: the first thing a ray hits: {object:, point:, normal:, distance:}, or nil (skip: an object it sees through)</li>
+<li><code>Physics.raycast_all(origin, direction, max_distance = 1000, layers: nil, ignore: nil)</code>: everything a ray hits, nearest first</li>
+<li><code>Physics.sphere_cast(from, to, radius, layers: nil, ignore: nil)</code>: the first thing a ball moving from <code>from</code> to <code>to</code> touches, or nil</li>
+<li><code>Physics.box_cast(from, to, size, rotation: nil, layers: nil, ignore: nil)</code>: the same for a box (its whole size; rotation in degrees)</li>
+<li><code>Physics.capsule_cast(from, to, radius, height, rotation: nil, layers: nil, ignore: nil)</code>: the same for an upright capsule (height end to end)</li>
+<li><code>Physics.overlap_sphere(center, radius, layers: nil, ignore: nil)</code>: the hits of everything inside a ball, nearest first</li>
+<li><code>Physics.overlap_box(center, size, rotation: nil, layers: nil, ignore: nil)</code>: the same inside a box</li>
+<li><code>Physics.overlap_capsule(center, radius, height, rotation: nil, layers: nil, ignore: nil)</code>: the same inside a capsule</li>
+<li><code>Physics.layers</code>: the game's collision layers, as Symbols (game.json's physics layers)</li>
+<li><code>Physics.joint(kind, object, other = nil, anchor: nil, other_anchor: nil, axis: nil, limits: nil, motor_speed: nil, motor_torque: nil, min: nil, max: nil, spring: nil, damping: nil, break_force: nil)</code>: joins two objects, or one to the world (other nil): :fixed, :hinge, :slider, :point or :distance</li>
 </ul>
+<p><code>layers:</code> is a layer's name or a list of them (every layer when nil); <code>ignore:</code> is an object or a list of objects to see through. Hits are <code>{object:, point:, normal:, distance:}</code>, each object once, nearest first, at most 64; triggers are never hit. A cast that starts inside something hits it at distance 0.</p>
+<h2 id="joint">Joint<a class="headerlink" href="#joint" title="Permanent link">&para;</a></h2>
+<p>What holds two bodies together, or one to the world (made by Physics.joint). See <a href="../gameplay/">gameplay.md</a>.</p>
+<ul>
+<li><code>kind</code>: :fixed, :hinge, :slider, :point or :distance</li>
+<li><code>object</code>: the object it holds</li>
+<li><code>other</code>: the other object it holds, or nil for the world</li>
+<li><code>alive?</code>: whether it still holds them</li>
+<li><code>broken?</code>: whether it was pulled past its break force</li>
+<li><code>remove</code>: lets go</li>
+<li><code>enabled?</code>: whether it holds right now</li>
+<li><code>enabled = flag</code>: lets go for a while, or holds again</li>
+<li><code>break_force</code>: the pull (newtons) or twist (newton meters) it breaks at; 0 never breaks</li>
+<li><code>break_force = newtons</code>: sets the pull it breaks at</li>
+<li><code>motor(speed, torque)</code>: a hinge turns at that speed (degrees per second) with at most that torque; 0 torque lets it go</li>
+<li><code>angle</code>: how far a hinge turned from where it started, in degrees</li>
+</ul>
+<p>Points and axes are in world space; <code>anchor:</code> defaults to the object's position, <code>other_anchor:</code> (a distance joint's other end) to the other object's, <code>axis:</code> to up. A hinge's <code>limits:</code> are degrees [low, high] from where it starts (low -180 to 0, high 0 to 180), a slider's are meters along its axis; a hinge's <code>motor_speed:</code> needs a <code>motor_torque:</code>. A distance joint keeps between <code>min:</code> (0) and <code>max:</code> (how far apart the ends are) apart, springy with <code>spring:</code> (hertz) and <code>damping:</code>. Each kind refuses options it has no use for, and <code>motor</code> and <code>angle</code> raise for anything but a hinge. A joint needs a dynamic body at one end (one whose bodies were all made kinematic since holds nothing until one is dynamic again); it goes when either object is destroyed or the scene changes.</p>
 <h2 id="charactercontroller">CharacterController<a class="headerlink" href="#charactercontroller" title="Permanent link">&para;</a></h2>
 <p>The body of an object with body = "character": walks, jumps, climbs steps. See <a href="../gameplay/">gameplay.md</a>.</p>
 <ul>
@@ -2144,14 +2251,34 @@
 <li><code>jump(speed)</code>: jumps up at that speed</li>
 <li><code>grounded?</code>: whether it stands on something</li>
 <li><code>velocity</code>: its velocity</li>
+<li><code>layer</code>: its collision layer, a Symbol</li>
+<li><code>layer = name</code>: moves it to another collision layer</li>
 </ul>
 <h2 id="rigidbody">Rigidbody<a class="headerlink" href="#rigidbody" title="Permanent link">&para;</a></h2>
-<p>The body of an object with body = "dynamic" or "kinematic".</p>
+<p>The body of an object with body = "dynamic" or "kinematic" (or a vehicle's chassis). See <a href="../gameplay/">gameplay.md</a>.</p>
 <ul>
 <li><code>velocity</code>: its velocity</li>
 <li><code>velocity = vector</code>: sets its velocity</li>
 <li><code>add_impulse(vector)</code>: pushes it</li>
+<li><code>add_force(force, at: nil)</code>: pushes it during the next step (newtons); at a point (world space), it also turns it</li>
+<li><code>add_torque(torque)</code>: turns it during the next step (newton meters)</li>
+<li><code>angular_velocity</code>: how fast it spins, degrees per second around each axis</li>
+<li><code>angular_velocity = vector</code>: sets how fast it spins</li>
+<li><code>mass</code>: its mass in kilograms</li>
+<li><code>mass = kilograms</code>: changes its mass (more than 0)</li>
+<li><code>kinematic?</code>: whether scripts move it (instead of forces)</li>
+<li><code>kinematic = flag</code>: turns a dynamic body kinematic, or back</li>
+<li><code>dynamic?</code>: whether forces move it</li>
+<li><code>dynamic = flag</code>: turns a kinematic body dynamic, or back</li>
+<li><code>gravity_scale</code>: how much gravity pulls it (1 is normal)</li>
+<li><code>gravity_scale = scale</code>: 0 floats, 2 falls twice as hard</li>
+<li><code>sleep</code>: stops simulating it until something touches it</li>
+<li><code>wake</code>: simulates it again</li>
+<li><code>sleeping?</code>: whether it sleeps</li>
+<li><code>layer</code>: its collision layer, a Symbol</li>
+<li><code>layer = name</code>: moves it to another collision layer</li>
 </ul>
+<p>Forces and torques act during the next physics step only: add them every <code>fixed_update</code> to keep pushing. A body made dynamic again starts at rest. <code>kinematic=</code> and <code>dynamic=</code> raise for a vehicle.</p>
 <h2 id="vehicle">Vehicle<a class="headerlink" href="#vehicle" title="Permanent link">&para;</a></h2>
 <p>The body of an object with body = "vehicle" and wheels. See <a href="../gameplay/">gameplay.md</a>.</p>
 <ul>
@@ -2212,6 +2339,7 @@
 <li><code>Animation::Graph.new(initial:, parameters: {})</code>: a graph starting at a state, with its parameters and their defaults</li>
 <li><code>clip(name, clip, loop: true, speed: 1.0)</code>: a state that plays one clip</li>
 <li><code>blend_1d(name, parameter:, clips:, loop: true, speed: 1.0)</code>: a state that blends clips by a number: clips: [[0.0, :Idle], [5.0, :Run]]</li>
+<li><code>blend_2d(name, parameters:, clips:, loop: true, speed: 1.0)</code>: a rectangular two-dimensional grid: parameters: [:x, :y], clips: [[[x, y], :Clip], ...]</li>
 <li><code>transition(from, to, parameter:, equals: nil, above: nil, below: nil, fade: 0.0)</code>: goes from one state to another when a parameter says so</li>
 </ul>
 <h2 id="audio">Audio<a class="headerlink" href="#audio" title="Permanent link">&para;</a></h2>
@@ -2335,11 +2463,19 @@
 <li><code>focus = focus</code>: sets it</li>
 </ul>
 <h2 id="particles">Particles<a class="headerlink" href="#particles" title="Permanent link">&para;</a></h2>
-<p>Short-lived sparks, smoke and dust. See <a href="../gameplay/#over-their-life">gameplay.md#over-their-life</a>.</p>
+<p>Short-lived sparks, smoke and dust. See <a href="../gameplay/#sparks-dust-and-smoke">gameplay.md#sparks-dust-and-smoke</a>.</p>
 <ul>
 <li><code>Particles.burst(position, count:, color:, alpha:, glow:, lit:, cast_shadow:, soft:, direction:, spread:, speed:, life:, size:, gravity:, image:, frames:, fps:, spin:)</code>: adds particles; returns how many (size, color and alpha may be lists over their life)</li>
+<li><code>Particles.emitter(object, rate: 24, offset: Vector3.zero, **settings)</code>: starts a continuous local effect; returns a Particles::Emitter handle; uses burst settings except count</li>
 <li><code>Particles.count</code>: how many are alive</li>
-<li><code>Particles.clear</code>: removes them all</li>
+<li><code>Particles.clear</code>: removes all particles and stops every emitter</li>
+</ul>
+<p>Emitters follow game time and stop on object destruction or scene changes. They are local visual effects, not replicated. Without a presenter, creation returns an inactive handle and no emitter is allocated or simulated. Births follow ordinary movement; movement over 10 meters per update starts them at the destination. Up to 256 emitters fairly share 4096 live particles; missed births are dropped.</p>
+<h2 id="particlesemitter">Particles::Emitter<a class="headerlink" href="#particlesemitter" title="Permanent link">&para;</a></h2>
+<p>A continuous particle effect attached to an object, returned by Particles.emitter. See <a href="../gameplay/#sparks-dust-and-smoke">gameplay.md#sparks-dust-and-smoke</a>.</p>
+<ul>
+<li><code>active?</code>: whether this emitter is still emitting from a live object</li>
+<li><code>stop</code>: stops new births; existing particles finish their lives</li>
 </ul>
 <h2 id="scatter">Scatter<a class="headerlink" href="#scatter" title="Permanent link">&para;</a></h2>
 <p>Great numbers of copies of a mesh (grass, trees, rocks), drawn only. See <a href="../../levels/#grass-forests-and-cities">../levels.md#grass-forests-and-cities</a>.</p>

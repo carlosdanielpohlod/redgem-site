@@ -15,6 +15,7 @@
 - [Levels, lighting and Blender](https://carlosdanielpohlod.github.io/redgem-site/manual/levels/): Levels made in Blender or the editor: custom properties, physics, lighting, environment, scatter.
 - [The command line](https://carlosdanielpohlod.github.io/redgem-site/manual/command-line/): redgem scene, run, shot and check: read and change scenes as text, play with no window, take pictures, check a game.
 - [Making games with an AI assistant](https://carlosdanielpohlod.github.io/redgem-site/manual/assistants/): Making games with a coding assistant: the guide every new game gets, the commands to use, and how to keep it cheap.
+- [MCP tools](https://carlosdanielpohlod.github.io/redgem-site/manual/mcp/): MCP over stdio: scene tools, headless runs, bounded events and explicit permissions for one game.
 
 ## Scripting in Ruby
 

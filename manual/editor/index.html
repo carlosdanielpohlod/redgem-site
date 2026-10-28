@@ -458,6 +458,28 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#material-pictures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Material pictures
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#several-objects-at-once" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Several objects at once
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#scenes" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -548,6 +570,34 @@
     
   
     Making games with an AI assistant
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mcp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MCP tools
   
 
     
@@ -1019,6 +1069,28 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#material-pictures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Material pictures
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#several-objects-at-once" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Several objects at once
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#scenes" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1053,27 +1125,36 @@
 <p>The editor is built with Dear ImGui (dark theme, Inter and JetBrains Mono fonts, Font Awesome
 icons):</p>
 <ul>
-<li><strong>Toolbar</strong>: move / rotate / scale gizmos, local or world axes, grid snapping (or hold Ctrl while
-  dragging), Play / Pause / Stop, and Build.</li>
-<li><strong>Hierarchy</strong>: the object tree with search. Click to select, double click to frame, drag onto
-  another object to parent it (or onto empty space to unparent), right click for actions and to
-  create objects. Scripts and models from the Project panel can be dropped on it.</li>
+<li><strong>Toolbar</strong>: move / rotate / scale gizmos, local or world axes, the pivot several selected objects
+  turn and scale around (their middle, or the first one selected), grid snapping (or hold Ctrl
+  while dragging), Play / Pause / Stop, and Build.</li>
+<li><strong>Hierarchy</strong>: the object tree with search. Click to select, Ctrl+click to add an object to the
+  selection or take it away, Shift+click to select every row from the last one clicked; double
+  click to frame, drag onto another object to parent it (or onto empty space to unparent; a row of
+  the selection takes the whole selection along), right click for actions (on the whole selection) and to create objects. Scripts and models from the
+  Project panel can be dropped on it.</li>
 <li><strong>Scene</strong>: hold the right mouse button and use WASD/QE to fly, wheel to dolly, F to frame the
-  selection, click to pick objects, W / E / R switch the gizmo. Drop a model on the ground to place
-  it there, or a script on an object to attach it.</li>
+  selection, click to pick objects (Ctrl or Shift + click adds or takes away), drag a rectangle to
+  select what shows inside it (with Ctrl or Shift held, added to the selection), W / E / R switch
+  the gizmo. Drop a model on the ground to place it there, or a script on an object to attach it.</li>
 <li><strong>Inspector</strong>: name, tag, visible, <em>Template</em> (hidden in the game, copied with <code>Scene.spawn</code>), then
-  one card per component: Transform, Mesh with its materials (color, metallic, roughness, emission),
+  one card per component: Transform, Mesh with its materials (color, metallic, roughness, emission
+  and their pictures, see <a href="#material-pictures">Material pictures</a>),
   Light (type, color, intensity, range), Camera (field of view, clipping), one card per Ruby script,
   Physics (body, trigger, collider, mass), vehicle wheels and custom properties. <strong>Add Component</strong>
-  adds scripts (existing or new), a physics body, a trigger or a property.</li>
+  adds scripts (existing or new), a physics body, a trigger or a property. With several objects
+  selected it shows what they have in common: tag, visible, <em>Template</em> and the Transform, a dash
+  where their values differ. An edit applies to all of them.</li>
 <li><strong>GameObject menu</strong>: terrain you sculpt with a brush (see <a href="../levels/#terrain">Levels</a>), empty
   objects, cube / sphere / plane / cylinder / capsule (with colliders),
   directional / point / spot lights, cameras, and the game's models.</li>
-<li><strong>Your own models and sounds</strong>: drop <code>.glb</code> files (exported from Blender) and <code>.wav</code> / <code>.ogg</code> /
-  <code>.mp3</code> / <code>.flac</code> files from your file manager onto the editor window. They are copied into the
-  game's <code>models/</code> and <code>sounds/</code> folders and show up in the Project panel.</li>
-<li><strong>Project</strong>: the game's scripts, models, sounds and scenes. Double click a script to edit it, a
-  model to add it to the scene, a sound to hear it, a scene to open it (see <a href="#scenes">Scenes</a>).
+<li><strong>Your own models, sounds and pictures</strong>: drop <code>.glb</code> files (exported from Blender), <code>.wav</code> /
+  <code>.ogg</code> / <code>.mp3</code> / <code>.flac</code> files and <code>.png</code> / <code>.jpg</code> / <code>.jpeg</code> / <code>.webp</code> pictures from your file
+  manager onto the editor window. They are copied into the game's <code>models/</code>, <code>sounds/</code> and
+  <code>images/</code> folders and show up in the Project panel.</li>
+<li><strong>Project</strong>: the game's scripts, models, sounds, scenes and images. Double click a script to edit
+  it, a model to add it to the scene, a sound to hear it, a scene to open it (see <a href="#scenes">Scenes</a>),
+  a picture to see it in your system's viewer.
   <em>New script</em> creates a <code>Behaviour</code> from a template, <em>New scene</em> a scene; <em>Open folder</em> shows the
   files.</li>
 <li><strong>Console</strong>: engine and Ruby output (filter by level), including script errors with backtraces.</li>
@@ -1085,9 +1166,43 @@ icons):</p>
   (Ctrl+J) to give the scene or the code more room; the toolbar's outer buttons toggle the sides.</li>
 <li><strong>Play / Pause / Stop</strong> (Ctrl+P, Esc): runs the game inside the Scene view with the current edits
   and fresh scripts; Stop restores the scene exactly as it was.</li>
-<li><strong>Ctrl+Z / Ctrl+Y</strong> undo and redo, <strong>Ctrl+D</strong> duplicate, <strong>Del</strong> delete, <strong>Ctrl+S</strong> save. Help &gt;
-  Keyboard Shortcuts lists them all. File &gt; New / Open Game goes back to the hub.</li>
+<li><strong>Ctrl+Z / Ctrl+Y</strong> undo and redo, <strong>Ctrl+D</strong> duplicate, <strong>Del</strong> delete, <strong>Ctrl+X / Ctrl+C /
+  Ctrl+V</strong> cut, copy and paste, <strong>Ctrl+S</strong> save. Help &gt; Keyboard Shortcuts lists them all. File &gt;
+  New / Open Game goes back to the hub.</li>
 </ul>
+<h2 id="material-pictures">Material pictures<a class="headerlink" href="#material-pictures" title="Permanent link">&para;</a></h2>
+<p>Under a material's color, metallic, roughness and emission, the Inspector lists its five texture
+slots, each with the picture it shows or <em>None</em>:</p>
+<ul>
+<li><strong>Color map</strong>: the surface's colors, tinted by the material's color.</li>
+<li><strong>Surface map</strong>: roughness in the green channel and metalness in the blue one (glTF's
+  metallic-roughness map), scaled by the sliders.</li>
+<li><strong>Normal map</strong>: small bumps and grooves, as a tangent-space normal map.</li>
+<li><strong>Occlusion map</strong>: how much ambient light reaches each spot, in the red channel.</li>
+<li><strong>Glow map</strong>: where the surface glows, tinted by the emission color.</li>
+</ul>
+<p>Click a slot to pick one of the pictures of the game's <code>images/</code> folder (or <em>None</em>), or drag a
+picture from the Project panel's Images onto it. The picture goes inside the scene's <code>.glb</code> (the
+same picture used twice is stored once), so the scene still shows it in Blender and when copied to
+another scene; a picture no material shows any more is left out when the scene is saved. Each
+change is one undo step. PNG, JPEG and still WebP pictures can be used.</p>
+<h2 id="several-objects-at-once">Several objects at once<a class="headerlink" href="#several-objects-at-once" title="Permanent link">&para;</a></h2>
+<p>Everything selected moves, turns and scales together with the gizmo (around the middle of the
+selection, or around the first object selected: the toolbar's pivot button; a scale goes along the
+pivot's axes, and an object turned another way and stretched unevenly takes the nearest placement
+without shear), and Duplicate, Delete,
+Cut, Copy and Paste act on all of it. A child goes along with its selected parent. Each of these is
+one undo step, however many objects it touches.</p>
+<p><strong>Copy</strong> takes the selected objects with everything under them: their meshes, materials, pictures,
+skeletons and animations, scripts and properties, lights and cameras. <strong>Paste</strong> (Ctrl+V) puts them
+next to the selected object, or at the top level when nothing is selected; <strong>Paste as Child</strong>
+(Ctrl+Shift+V, or the Hierarchy's menu) puts them under the selected object. They land where they
+were in the world, and a name that is already taken gets a number (<code>Crate.001</code>). Paste works in the
+scene they came from, in another scene of the game (open it and paste), and in another editor
+window: the copy goes on the system's clipboard as text. A copy bigger than 64 MB stays in the
+editor's own clipboard and pastes only in the window it was copied in.</p>
+<p>A pasted object has its own copy of its meshes and pictures, even in the scene it was copied from
+(Duplicate shares them instead).</p>
 <p>Undo goes back up to 200 steps, and keeps at most 256 MB for them (its copies of the objects and
 terrains, and what deleted objects and undone imports were made of: vertices, pictures and their
 bytes in the scene's file; an estimate, counted as each step begins): past either, the oldest steps

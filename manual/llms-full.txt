@@ -237,27 +237,36 @@ Page: https://carlosdanielpohlod.github.io/redgem-site/manual/editor/
 The editor is built with Dear ImGui (dark theme, Inter and JetBrains Mono fonts, Font Awesome
 icons):
 
-* **Toolbar**: move / rotate / scale gizmos, local or world axes, grid snapping (or hold Ctrl while
-  dragging), Play / Pause / Stop, and Build.
-* **Hierarchy**: the object tree with search. Click to select, double click to frame, drag onto
-  another object to parent it (or onto empty space to unparent), right click for actions and to
-  create objects. Scripts and models from the Project panel can be dropped on it.
+* **Toolbar**: move / rotate / scale gizmos, local or world axes, the pivot several selected objects
+  turn and scale around (their middle, or the first one selected), grid snapping (or hold Ctrl
+  while dragging), Play / Pause / Stop, and Build.
+* **Hierarchy**: the object tree with search. Click to select, Ctrl+click to add an object to the
+  selection or take it away, Shift+click to select every row from the last one clicked; double
+  click to frame, drag onto another object to parent it (or onto empty space to unparent; a row of
+  the selection takes the whole selection along), right click for actions (on the whole selection) and to create objects. Scripts and models from the
+  Project panel can be dropped on it.
 * **Scene**: hold the right mouse button and use WASD/QE to fly, wheel to dolly, F to frame the
-  selection, click to pick objects, W / E / R switch the gizmo. Drop a model on the ground to place
-  it there, or a script on an object to attach it.
+  selection, click to pick objects (Ctrl or Shift + click adds or takes away), drag a rectangle to
+  select what shows inside it (with Ctrl or Shift held, added to the selection), W / E / R switch
+  the gizmo. Drop a model on the ground to place it there, or a script on an object to attach it.
 * **Inspector**: name, tag, visible, *Template* (hidden in the game, copied with `Scene.spawn`), then
-  one card per component: Transform, Mesh with its materials (color, metallic, roughness, emission),
+  one card per component: Transform, Mesh with its materials (color, metallic, roughness, emission
+  and their pictures, see [Material pictures](#material-pictures)),
   Light (type, color, intensity, range), Camera (field of view, clipping), one card per Ruby script,
   Physics (body, trigger, collider, mass), vehicle wheels and custom properties. **Add Component**
-  adds scripts (existing or new), a physics body, a trigger or a property.
+  adds scripts (existing or new), a physics body, a trigger or a property. With several objects
+  selected it shows what they have in common: tag, visible, *Template* and the Transform, a dash
+  where their values differ. An edit applies to all of them.
 * **GameObject menu**: terrain you sculpt with a brush (see [Levels](levels.md#terrain)), empty
   objects, cube / sphere / plane / cylinder / capsule (with colliders),
   directional / point / spot lights, cameras, and the game's models.
-* **Your own models and sounds**: drop `.glb` files (exported from Blender) and `.wav` / `.ogg` /
-  `.mp3` / `.flac` files from your file manager onto the editor window. They are copied into the
-  game's `models/` and `sounds/` folders and show up in the Project panel.
-* **Project**: the game's scripts, models, sounds and scenes. Double click a script to edit it, a
-  model to add it to the scene, a sound to hear it, a scene to open it (see [Scenes](#scenes)).
+* **Your own models, sounds and pictures**: drop `.glb` files (exported from Blender), `.wav` /
+  `.ogg` / `.mp3` / `.flac` files and `.png` / `.jpg` / `.jpeg` / `.webp` pictures from your file
+  manager onto the editor window. They are copied into the game's `models/`, `sounds/` and
+  `images/` folders and show up in the Project panel.
+* **Project**: the game's scripts, models, sounds, scenes and images. Double click a script to edit
+  it, a model to add it to the scene, a sound to hear it, a scene to open it (see [Scenes](#scenes)),
+  a picture to see it in your system's viewer.
   *New script* creates a `Behaviour` from a template, *New scene* a scene; *Open folder* shows the
   files.
 * **Console**: engine and Ruby output (filter by level), including script errors with backtraces.
@@ -269,8 +278,48 @@ icons):
   (Ctrl+J) to give the scene or the code more room; the toolbar's outer buttons toggle the sides.
 * **Play / Pause / Stop** (Ctrl+P, Esc): runs the game inside the Scene view with the current edits
   and fresh scripts; Stop restores the scene exactly as it was.
-* **Ctrl+Z / Ctrl+Y** undo and redo, **Ctrl+D** duplicate, **Del** delete, **Ctrl+S** save. Help >
-  Keyboard Shortcuts lists them all. File > New / Open Game goes back to the hub.
+* **Ctrl+Z / Ctrl+Y** undo and redo, **Ctrl+D** duplicate, **Del** delete, **Ctrl+X / Ctrl+C /
+  Ctrl+V** cut, copy and paste, **Ctrl+S** save. Help > Keyboard Shortcuts lists them all. File >
+  New / Open Game goes back to the hub.
+
+## Material pictures
+
+Under a material's color, metallic, roughness and emission, the Inspector lists its five texture
+slots, each with the picture it shows or *None*:
+
+* **Color map**: the surface's colors, tinted by the material's color.
+* **Surface map**: roughness in the green channel and metalness in the blue one (glTF's
+  metallic-roughness map), scaled by the sliders.
+* **Normal map**: small bumps and grooves, as a tangent-space normal map.
+* **Occlusion map**: how much ambient light reaches each spot, in the red channel.
+* **Glow map**: where the surface glows, tinted by the emission color.
+
+Click a slot to pick one of the pictures of the game's `images/` folder (or *None*), or drag a
+picture from the Project panel's Images onto it. The picture goes inside the scene's `.glb` (the
+same picture used twice is stored once), so the scene still shows it in Blender and when copied to
+another scene; a picture no material shows any more is left out when the scene is saved. Each
+change is one undo step. PNG, JPEG and still WebP pictures can be used.
+
+## Several objects at once
+
+Everything selected moves, turns and scales together with the gizmo (around the middle of the
+selection, or around the first object selected: the toolbar's pivot button; a scale goes along the
+pivot's axes, and an object turned another way and stretched unevenly takes the nearest placement
+without shear), and Duplicate, Delete,
+Cut, Copy and Paste act on all of it. A child goes along with its selected parent. Each of these is
+one undo step, however many objects it touches.
+
+**Copy** takes the selected objects with everything under them: their meshes, materials, pictures,
+skeletons and animations, scripts and properties, lights and cameras. **Paste** (Ctrl+V) puts them
+next to the selected object, or at the top level when nothing is selected; **Paste as Child**
+(Ctrl+Shift+V, or the Hierarchy's menu) puts them under the selected object. They land where they
+were in the world, and a name that is already taken gets a number (`Crate.001`). Paste works in the
+scene they came from, in another scene of the game (open it and paste), and in another editor
+window: the copy goes on the system's clipboard as text. A copy bigger than 64 MB stays in the
+editor's own clipboard and pastes only in the window it was copied in.
+
+A pasted object has its own copy of its meshes and pictures, even in the scene it was copied from
+(Duplicate shares them instead).
 
 Undo goes back up to 200 steps, and keeps at most 256 MB for them (its copies of the objects and
 terrains, and what deleted objects and undone imports were made of: vertices, pictures and their
@@ -577,7 +626,8 @@ regenerates a whole level from code; `tools/blender/scene_kit.py` has helpers to
 | `wheel`    | `true`                                         | On a child of a `vehicle`: it becomes a wheel (model it with its axle along X) |
 | `collider` | `box`, `sphere`, `capsule`, `mesh`             | Shape, sized from the mesh bounds × object scale. `collider` alone = static body |
 | `trigger`  | `true`                                         | Trigger volume: fires `on_trigger_enter/exit`, does not collide |
-| `mass`     | number                                         | Mass of dynamic bodies |
+| `mass`     | number                                         | Mass of dynamic bodies (and of kinematic ones, should a script make them dynamic) |
+| `layer`    | a layer of `game.json`, e.g. `"enemy"`         | Collision layer of the body or trigger: what it meets (see "Collision layers" in the gameplay recipes). Without it, `default` |
 | `tag`      | string                                         | Used by `Scene.find_all(tag)` and `game_object.tag?` |
 | `visible`  | `false`                                        | Hide the mesh (the object still exists) |
 | `prefab`   | `true`                                         | A template: hidden and inert in the game, copied by `Scene.spawn` |
@@ -702,6 +752,9 @@ Page: https://carlosdanielpohlod.github.io/redgem-site/manual/command-line/
 
 # The command line
 
+For an MCP client, `redgem mcp <game> --read-only` exposes scene and API inspection over stdio.
+See [MCP tools](mcp.md) for editing, headless runs, process events and permission options.
+
 Besides opening the editor (`redgem my_game`), playing (`redgem my_game --play`), making a game
 (`redgem new`) and building one (`redgem build`), `redgem` has tools that answer in a few lines
 of text and end: they read and change a scene, play the game with no window, take a picture of
@@ -736,10 +789,11 @@ otherwise than the object, its light or camera, the classes of its scripts, and 
 properties. Children are indented under their parent. `--depth 0` lists the top objects alone;
 `--limit N` stops after N lines (200 unless said; `--limit 0` lists all).
 
-**Naming an object.** `#12` is the object's id: its place in the scene file. A path
-(`Player/Visor`) or a name works too when only one object has it; a name several objects share is
-refused, with each of them listed by id and path. Adding or removing objects renumbers the ones
-after them, so take ids from a fresh list.
+**Naming an object.** `#12` is a persistent object identity, independent of its place in the
+scene file. A path (`Player/Visor`) or a name works too when only one object has it; a name several
+objects share is refused, with each of them listed by id and path. Identities survive saves,
+renames and reparenting. New objects get hexadecimal identities: take them from `scene list` or
+`scene add` and pass them back unchanged.
 
 | Command | What it does |
 |---------|--------------|
@@ -748,9 +802,24 @@ after them, so take ids from a fresh list.
 | `redgem scene set <game> <object> key=value...` | changes the object and saves the scene |
 | `redgem scene add <game> <name> [--from <object>] [--parent <object>] [key=value...]` | adds an empty object, or a copy of another (with its children), and saves |
 | `redgem scene remove <game> <object>` | removes the object and its children, and saves |
+| `redgem scene diff <game> --against <before.glb>` | compares the current scene with an earlier save, without changing either file |
 
 Every command takes `--scene <name>` for another scene than `scene.glb`: `--scene level2` is
 `scenes/level2.glb`.
+
+For `diff`, save a copy of the scene before editing, then pass that file to `--against`. Objects
+are matched by their persistent identities: a rename or a reordered node array does not create
+a new object. The summary counts added, removed and changed objects; details show the fields
+that changed, including placement, hierarchy, properties, materials, image bytes, geometry,
+cameras, lights, skin bindings and animation keys. Geometry and binary assets show content
+fingerprints. Unused assets and glTF data the engine does not load are outside this comparison.
+Re-encoding an image changes its fingerprint even if it looks identical.
+
+`--limit N` bounds the detail lines (50 by default, `0` for all); the summary always counts every
+object. Numeric object and material fields tolerate float differences up to 0.00001; custom
+properties and fingerprinted asset values are compared exactly. Use an earlier save of the same
+scene: independently exported scenes without persistent
+identities cannot reliably identify the same objects.
 
 What `set` (and `add`) take:
 
@@ -863,6 +932,9 @@ Page: https://carlosdanielpohlod.github.io/redgem-site/manual/assistants/
 
 # Making games with an AI assistant
 
+For an MCP client, [the stdio server](mcp.md) exposes the same developer commands through
+eight tools, with a read-only mode, an allow list and cursor-based process events.
+
 A coding assistant that works in a terminal (one that reads files and runs commands) can make a
 RedGem game with you: write behaviours, place objects in a level, play the game and read what went
 wrong. RedGem gives it what it needs in text, so it does not have to guess an API it has never
@@ -940,6 +1012,202 @@ The manual's site has `llms.txt`, an index of its pages with a line about each, 
 `llms-full.txt`, every page in one file to search. The docs build writes both
 (`tools/docs/llms_txt.py`). The API reference is also data: `redgem api --json`, and
 `docs/scripting/api.json` in the repository, which tests keep in step with the engine.
+
+## Repeating a headless session
+
+`redgem run` uses fixed steps of 1/60 s and a random seed of 0. Use `--seed N` to repeat another
+Ruby and particle random stream, including random values read while scripts first load. A seed
+is a whole number from 0 to 2147483647. Scatter requests keep their own explicit seeds. Network
+traffic, web responses and scripts that read external clocks or files are outside this replay.
+
+Keyboard input comes from a JSON file. Each event replaces the whole set of held keys before
+its zero-based frame; keys remain held until the next event. An empty list releases them:
+
+```json
+[
+  {"frame": 0, "keys": ["w"]},
+  {"frame": 30, "keys": ["w", "space"]},
+  {"frame": 31, "keys": ["w"]},
+  {"frame": 120, "keys": []}
+]
+```
+
+```sh
+redgem run my-game --seed 42 --frames 180 --input input.json \
+  --assert "Scene.find('Player').transform.position.y > -10" \
+  --print "Scene.find('Player').transform.position" --every 60
+```
+
+`--assert` evaluates a Ruby expression after every frame and fails the run at its first false or
+nil result. `--until` stops successfully when its expression becomes true; reaching the frame
+limit or quitting without satisfying it fails. Both expressions use ordinary Ruby truthiness
+(0 is true). `--print` evaluates an expression every `--every` frames (60 by default) and on the
+last frame, showing its Ruby `inspect` value with a one-based frame number. Values and total
+output are capped; increase `--every` to keep a longer run concise.
+
+Expressions run in the game's interpreter with its script timeout, and can call game APIs.
+Use them to read state: a mutation or a call to `rand` changes the session too. The order is
+input, game frame, assertion, periodic print, stop condition. On an early stop, a final print
+runs after the stop condition. A syntax error, exception or timeout in any expression fails the
+run with its frame and option. The command exits 0 on success, 1 for a failed run, and 2 for
+invalid options or an invalid input file. Input currently covers keyboard state only.
+
+## Object identities
+
+An object's `#id` identifies that object across saves, renames and changes to its parent. Removing
+another object does not renumber it. Objects made, duplicated, pasted or imported in the editor
+get new identities; undo and redo restore the same identities with the objects.
+
+A scene that has never been saved by the editor starts with numeric identities (`#0`, `#1`, and
+so on). Its next save persists them in the scene. New objects use compact hexadecimal identities.
+Always take an identity from `redgem scene list` or the result of `scene add`, and pass it back
+unchanged; it is not an array index. Names and hierarchy paths remain valid selectors too.
+
+The file keeps identities in the private `REDGEM_object_id` glTF extension, with an `id` string
+on each node. It is listed in `extensionsUsed` so other glTF tools can ignore it. The engine
+repairs invalid or duplicate identities with a warning. An external exporter that drops this
+extension creates a scene without those persistent identities; list its objects again before
+editing it. Identical names in different scenes do not identify the same object.
+
+Before editing a scene, keep a copy of its `.glb`. Afterwards, use
+`redgem scene diff . --against /path/to/before.glb` to inspect the changes by persistent identity.
+It reports object additions, removals and changed fields without writing either file. `--scene`
+chooses another scene and `--limit` caps the details; see [the command line](command-line.md).
+
+---
+
+Page: https://carlosdanielpohlod.github.io/redgem-site/manual/mcp/
+
+# MCP tools
+
+Start a local MCP server for one game:
+
+```sh
+redgem mcp /path/to/game --read-only
+```
+
+Configure your MCP client to launch the `redgem` executable with those arguments. It reads
+newline-delimited JSON-RPC from standard input and writes only protocol responses to standard
+output. Native library output goes to standard error. Closing input stops the server.
+By default it opens no listening socket and works on files. Add `--editor` to connect to an
+editor that explicitly enabled its local bridge (see below).
+
+The server supports the MCP `2026-07-28` per-request metadata protocol and the `2025-11-25`
+initialization handshake. Modern clients can discover capabilities with `server/discover` and
+must supply their protocol version and client capabilities in each request's `params._meta`.
+Legacy clients send `initialize`, then `notifications/initialized`, before using tools.
+
+## Tools and permissions
+
+| Tool | What it does |
+|------|--------------|
+| `scene_list` | Lists objects, taking optional `scene`, `limit` and `depth`. |
+| `scene_get` | Reads one `object` by persistent `#id`, unique name or hierarchy path. |
+| `scene_edit` | Takes `action` (`set`, `add`, `remove`), `object` and optional `assignments` (`key=value` strings), `from`, `parent`, `scene`. Removal requires `confirm: true`. Saves the scene file. |
+| `scene_diff` | Compares with an earlier scene file named by `against`, inside the game. |
+| `game_run` | Plays headlessly with `frames` (default 60, maximum 600), `seed`, `input`, `assert`, `until`, `print`, `every`, `scene`. |
+| `game_check` | Checks scripts, scenes and assets; does not run the game's test files. |
+| `api` | Reads the API index, a `class`, or a `search`. |
+| `events` | Reads this server's log history with `since`, `limit` (default 20, maximum 32), `level`. |
+
+`--read-only` exposes only `scene_list`, `scene_get`, `scene_diff`, `api` and `events`. It also
+rejects calls to disabled tools, even if the client remembers an earlier tool list. For a smaller
+surface, add an exact comma-separated allow list:
+
+```sh
+redgem mcp /path/to/game --read-only --allow scene_list,scene_get,api,events
+```
+
+Without `--read-only`, the tools can save edits and execute the configured game's Ruby scripts.
+Run only games you trust. A run expression can mutate state or use networking; read-only mode
+disables execution entirely. The configured game directory stays fixed for the life of the
+process. Input replay and comparison files must be regular files inside it, without symbolic
+links. These restrictions protect tooling paths; they do not sandbox native game code.
+
+Without `--editor`, edits go through the file-based scene commands. Close the editor while
+editing its files this way. Keep an earlier save and inspect `scene_diff` after an edit.
+`from` is available only in file mode; `parent` also works when adding a live empty object.
+
+## Live editor
+
+Start the editor with its bridge explicitly enabled:
+
+```sh
+redgem /path/to/game --editor-bridge
+```
+
+The terminal prints the path of a private `connection.json` in the user's RedGem data folder.
+Pass that file to the MCP server for the same game:
+
+```sh
+redgem mcp /path/to/game --editor /path/to/connection.json
+```
+
+Scene listing, object details and scene comparison now read the editor's unsaved document.
+`scene_edit` supports `set`, `add` and `remove`. `add` creates an empty object, optionally under
+`parent`, with initial `assignments`; attach scripts and properties as with the CLI. `from`
+(asset-backed duplication) remains file-only. `remove` deletes a subtree and requires
+`confirm: true`. Every call is one undo step: invalid assignments or exceptions roll it back
+without losing earlier undo/redo. Changes update the viewport and remain unsaved until `save`.
+
+The `editor` tool takes these actions:
+
+| Action | Result |
+|--------|--------|
+| `status` | Scene, play state, dirty flag, selection, undo/redo and external-conflict state. |
+| `select` | Select the requested `object`. |
+| `undo`, `redo`, `save` | Apply the corresponding editor command. Saving is explicit. |
+| `play`, `pause`, `resume`, `stop` | Control the editor's game, using its normal input, audio and viewport. |
+| `step` | Advance a paused game by exactly one fixed frame, keeping it paused. |
+| `capture` | Return the last completed viewport as an MCP PNG image, without writing a file. |
+
+`capture` accepts `max_size` (default 512, range 128–1024), the longest output side. Images are
+reduced further when necessary to stay below 128 KiB before base64 encoding. Only the scene
+viewport is captured, never the desktop or other applications. `object` is accepted only by
+`select`; `max_size` only by `capture`. Read-only mode permits `status` and `capture` only.
+
+Edits and document commands are refused while playing, during gestures/dialogs, or with an
+external file conflict pending. Play starts a copy of the unsaved scene; Stop discards that
+runtime and restores the edited document. Pause/resume/stop/step control that runtime, not the
+file. Read operations still describe the edited document, not runtime-mutated objects. An
+explicit `scene` must match the open scene; requests never switch or discard scenes.
+
+`events` reads the editor's log history. `api`, `game_run` and `game_check` remain ordinary CLI
+tools: runs/checks read saved files rather than the unsaved editor scene. Runtime object
+inspection and arbitrary live eval are not exposed by this release.
+
+The bridge binds only to IPv4 loopback and requires a random credential on every request, with
+the game directory checked at both ends. Its connection file stays outside the repository and
+is removed on clean shutdown. On POSIX it is owner-only inside an owner-only directory; on
+Windows it inherits the user's profile access controls. Treat the file as a credential granting
+control of that editor. MCP read-only and allow-list options restrict that client's calls.
+
+At most four connections are handled at once, on the editor thread between frames. Requests
+are limited to 64 KiB and replies to 256 KiB. Transport waits expire after five seconds. If an
+edit times out, it may have completed: inspect status and the object before retrying. There is
+no automatic retry or fallback to editing the file when an editor connection fails. After a
+crash a stale connection file can remain; reconnect using the new editor instance's file.
+
+## Bounded results
+
+Each request is at most 64 KiB with at most 16 JSON nesting levels. Ordinary tool text is limited
+to 8 KiB with a truncation notice; narrow the scene list or API query for more detail. Invalid
+arguments return JSON-RPC errors. A valid command that fails returns `isError: true` with the
+engine's diagnostic.
+
+Event results also contain `structuredContent`: `events`, `cursor`, `dropped`, `more` and
+`cursor_ahead`. Pass the returned cursor in the next `since`. Each event's text is capped at 256
+UTF-8 bytes, with `truncated` when shortened. The cursor belongs to this server process; it is
+not a cursor into an unrelated editor or game (with `--editor`, it belongs to that editor).
+Events include engine log messages, not raw
+standard output. Process history is bounded, so `dropped` identifies overwritten messages.
+
+Requests run one at a time. A cancellation notification cannot interrupt a native command already
+running; frame limits and the game's script budget bound headless work. A slow native operation
+can still delay completion. Clients can terminate and restart a server that stops responding.
+
+The protocol follows the official [stdio binding](https://modelcontextprotocol.io/specification/2026-07-28/basic/transports/stdio)
+and [tool messages](https://modelcontextprotocol.io/specification/2026-07-28/server/tools).
 
 ---
 
@@ -1318,6 +1586,82 @@ rigidbody.velocity = Vector3.new(0, 0, -10)
 A **kinematic** body is moved by your script (set `transform.position`) and carries what stands
 on it: platforms, lifts, doors.
 
+Forces push for one physics step, so a steady push goes in `fixed_update`:
+
+```ruby
+def fixed_update(_dt)
+  rigidbody.add_force(Vector3.up * 30.0)                                  # newtons: a hovering crate
+  rigidbody.add_force(transform.forward * 5.0, at: transform.position + Vector3.up)   # also tips it
+  rigidbody.add_torque(Vector3.new(0, 2, 0))                              # spins it around y
+end
+```
+
+`rigidbody.mass`, `gravity_scale` (0 floats), `angular_velocity` (degrees per second) can be read
+and changed while the game runs. `rigidbody.kinematic = true` hands a falling crate to your script
+(a crane picks it up); `rigidbody.dynamic = true` drops it again, at rest. `rigidbody.sleep` keeps
+a body still until something bumps it or `wake` is called.
+
+## Doors, ropes and chains: joints
+
+A joint holds two bodies together, or one to the world (give `nil` as the other). Points and axes
+are in world space.
+
+A door on a hinge that pushes open up to 110 degrees, and that its motor pulls shut (back to the
+0 degrees it started at, its other limit):
+
+```ruby
+class Door < Behaviour
+  def start
+    pin = transform.position + Vector3.left * 0.5            # its left edge
+    @hinge = Physics.joint(:hinge, game_object, nil, anchor: pin, axis: Vector3.up, limits: [0, 110])
+  end
+
+  def close = @hinge.motor(-60, 50)                           # degrees per second, newton meters
+  def let_go = @hinge.motor(0, 0)
+end
+```
+
+A rope of distance joints: each link may come closer to the one above it, never farther.
+
+```ruby
+hook = Vector3.new(0, 8, 0)
+above = nil
+links.each do |link|                                          # dynamic spheres, top to bottom
+  Physics.joint(:distance, link, above, other_anchor: above ? nil : hook)
+  above = link
+end
+```
+
+`spring: 2, damping: 0.3` makes it a bungee. Other kinds: `:fixed` glues two bodies as they are,
+`:slider` lets one slide along an axis (`limits:` in meters), `:point` lets it turn every way (a
+ball and socket). `break_force: 500` breaks a joint pulled harder than 500 newtons, or twisted
+harder than 500 newton meters (`joint.broken?` then says so); `joint.remove` lets go; destroying either object removes it.
+
+## Collision layers
+
+Bullets that fly through pickups, ghosts that walk through walls: give each body a **layer** and
+say in `game.json` which layers meet. Up to 16 layers; `default` is always there.
+
+```json
+"physics": {
+  "layers": ["default", "player", "enemy", "bullet", "pickup"],
+  "collides": {"bullet": ["enemy", "default"], "pickup": ["player"]}
+}
+```
+
+A layer with no `collides` entry meets every layer; two layers meet only when each lets the other
+in, so above bullets hit enemies and walls but pass through players, pickups and other bullets,
+and pickups only notice players. Put an object on a layer with the `layer` custom property (in
+Blender or the Inspector), or from a script:
+
+```ruby
+bullet = Scene.spawn("Bullet", position: muzzle, rotation: transform.rotation)
+bullet.rigidbody.layer = :bullet
+bullet.rigidbody.velocity = transform.forward * 40.0
+```
+
+Triggers only notice bodies whose layer meets theirs, and queries look at the layers they are given.
+
 ## Drive a car
 
 Give the chassis a **vehicle** body and mark its wheel children with `wheel = true`.
@@ -1368,7 +1712,24 @@ hit = Physics.raycast(transform.position, transform.forward, 20.0, game_object)
 Debug.log("I see #{hit[:object].name} #{hit[:distance]} m away") if hit
 ```
 
-The last argument is an object the ray ignores (usually the one casting it).
+The last argument is an object the ray ignores (usually the one casting it). Every query also takes
+`layers:` (a layer or a list) and `ignore:` (an object or a list):
+
+```ruby
+# Everything a laser goes through, nearest first.
+Physics.raycast_all(eye, forward, 50.0, layers: [:enemy, :default], ignore: [game_object, gun])
+
+# Would a ball of radius 0.4 get from here to there? (nil: the way is clear)
+blocked = Physics.sphere_cast(transform.position, target, 0.4, ignore: game_object)
+
+# An explosion: everything on the enemy layer within 5 m.
+Physics.overlap_sphere(transform.position, 5.0, layers: :enemy).each do |hit|
+  hit[:object].rigidbody&.add_impulse((hit[:point] - transform.position).normalized * 20.0)
+end
+```
+
+`box_cast`, `capsule_cast`, `overlap_box` and `overlap_capsule` work the same way. Hits come
+nearest first, each object once, at most 64.
 
 ## Show text on screen
 
@@ -1532,12 +1893,31 @@ with them.
 # A coin picked up: gold sparks in every direction.
 Particles.burst(transform.position, count: 24, color: :gold, glow: true)
 
-# Smoke from an exhaust: a few gray puffs a second, drifting up in a narrow cone.
-every(0.05) do
-  Particles.burst(exhaust, count: 1, color: :gray, direction: Vector3.up, spread: 20,
-                  speed: 1.0, life: 1.5, size: 0.4, gravity: -0.05)
-end
+# Smoke follows this object, from a local exhaust offset. Old puffs stay in the world.
+@smoke = Particles.emitter(game_object, rate: 20, offset: [0, 0.5, 1], color: :gray,
+                           direction: Vector3.up, spread: 20, speed: 1.0, life: 1.5,
+                           size: 0.4, gravity: -0.05)
 ```
+
+`Particles.emitter(object, rate: 24, offset: Vector3.zero, **settings)` returns a handle with
+`active?` and `stop`. It takes the burst settings below except `count`: `rate` is particles per
+game second, greater than zero and at most 4096. Offset uses the object's full world transform;
+direction follows its world rotation. Birth positions are spread along the object's movement
+between frames. Movement over 10 meters in one update is treated as a teleport: new particles
+start at the destination. Each birth is aged and advanced by the time since its birth within
+the frame. Emitted particles move independently in world space, without inheriting the
+object's velocity. `Time.scale = 0` pauses emission.
+
+Destroying the object or changing scenes ends its emitters; stopping one leaves its existing
+particles to finish their lives. `Particles.clear` removes particles and emitters together. Up to
+256 emitters share the existing limit of 4096 live particles. When that limit is full, missed
+births are dropped rather than saved for a later burst. Priority passes to the next emitter
+that is waiting for space, so a full pool cannot permanently favor the first one. Emitter
+handles are never reused.
+
+These are local visual effects, not replicated by `NetworkSync`. Start matching effects on
+each client through gameplay events. A game running without a presenter, including a dedicated
+server, returns inactive emitter handles and does not allocate or simulate emitters.
 
 | Setting | Meaning | Default |
 |---------|---------|---------|
@@ -1578,11 +1958,13 @@ Particles.burst(chimney, count: 1, image: :smoke, lit: true, soft: 1.0, size: [0
 alpha and flipbook cell (or the circular dot mask without an image). Fragments whose combined
 texture and particle alpha is below 0.5 cast no shadow. Fading can therefore shrink or remove a
 shadow abruptly. This is a sprite approximation, not volumetric smoke: overlapping particles do
-not accumulate density, particles do not receive shadows, and `soft:` only fades the color pass
+not accumulate density, and `soft:` only fades the color pass
 against the camera's scene depth. Point lights do not cast particle shadows.
 
 Lit particles are lit at their corners by the sun, the sky and the nearest lights, as a puff lit
-on about half of it; they take no shadows yet.
+on about half of it. `lit: true` also receives the scene's filtered sun shadows, using the same
+shadow cascades as surfaces. Sun shadowing leaves sky and point-light contributions intact.
+Unlit particles, including unlit glowing ones, keep their own color in shadows.
 
 ## Light that flickers and fades
 
@@ -2346,9 +2728,10 @@ The scripting API of RedGem games: the classes and methods scripts use. Generate
 | [`SceneScript`](#scenescript) | Sets a level up from Ruby when it loads: scripts/<scene>_scene.rb. |
 | [`Input`](#input) | Keyboard, mouse, gamepad and touch, read every frame. |
 | [`Time`](#time) | The game's clock (added to Ruby's Time). |
-| [`Physics`](#physics) | Questions to the physics world. |
+| [`Physics`](#physics) | Questions to the physics world: rays, moving shapes and shapes in place. |
+| [`Joint`](#joint) | What holds two bodies together, or one to the world (made by Physics.joint). |
 | [`CharacterController`](#charactercontroller) | The body of an object with body = "character": walks, jumps, climbs steps. |
-| [`Rigidbody`](#rigidbody) | The body of an object with body = "dynamic" or "kinematic". |
+| [`Rigidbody`](#rigidbody) | The body of an object with body = "dynamic" or "kinematic" (or a vehicle's chassis). |
 | [`Vehicle`](#vehicle) | The body of an object with body = "vehicle" and wheels. |
 | [`Camera`](#camera) | The camera the game is seen through. |
 | [`Light`](#light) | game_object.light: the light an object shines with. |
@@ -2364,6 +2747,7 @@ The scripting API of RedGem games: the classes and methods scripts use. Generate
 | [`GameMenu`](#gamemenu) | A behaviour: title screen, pause menu, end screen and settings screen with its controls page; arrows or the D-pad move the focus, Enter or A picks. |
 | [`GameMenu::Screen`](#gamemenuscreen) | A screen of the GameMenu. |
 | [`Particles`](#particles) | Short-lived sparks, smoke and dust. |
+| [`Particles::Emitter`](#particlesemitter) | A continuous particle effect attached to an object, returned by Particles.emitter. |
 | [`Scatter`](#scatter) | Great numbers of copies of a mesh (grass, trees, rocks), drawn only. |
 | [`Save`](#save) | What the game keeps between runs. |
 | [`HTTP`](#http) | Web requests; the answer comes to the block. |
@@ -2575,9 +2959,39 @@ The game's clock (added to Ruby's Time).
 
 ## Physics
 
-Questions to the physics world. See [gameplay.md](gameplay.md).
+Questions to the physics world: rays, moving shapes and shapes in place. See [gameplay.md](gameplay.md).
 
-- `Physics.raycast(origin, direction, max_distance = 1000, ignore = nil)`: the first thing a ray hits: {object:, point:, normal:, distance:}, or nil
+- `Physics.raycast(origin, direction, max_distance = 1000, skip = nil, layers: nil, ignore: nil)`: the first thing a ray hits: {object:, point:, normal:, distance:}, or nil (skip: an object it sees through)
+- `Physics.raycast_all(origin, direction, max_distance = 1000, layers: nil, ignore: nil)`: everything a ray hits, nearest first
+- `Physics.sphere_cast(from, to, radius, layers: nil, ignore: nil)`: the first thing a ball moving from `from` to `to` touches, or nil
+- `Physics.box_cast(from, to, size, rotation: nil, layers: nil, ignore: nil)`: the same for a box (its whole size; rotation in degrees)
+- `Physics.capsule_cast(from, to, radius, height, rotation: nil, layers: nil, ignore: nil)`: the same for an upright capsule (height end to end)
+- `Physics.overlap_sphere(center, radius, layers: nil, ignore: nil)`: the hits of everything inside a ball, nearest first
+- `Physics.overlap_box(center, size, rotation: nil, layers: nil, ignore: nil)`: the same inside a box
+- `Physics.overlap_capsule(center, radius, height, rotation: nil, layers: nil, ignore: nil)`: the same inside a capsule
+- `Physics.layers`: the game's collision layers, as Symbols (game.json's physics layers)
+- `Physics.joint(kind, object, other = nil, anchor: nil, other_anchor: nil, axis: nil, limits: nil, motor_speed: nil, motor_torque: nil, min: nil, max: nil, spring: nil, damping: nil, break_force: nil)`: joins two objects, or one to the world (other nil): :fixed, :hinge, :slider, :point or :distance
+
+`layers:` is a layer's name or a list of them (every layer when nil); `ignore:` is an object or a list of objects to see through. Hits are `{object:, point:, normal:, distance:}`, each object once, nearest first, at most 64; triggers are never hit. A cast that starts inside something hits it at distance 0.
+
+## Joint
+
+What holds two bodies together, or one to the world (made by Physics.joint). See [gameplay.md](gameplay.md).
+
+- `kind`: :fixed, :hinge, :slider, :point or :distance
+- `object`: the object it holds
+- `other`: the other object it holds, or nil for the world
+- `alive?`: whether it still holds them
+- `broken?`: whether it was pulled past its break force
+- `remove`: lets go
+- `enabled?`: whether it holds right now
+- `enabled = flag`: lets go for a while, or holds again
+- `break_force`: the pull (newtons) or twist (newton meters) it breaks at; 0 never breaks
+- `break_force = newtons`: sets the pull it breaks at
+- `motor(speed, torque)`: a hinge turns at that speed (degrees per second) with at most that torque; 0 torque lets it go
+- `angle`: how far a hinge turned from where it started, in degrees
+
+Points and axes are in world space; `anchor:` defaults to the object's position, `other_anchor:` (a distance joint's other end) to the other object's, `axis:` to up. A hinge's `limits:` are degrees [low, high] from where it starts (low -180 to 0, high 0 to 180), a slider's are meters along its axis; a hinge's `motor_speed:` needs a `motor_torque:`. A distance joint keeps between `min:` (0) and `max:` (how far apart the ends are) apart, springy with `spring:` (hertz) and `damping:`. Each kind refuses options it has no use for, and `motor` and `angle` raise for anything but a hinge. A joint needs a dynamic body at one end (one whose bodies were all made kinematic since holds nothing until one is dynamic again); it goes when either object is destroyed or the scene changes.
 
 ## CharacterController
 
@@ -2587,14 +3001,35 @@ The body of an object with body = "character": walks, jumps, climbs steps. See [
 - `jump(speed)`: jumps up at that speed
 - `grounded?`: whether it stands on something
 - `velocity`: its velocity
+- `layer`: its collision layer, a Symbol
+- `layer = name`: moves it to another collision layer
 
 ## Rigidbody
 
-The body of an object with body = "dynamic" or "kinematic".
+The body of an object with body = "dynamic" or "kinematic" (or a vehicle's chassis). See [gameplay.md](gameplay.md).
 
 - `velocity`: its velocity
 - `velocity = vector`: sets its velocity
 - `add_impulse(vector)`: pushes it
+- `add_force(force, at: nil)`: pushes it during the next step (newtons); at a point (world space), it also turns it
+- `add_torque(torque)`: turns it during the next step (newton meters)
+- `angular_velocity`: how fast it spins, degrees per second around each axis
+- `angular_velocity = vector`: sets how fast it spins
+- `mass`: its mass in kilograms
+- `mass = kilograms`: changes its mass (more than 0)
+- `kinematic?`: whether scripts move it (instead of forces)
+- `kinematic = flag`: turns a dynamic body kinematic, or back
+- `dynamic?`: whether forces move it
+- `dynamic = flag`: turns a kinematic body dynamic, or back
+- `gravity_scale`: how much gravity pulls it (1 is normal)
+- `gravity_scale = scale`: 0 floats, 2 falls twice as hard
+- `sleep`: stops simulating it until something touches it
+- `wake`: simulates it again
+- `sleeping?`: whether it sleeps
+- `layer`: its collision layer, a Symbol
+- `layer = name`: moves it to another collision layer
+
+Forces and torques act during the next physics step only: add them every `fixed_update` to keep pushing. A body made dynamic again starts at rest. `kinematic=` and `dynamic=` raise for a vehicle.
 
 ## Vehicle
 
@@ -2663,6 +3098,7 @@ Named states and transitions for one character (animation.use(graph)). See [anim
 - `Animation::Graph.new(initial:, parameters: {})`: a graph starting at a state, with its parameters and their defaults
 - `clip(name, clip, loop: true, speed: 1.0)`: a state that plays one clip
 - `blend_1d(name, parameter:, clips:, loop: true, speed: 1.0)`: a state that blends clips by a number: clips: [[0.0, :Idle], [5.0, :Run]]
+- `blend_2d(name, parameters:, clips:, loop: true, speed: 1.0)`: a rectangular two-dimensional grid: parameters: [:x, :y], clips: [[[x, y], :Clip], ...]
 - `transition(from, to, parameter:, equals: nil, above: nil, below: nil, fade: 0.0)`: goes from one state to another when a parameter says so
 
 ## Audio
@@ -2798,11 +3234,21 @@ A screen of the GameMenu. See [gameplay.md#pause-and-the-flow-between-screens](g
 
 ## Particles
 
-Short-lived sparks, smoke and dust. See [gameplay.md#over-their-life](gameplay.md#over-their-life).
+Short-lived sparks, smoke and dust. See [gameplay.md#sparks-dust-and-smoke](gameplay.md#sparks-dust-and-smoke).
 
 - `Particles.burst(position, count:, color:, alpha:, glow:, lit:, cast_shadow:, soft:, direction:, spread:, speed:, life:, size:, gravity:, image:, frames:, fps:, spin:)`: adds particles; returns how many (size, color and alpha may be lists over their life)
+- `Particles.emitter(object, rate: 24, offset: Vector3.zero, **settings)`: starts a continuous local effect; returns a Particles::Emitter handle; uses burst settings except count
 - `Particles.count`: how many are alive
-- `Particles.clear`: removes them all
+- `Particles.clear`: removes all particles and stops every emitter
+
+Emitters follow game time and stop on object destruction or scene changes. They are local visual effects, not replicated. Without a presenter, creation returns an inactive handle and no emitter is allocated or simulated. Births follow ordinary movement; movement over 10 meters per update starts them at the destination. Up to 256 emitters fairly share 4096 live particles; missed births are dropped.
+
+## Particles::Emitter
+
+A continuous particle effect attached to an object, returned by Particles.emitter. See [gameplay.md#sparks-dust-and-smoke](gameplay.md#sparks-dust-and-smoke).
+
+- `active?`: whether this emitter is still emitting from a live object
+- `stop`: stops new births; existing particles finish their lives
 
 ## Scatter
 
@@ -3590,6 +4036,67 @@ run left. The first run is a ctest fixture of the second (`redgem-test --work <d
 Test fixtures are regenerated with
 `tools/blender/run.sh build_test_fixtures.py tests/fixtures`.
 
+## Continuous integration
+
+Every pull request runs these workflows (`.github/workflows/`), side by side:
+
+* **Linux** (`linux.yml`): the build, every test (the system tests in windows drawn by Mesa's
+  software renderer on a virtual display) and every linter.
+* **Windows** (`windows.yml`): the build with llvm-mingw and the tests that open no window.
+* **macOS** (`macos.yml`): the build and the tests that open no window on Apple Silicon and Intel,
+  and the editor system test.
+* **Android** (`android.yml`): the player built for arm64-v8a and x86_64 by
+  `tools/android/build_runtime.sh`, with the NDK `tools/android/fetch_toolchain.sh` pins (kept
+  between runs). Nothing runs on Android there: it catches code that only breaks that build.
+* **Sanitizers** (`sanitizers.yml`): the tests that open no window (unit and integration, the
+  testing library, Ruby, the command lines of the relay and the server) in a build with
+  AddressSanitizer, LeakSanitizer and UndefinedBehaviorSanitizer and in one with ThreadSanitizer,
+  stopping at the first finding; and a build with coverage, whose report of `src/` is the run's
+  `coverage` artifact. The system tests are not run there: drawn by a software renderer, they
+  would take hours with sanitizers on.
+
+* **Fuzzing** (`fuzz.yml`): the fuzz targets below, a minute each on a pull request, ten minutes
+  each every night.
+
+Every workflow builds with `-DREDGEM_WARNINGS_AS_ERRORS=ON`: a compiler warning in `src/` or
+`tests/` fails it (the dependencies keep theirs). Build the same way before pushing to see them
+first. A sanitized build is made and tested the same way as CI does:
+
+```bash
+cmake -S . -B build-asan -G Ninja -DCMAKE_BUILD_TYPE=RelWithDebInfo -DREDGEM_SANITIZERS=address,undefined
+cmake --build build-asan
+tools/sanitizers/run_tests.sh build-asan address     # thread: -DREDGEM_SANITIZERS=thread
+```
+
+A finding in the engine's code is fixed. One inside a library the engine is built from goes into
+the suppression file of its sanitizer (`tools/sanitizers/*.supp`), with a line saying why.
+
+Every archive `cmake/Dependencies.cmake` fetches is pinned by its SHA-256, as is the Android NDK
+(`tools/android/fetch_toolchain.sh`); a dependency fetched from git is pinned by its tag or commit. `THIRD_PARTY_LICENSES.md` is generated: after adding or
+updating a dependency, run `python3 -I tools/licenses/collect_notices.py` (after a build) and
+commit what it writes. The test `tools.license_notices_are_up_to_date` fails when it is stale.
+
+### Fuzzing
+
+The parsers of what comes from outside have fuzz targets in `tests/fuzz/` (`fuzz_<target>.cpp`):
+`gltf` (the glTF loader), `image_header` (PNG, JPEG, WebP and Radiance headers, Radiance and small
+WebP pictures decoded), `wire` (MessagePack messages and the frames they travel in),
+`http_response` (answers of web servers, in pieces) and `json_scanner` (the custom properties of
+a scene's objects). With clang, libFuzzer makes up inputs for them:
+
+```bash
+cmake -S . -B build-fuzz -G Ninja -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ \
+  -DCMAKE_BUILD_TYPE=RelWithDebInfo -DREDGEM_FUZZ=ON -DREDGEM_SANITIZERS=address,undefined
+cmake --build build-fuzz --target redgem_fuzz_targets
+tests/fuzz/run_fuzzers.sh build-fuzz 60 fuzz-work      # seconds each; what it finds is in fuzz-work/findings
+```
+
+Each target's seeds are in `tests/fuzz/corpus/<target>/`, and every build replays them
+(`redgem_fuzz_<target>_replay`, the ctest test `fuzz.<target>`). When a target finds an input that
+crashes it, fix the code and add the input to the target's corpus: its replay keeps it tested. A
+new parser of untrusted input gets a target of its own (`redgem_add_fuzz_target` in
+`tests/fuzz/CMakeLists.txt`).
+
 ## Layout
 
 ```
@@ -3771,3 +4278,17 @@ and every text of theirs is shown.
 * Mirrored objects (negative scale) are drawn inside out.
 * More vehicle options from Blender properties (drive layout, engine torque); hot reload of
   scripts while playing.
+
+### Reading the process event history
+
+The native tooling API can read logs without replacing the console sink. Include
+`core/event_journal.hpp`, take `log::event_cursor()` before an operation, then read
+`log::events_since(cursor, limit, minimum_level)`. Pass the returned `cursor` to the next read,
+including when the level filter matched nothing. Read another page while `more` is true.
+
+The process retains 512 messages, each limited to 2 KiB plus a truncation marker, and returns
+at most 128 messages per page. Text keeps whole UTF-8 characters and removes terminal control
+characters while retaining line breaks. `dropped` counts messages overwritten since the supplied
+cursor. `cursor_ahead` reports a cursor beyond this process's latest event; reset the reader to
+the returned cursor. Cursors belong to the process that issued them and do not survive a restart.
+Writes and reads are synchronized; installing a custom log sink does not disable this history.

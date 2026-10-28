@@ -16,7 +16,7 @@
         <link rel="prev" href="../command-line/">
       
       
-        <link rel="next" href="../scripting/behaviours/">
+        <link rel="next" href="../mcp/">
       
       
         
@@ -596,10 +596,60 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#repeating-a-headless-session" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Repeating a headless session
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#object-identities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Object identities
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mcp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MCP tools
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -1117,6 +1167,28 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#repeating-a-headless-session" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Repeating a headless session
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#object-identities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Object identities
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1135,6 +1207,8 @@
 
 
 <h1 id="making-games-with-an-ai-assistant">Making games with an AI assistant<a class="headerlink" href="#making-games-with-an-ai-assistant" title="Permanent link">&para;</a></h1>
+<p>For an MCP client, <a href="../mcp/">the stdio server</a> exposes the same developer commands through
+eight tools, with a read-only mode, an allow list and cursor-based process events.</p>
 <p>A coding assistant that works in a terminal (one that reads files and runs commands) can make a
 RedGem game with you: write behaviours, place objects in a level, play the game and read what went
 wrong. RedGem gives it what it needs in text, so it does not have to guess an API it has never
@@ -1232,6 +1306,53 @@ them so:</p>
 <code>llms-full.txt</code>, every page in one file to search. The docs build writes both
 (<code>tools/docs/llms_txt.py</code>). The API reference is also data: <code>redgem api --json</code>, and
 <code>docs/scripting/api.json</code> in the repository, which tests keep in step with the engine.</p>
+<h2 id="repeating-a-headless-session">Repeating a headless session<a class="headerlink" href="#repeating-a-headless-session" title="Permanent link">&para;</a></h2>
+<p><code>redgem run</code> uses fixed steps of 1/60 s and a random seed of 0. Use <code>--seed N</code> to repeat another
+Ruby and particle random stream, including random values read while scripts first load. A seed
+is a whole number from 0 to 2147483647. Scatter requests keep their own explicit seeds. Network
+traffic, web responses and scripts that read external clocks or files are outside this replay.</p>
+<p>Keyboard input comes from a JSON file. Each event replaces the whole set of held keys before
+its zero-based frame; keys remain held until the next event. An empty list releases them:</p>
+<div class="highlight"><pre><span></span><code><span class="p">[</span>
+<span class="w">  </span><span class="p">{</span><span class="nt">"frame"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nt">"keys"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"w"</span><span class="p">]},</span>
+<span class="w">  </span><span class="p">{</span><span class="nt">"frame"</span><span class="p">:</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span><span class="w"> </span><span class="nt">"keys"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"w"</span><span class="p">,</span><span class="w"> </span><span class="s2">"space"</span><span class="p">]},</span>
+<span class="w">  </span><span class="p">{</span><span class="nt">"frame"</span><span class="p">:</span><span class="w"> </span><span class="mi">31</span><span class="p">,</span><span class="w"> </span><span class="nt">"keys"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"w"</span><span class="p">]},</span>
+<span class="w">  </span><span class="p">{</span><span class="nt">"frame"</span><span class="p">:</span><span class="w"> </span><span class="mi">120</span><span class="p">,</span><span class="w"> </span><span class="nt">"keys"</span><span class="p">:</span><span class="w"> </span><span class="p">[]}</span>
+<span class="p">]</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>redgem<span class="w"> </span>run<span class="w"> </span>my-game<span class="w"> </span>--seed<span class="w"> </span><span class="m">42</span><span class="w"> </span>--frames<span class="w"> </span><span class="m">180</span><span class="w"> </span>--input<span class="w"> </span>input.json<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--assert<span class="w"> </span><span class="s2">"Scene.find('Player').transform.position.y &gt; -10"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--print<span class="w"> </span><span class="s2">"Scene.find('Player').transform.position"</span><span class="w"> </span>--every<span class="w"> </span><span class="m">60</span>
+</code></pre></div>
+<p><code>--assert</code> evaluates a Ruby expression after every frame and fails the run at its first false or
+nil result. <code>--until</code> stops successfully when its expression becomes true; reaching the frame
+limit or quitting without satisfying it fails. Both expressions use ordinary Ruby truthiness
+(0 is true). <code>--print</code> evaluates an expression every <code>--every</code> frames (60 by default) and on the
+last frame, showing its Ruby <code>inspect</code> value with a one-based frame number. Values and total
+output are capped; increase <code>--every</code> to keep a longer run concise.</p>
+<p>Expressions run in the game's interpreter with its script timeout, and can call game APIs.
+Use them to read state: a mutation or a call to <code>rand</code> changes the session too. The order is
+input, game frame, assertion, periodic print, stop condition. On an early stop, a final print
+runs after the stop condition. A syntax error, exception or timeout in any expression fails the
+run with its frame and option. The command exits 0 on success, 1 for a failed run, and 2 for
+invalid options or an invalid input file. Input currently covers keyboard state only.</p>
+<h2 id="object-identities">Object identities<a class="headerlink" href="#object-identities" title="Permanent link">&para;</a></h2>
+<p>An object's <code>#id</code> identifies that object across saves, renames and changes to its parent. Removing
+another object does not renumber it. Objects made, duplicated, pasted or imported in the editor
+get new identities; undo and redo restore the same identities with the objects.</p>
+<p>A scene that has never been saved by the editor starts with numeric identities (<code>#0</code>, <code>#1</code>, and
+so on). Its next save persists them in the scene. New objects use compact hexadecimal identities.
+Always take an identity from <code>redgem scene list</code> or the result of <code>scene add</code>, and pass it back
+unchanged; it is not an array index. Names and hierarchy paths remain valid selectors too.</p>
+<p>The file keeps identities in the private <code>REDGEM_object_id</code> glTF extension, with an <code>id</code> string
+on each node. It is listed in <code>extensionsUsed</code> so other glTF tools can ignore it. The engine
+repairs invalid or duplicate identities with a warning. An external exporter that drops this
+extension creates a scene without those persistent identities; list its objects again before
+editing it. Identical names in different scenes do not identify the same object.</p>
+<p>Before editing a scene, keep a copy of its <code>.glb</code>. Afterwards, use
+<code>redgem scene diff . --against /path/to/before.glb</code> to inspect the changes by persistent identity.
+It reports object additions, removals and changed fields without writing either file. <code>--scene</code>
+chooses another scene and <code>--limit</code> caps the details; see <a href="../command-line/">the command line</a>.</p>
 
 
 
@@ -1281,13 +1402,13 @@ them so:</p>
         
         
           
-          <a href="../scripting/behaviours/" class="md-footer__link md-footer__link--next" aria-label="Next: Behaviours">
+          <a href="../mcp/" class="md-footer__link md-footer__link--next" aria-label="Next: MCP tools">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Behaviours
+                MCP tools
               </div>
             </div>
             <div class="md-footer__button md-icon">

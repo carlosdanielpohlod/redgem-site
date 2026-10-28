@@ -605,6 +605,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mcp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MCP tools
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1135,6 +1163,8 @@
 
 
 <h1 id="the-command-line">The command line<a class="headerlink" href="#the-command-line" title="Permanent link">&para;</a></h1>
+<p>For an MCP client, <code>redgem mcp &lt;game&gt; --read-only</code> exposes scene and API inspection over stdio.
+See <a href="../mcp/">MCP tools</a> for editing, headless runs, process events and permission options.</p>
 <p>Besides opening the editor (<code>redgem my_game</code>), playing (<code>redgem my_game --play</code>), making a game
 (<code>redgem new</code>) and building one (<code>redgem build</code>), <code>redgem</code> has tools that answer in a few lines
 of text and end: they read and change a scene, play the game with no window, take a picture of
@@ -1162,10 +1192,11 @@ editor would save it.</p>
 otherwise than the object, its light or camera, the classes of its scripts, and its custom
 properties. Children are indented under their parent. <code>--depth 0</code> lists the top objects alone;
 <code>--limit N</code> stops after N lines (200 unless said; <code>--limit 0</code> lists all).</p>
-<p><strong>Naming an object.</strong> <code>#12</code> is the object's id: its place in the scene file. A path
-(<code>Player/Visor</code>) or a name works too when only one object has it; a name several objects share is
-refused, with each of them listed by id and path. Adding or removing objects renumbers the ones
-after them, so take ids from a fresh list.</p>
+<p><strong>Naming an object.</strong> <code>#12</code> is a persistent object identity, independent of its place in the
+scene file. A path (<code>Player/Visor</code>) or a name works too when only one object has it; a name several
+objects share is refused, with each of them listed by id and path. Identities survive saves,
+renames and reparenting. New objects get hexadecimal identities: take them from <code>scene list</code> or
+<code>scene add</code> and pass them back unchanged.</p>
 <table>
 <thead>
 <tr>
@@ -1194,10 +1225,26 @@ after them, so take ids from a fresh list.</p>
 <td><code>redgem scene remove &lt;game&gt; &lt;object&gt;</code></td>
 <td>removes the object and its children, and saves</td>
 </tr>
+<tr>
+<td><code>redgem scene diff &lt;game&gt; --against &lt;before.glb&gt;</code></td>
+<td>compares the current scene with an earlier save, without changing either file</td>
+</tr>
 </tbody>
 </table>
 <p>Every command takes <code>--scene &lt;name&gt;</code> for another scene than <code>scene.glb</code>: <code>--scene level2</code> is
 <code>scenes/level2.glb</code>.</p>
+<p>For <code>diff</code>, save a copy of the scene before editing, then pass that file to <code>--against</code>. Objects
+are matched by their persistent identities: a rename or a reordered node array does not create
+a new object. The summary counts added, removed and changed objects; details show the fields
+that changed, including placement, hierarchy, properties, materials, image bytes, geometry,
+cameras, lights, skin bindings and animation keys. Geometry and binary assets show content
+fingerprints. Unused assets and glTF data the engine does not load are outside this comparison.
+Re-encoding an image changes its fingerprint even if it looks identical.</p>
+<p><code>--limit N</code> bounds the detail lines (50 by default, <code>0</code> for all); the summary always counts every
+object. Numeric object and material fields tolerate float differences up to 0.00001; custom
+properties and fingerprinted asset values are compared exactly. Use an earlier save of the same
+scene: independently exported scenes without persistent
+identities cannot reliably identify the same objects.</p>
 <p>What <code>set</code> (and <code>add</code>) take:</p>
 <table>
 <thead>

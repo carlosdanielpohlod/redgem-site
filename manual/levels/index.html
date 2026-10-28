@@ -678,6 +678,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mcp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MCP tools
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1613,7 +1641,12 @@ regenerates a whole level from code; <code>tools/blender/scene_kit.py</code> has
 <tr>
 <td><code>mass</code></td>
 <td>number</td>
-<td>Mass of dynamic bodies</td>
+<td>Mass of dynamic bodies (and of kinematic ones, should a script make them dynamic)</td>
+</tr>
+<tr>
+<td><code>layer</code></td>
+<td>a layer of <code>game.json</code>, e.g. <code>"enemy"</code></td>
+<td>Collision layer of the body or trigger: what it meets (see "Collision layers" in the gameplay recipes). Without it, <code>default</code></td>
 </tr>
 <tr>
 <td><code>tag</code></td>

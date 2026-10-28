@@ -497,6 +497,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mcp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MCP tools
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -985,19 +1013,36 @@ loaded scene, state names must be unique, and every state must be reachable from
 For numeric conditions use exactly one of <code>equals:</code>, <code>above:</code> or <code>below:</code>; comparisons are strict
 for <code>above</code> and <code>below</code>. For booleans use <code>equals:</code>. The first matching transition in declaration
 order wins, and at most one transition is taken per frame.</p>
-<p>Blend points must have strictly increasing finite thresholds. Outside their range, the nearest
+<p>One-dimensional blend points must have strictly increasing finite thresholds. Outside their range, the nearest
 endpoint plays alone. Inside, the two neighboring clips mix linearly. Clips share normalized
 phase; their weighted duration determines the cycle length. A missing channel contributes the
 character's rest pose. Rotations mix normalized quaternions on the same hemisphere.
 Installation and parameter updates reject synchronized clip speeds outside the representable
 float range, preserving the active controller and its previous parameter values.</p>
-<p>Both <code>clip</code> and <code>blend_1d</code> accept <code>loop:</code> and <code>speed:</code>. Negative speed plays backwards; a
+<p>For movement on two axes, use a complete rectangular grid. Points can be in any order; each
+combination of the distinct x and y coordinates must appear exactly once, with at least two
+coordinates per axis. Both parameters must be distinct, declared numbers. Missing corners,
+duplicate points, unknown clips and nonfinite coordinates are rejected at installation.</p>
+<div class="highlight"><pre><span></span><code><span class="n">graph</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">Animation</span><span class="o">::</span><span class="no">Graph</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">initial</span><span class="p">:</span><span class="w"> </span><span class="ss">:move</span><span class="p">,</span><span class="w"> </span><span class="ss">parameters</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="ss">strafe</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="o">.</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="ss">forward</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="o">.</span><span class="mi">0</span><span class="p">})</span>
+<span class="n">graph</span><span class="o">.</span><span class="n">blend_2d</span><span class="p">(</span><span class="ss">:move</span><span class="p">,</span><span class="w"> </span><span class="ss">parameters</span><span class="p">:</span><span class="w"> </span><span class="o">[</span><span class="ss">:strafe</span><span class="p">,</span><span class="w"> </span><span class="ss">:forward</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="ss">clips</span><span class="p">:</span><span class="w"> </span><span class="o">[</span>
+<span class="w">  </span><span class="o">[[-</span><span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="ss">:BackLeft</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="o">[[</span><span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="ss">:BackRight</span><span class="o">]</span><span class="p">,</span>
+<span class="w">  </span><span class="o">[[-</span><span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="ss">:ForwardLeft</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="o">[[</span><span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="ss">:ForwardRight</span><span class="o">]</span>
+<span class="o">]</span><span class="p">)</span>
+<span class="n">animation</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
+<span class="n">animation</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="ss">:strafe</span><span class="p">,</span><span class="w"> </span><span class="n">sideways_speed</span><span class="p">)</span>
+<span class="n">animation</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="ss">:forward</span><span class="p">,</span><span class="w"> </span><span class="n">forward_speed</span><span class="p">)</span>
+</code></pre></div>
+<p>The four corners of the enclosing cell mix bilinearly. Outside the grid, each axis clamps to
+its nearest endpoint. Zero-weight corners are omitted; shared phase and weighted cycle duration
+work as for one-dimensional blends. The evaluated tracks are replicated by <code>NetworkSync</code>.
+The larger snapshots use protocol version 2; machines with different protocols cannot join.</p>
+<p><code>clip</code>, <code>blend_1d</code> and <code>blend_2d</code> accept <code>loop:</code> and <code>speed:</code>. Negative speed plays backwards; a
 nonlooping state holds its endpoint. State fades keep the source and destination playing and
-use at most four clips. A fade completes before another transition is evaluated at the next
+use at most eight clips (four per side for two-dimensional states). A fade completes before another transition is evaluated at the next
 frame boundary; changing parameters during a fade does not interrupt it.</p>
 <p><code>animation.state</code> returns the current destination state's name as a String, including during a
 fade, or <code>nil</code> under manual control. <code>clip</code> and <code>time</code> refer to the dominant destination clip;
-equal weights choose the earlier blend point. <code>pause</code> freezes the graph's clocks and fade.
+equal weights choose the earlier blend point (grid points are ordered by y, then x). <code>pause</code> freezes the graph's clocks and fade.
 Calling <code>use</code> again installs a fresh controller with its defaults.</p>
 <p><code>mix</code> and <code>unmix</code> retain the graph and affect the separate overlay as usual. A valid manual
 <code>play</code> or <code>follow_scene</code> detaches the graph immediately. Fades across this control boundary are
@@ -1007,7 +1052,8 @@ active graph.</p>
 time. Receivers advance those tracks without installing a graph or evaluating its conditions.
 Only the owner changes parameters. Every machine needs the same clips; malformed or unknown
 graph tracks are ignored without replacing the active controller. Graphs currently support
-flat clip states and one-dimensional blends; there are no hierarchical or two-dimensional trees.</p>
+flat clip states, one-dimensional blends and rectangular two-dimensional grids; there are no
+hierarchical trees or irregular point-cloud blends.</p>
 
 
 
