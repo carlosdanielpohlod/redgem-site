@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="MCP over stdio: scene tools, headless runs, bounded events and explicit permissions for one game.">
+        <meta name="description" content="redgem mcp: MCP over stdio for one game, with scene tools, headless runs, game_query and game_shot, the live editor, bounded events and explicit permissions.">
       
       
       
@@ -406,6 +406,34 @@
     
   
     The editor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../prefabs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Prefab files
   
 
     
@@ -1127,8 +1155,8 @@ newline-delimited JSON-RPC from standard input and writes only protocol response
 output. Native library output goes to standard error. Closing input stops the server.
 By default it opens no listening socket and works on files. Add <code>--editor</code> to connect to an
 editor that explicitly enabled its local bridge (see below).</p>
-<p>The server supports the MCP <code>2026-07-28</code> per-request metadata protocol and the <code>2025-11-25</code>
-initialization handshake. Modern clients can discover capabilities with <code>server/discover</code> and
+<p>The server supports the MCP <code>2026-07-28</code> per-request metadata protocol and the <code>2025-11-25</code>,
+<code>2025-06-18</code> and <code>2025-03-26</code> initialization handshakes (a client asking for one of them gets it). Modern clients can discover capabilities with <code>server/discover</code> and
 must supply their protocol version and client capabilities in each request's <code>params._meta</code>.
 Legacy clients send <code>initialize</code>, then <code>notifications/initialized</code>, before using tools.</p>
 <h2 id="tools-and-permissions">Tools and permissions<a class="headerlink" href="#tools-and-permissions" title="Permanent link">&para;</a></h2>
@@ -1142,7 +1170,7 @@ Legacy clients send <code>initialize</code>, then <code>notifications/initialize
 <tbody>
 <tr>
 <td><code>scene_list</code></td>
-<td>Lists objects, taking optional <code>scene</code>, <code>limit</code> and <code>depth</code>.</td>
+<td>Lists objects, taking optional <code>scene</code>, <code>limit</code> (default 50, <code>0</code> for all) and <code>depth</code>.</td>
 </tr>
 <tr>
 <td><code>scene_get</code></td>
@@ -1165,6 +1193,14 @@ Legacy clients send <code>initialize</code>, then <code>notifications/initialize
 <td>Checks scripts, scenes and assets; does not run the game's test files.</td>
 </tr>
 <tr>
+<td><code>game_shot</code></td>
+<td>Returns a PNG picture of the saved game at <code>at</code> seconds (default 1), <code>width</code> pixels wide (default 512, 16:9), optionally through another <code>camera</code>.</td>
+</tr>
+<tr>
+<td><code>game_query</code></td>
+<td>Asks the playing game: <code>inspect</code> an <code>object</code>, <code>raycast</code> <code>from</code> one point <code>to</code> another, or <code>overlap</code> a sphere <code>at</code> a point with a <code>radius</code>.</td>
+</tr>
+<tr>
 <td><code>api</code></td>
 <td>Reads the API index, a <code>class</code>, or a <code>search</code>.</td>
 </tr>
@@ -1174,7 +1210,33 @@ Legacy clients send <code>initialize</code>, then <code>notifications/initialize
 </tr>
 </tbody>
 </table>
-<p><code>--read-only</code> exposes only <code>scene_list</code>, <code>scene_get</code>, <code>scene_diff</code>, <code>api</code> and <code>events</code>. It also
+<p><code>game_run</code> expressions run in the game after each frame and can use anything scripts can, for
+example <code>print: "Scene.find('Player').transform.position"</code> or
+<code>assert: "Physics.raycast(Vector3.new(0, 5, 0), Vector3.down)"</code>.</p>
+<p><code>game_query</code> answers in short lines with rounded numbers. <code>inspect</code> gives the object's world
+position and rotation, its body, velocity and whether a character is grounded, and only those
+props that scripts changed since the scene loaded. Points are <code>x,y,z</code> strings in meters. Without
+an editor in Play, it plays the saved game for <code>frames</code> (default 60) first, as <code>game_run</code> does:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">"action"</span><span class="p">:</span><span class="w"> </span><span class="s2">"inspect"</span><span class="p">,</span><span class="w"> </span><span class="nt">"object"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Player"</span><span class="p">}</span>
+<span class="p">{</span><span class="nt">"action"</span><span class="p">:</span><span class="w"> </span><span class="s2">"raycast"</span><span class="p">,</span><span class="w"> </span><span class="nt">"from"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0,5,0"</span><span class="p">,</span><span class="w"> </span><span class="nt">"to"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0,-5,0"</span><span class="p">}</span>
+<span class="p">{</span><span class="nt">"action"</span><span class="p">:</span><span class="w"> </span><span class="s2">"overlap"</span><span class="p">,</span><span class="w"> </span><span class="nt">"at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4,1,-3"</span><span class="p">,</span><span class="w"> </span><span class="nt">"radius"</span><span class="p">:</span><span class="w"> </span><span class="mf">1.5</span><span class="p">}</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>after 60 frames: #5 Player pos=0,0.8,0 body=character vel=0,-0.33,0 grounded
+after 60 frames: 2 hits, nearest first:
+#5 Player at 0,1.62,0 normal=0,1,0 dist=3.38
+#0 Ground at 0,0,0 normal=0,1,0 dist=5
+</code></pre></div>
+<p><code>game_shot</code> draws in a separate <code>redgem shot</code> process with a hidden window. A graphics driver
+that crashes takes only that process down, and the call reports it. It needs a display. Without one (no <code>DISPLAY</code> on Linux)
+it returns a tool error that says so, and the server keeps answering. Some MCP clients start
+servers with only a few environment variables; pass <code>DISPLAY</code> in the server's configuration
+if pictures are wanted. Prefer <code>game_run</code> to find out whether something works and use pictures
+for how it looks.</p>
+<p>Invalid arguments come back as tool errors (<code>isError: true</code>) naming the argument and what it
+accepts, such as <code>frames: must be at most 600, not 601</code>, so the model can correct the call.
+Unknown or disabled tools remain JSON-RPC errors.</p>
+<p><code>--read-only</code> exposes only <code>scene_list</code>, <code>scene_get</code>, <code>scene_diff</code>, <code>api</code> and <code>events</code>; the
+<code>game_*</code> tools execute the game's scripts and are disabled. It also
 rejects calls to disabled tools, even if the client remembers an earlier tool list. For a smaller
 surface, add an exact comma-separated allow list:</p>
 <div class="highlight"><pre><span></span><code>redgem<span class="w"> </span>mcp<span class="w"> </span>/path/to/game<span class="w"> </span>--read-only<span class="w"> </span>--allow<span class="w"> </span>scene_list,scene_get,api,events
@@ -1186,15 +1248,29 @@ process. Input replay and comparison files must be regular files inside it, with
 links. These restrictions protect tooling paths; they do not sandbox native game code.</p>
 <p>Without <code>--editor</code>, edits go through the file-based scene commands. Close the editor while
 editing its files this way. Keep an earlier save and inspect <code>scene_diff</code> after an edit.
-<code>from</code> is available only in file mode; <code>parent</code> also works when adding a live empty object.</p>
+<code>from</code> is available only in file mode; <code>parent</code> also works when adding a live empty object.
+With <code>--editor auto</code>, check <code>editor</code> <code>status</code> to know whether calls reach an editor.</p>
 <h2 id="live-editor">Live editor<a class="headerlink" href="#live-editor" title="Permanent link">&para;</a></h2>
 <p>Start the editor with its bridge explicitly enabled:</p>
 <div class="highlight"><pre><span></span><code>redgem<span class="w"> </span>/path/to/game<span class="w"> </span>--editor-bridge
 </code></pre></div>
 <p>The terminal prints the path of a private <code>connection.json</code> in the user's RedGem data folder.
-Pass that file to the MCP server for the same game:</p>
+Let the MCP server find it on every call, so one client configuration survives editor restarts:</p>
+<div class="highlight"><pre><span></span><code>redgem<span class="w"> </span>mcp<span class="w"> </span>/path/to/game<span class="w"> </span>--editor<span class="w"> </span>auto
+</code></pre></div>
+<p>With <code>auto</code>, each call uses the newest running editor of that game. When none answers, the
+scene tools, <code>game_query</code> and <code>events</code> work on the saved files and this server instead, and
+their answer starts with <code>(no editor is running: answered from the saved files)</code>; the <code>editor</code>
+tool returns an error saying how to start an editor with its bridge. A connection file whose
+port refuses connections belongs to an editor that is gone and is deleted. A listener that does
+not prove itself (below) is skipped for a minute, so it delays at most one call a minute by about
+a second. To pin one editor instance, pass its file:</p>
 <div class="highlight"><pre><span></span><code>redgem<span class="w"> </span>mcp<span class="w"> </span>/path/to/game<span class="w"> </span>--editor<span class="w"> </span>/path/to/connection.json
 </code></pre></div>
+<p>If that editor exits, calls fail with an error that says how to restart it. A pinned editor
+always answers scene edits live, so its <code>scene_edit</code> schema leaves out <code>from</code>.</p>
+<p>With <code>auto</code>, an <code>events</code> cursor belongs to whichever process answered: the editor, or this server
+when no editor is open. After an editor opens or closes, start again from <code>since: 0</code>.</p>
 <p>Scene listing, object details and scene comparison now read the editor's unsaved document.
 <code>scene_edit</code> supports <code>set</code>, <code>add</code> and <code>remove</code>. <code>add</code> creates an empty object, optionally under
 <code>parent</code>, with initial <code>assignments</code>; attach scripts and properties as with the CLI. <code>from</code>
@@ -1219,6 +1295,10 @@ without losing earlier undo/redo. Changes update the viewport and remain unsaved
 <td>Select the requested <code>object</code>.</td>
 </tr>
 <tr>
+<td><code>frame</code></td>
+<td>Point the editor camera at <code>object</code> (selecting it), or at the selection.</td>
+</tr>
+<tr>
 <td><code>undo</code>, <code>redo</code>, <code>save</code></td>
 <td>Apply the corresponding editor command. Saving is explicit.</td>
 </tr>
@@ -1237,17 +1317,21 @@ without losing earlier undo/redo. Changes update the viewport and remain unsaved
 </tbody>
 </table>
 <p><code>capture</code> accepts <code>max_size</code> (default 512, range 128–1024), the longest output side. Images are
-reduced further when necessary to stay below 128 KiB before base64 encoding. Only the scene
+reduced further when necessary for the reply, with the PNG as base64 text, to stay within the
+bridge's 256 KiB limit (about 188 KiB of PNG). Only the scene
 viewport is captured, never the desktop or other applications. <code>object</code> is accepted only by
-<code>select</code>; <code>max_size</code> only by <code>capture</code>. Read-only mode permits <code>status</code> and <code>capture</code> only.</p>
+<code>select</code> and <code>frame</code>; <code>max_size</code> only by <code>capture</code>. Read-only mode permits <code>status</code> and <code>capture</code> only.</p>
 <p>Edits and document commands are refused while playing, during gestures/dialogs, or with an
 external file conflict pending. Play starts a copy of the unsaved scene; Stop discards that
 runtime and restores the edited document. Pause/resume/stop/step control that runtime, not the
 file. Read operations still describe the edited document, not runtime-mutated objects. An
 explicit <code>scene</code> must match the open scene; requests never switch or discard scenes.</p>
-<p><code>events</code> reads the editor's log history. <code>api</code>, <code>game_run</code> and <code>game_check</code> remain ordinary CLI
-tools: runs/checks read saved files rather than the unsaved editor scene. Runtime object
-inspection and arbitrary live eval are not exposed by this release.</p>
+<p><code>events</code> reads the editor's log history. <code>game_query</code> asks the game the editor is playing (the
+runtime, not the edited document); it refuses <code>frames</code> there, so pause and <code>step</code> to advance.
+While editing, it reports that the editor is not playing; it does not fall back to the saved
+files, which may differ from the open document. <code>api</code>, <code>game_run</code>, <code>game_check</code> and
+<code>game_shot</code> remain ordinary CLI tools: they read saved files rather than the unsaved editor scene.
+Arbitrary live eval is not exposed.</p>
 <p>The bridge binds only to IPv4 loopback and requires a random credential on every request, with
 the game directory checked at both ends. Its connection file stays outside the repository and
 is removed on clean shutdown. On POSIX it is owner-only inside an owner-only directory; on
@@ -1255,18 +1339,29 @@ Windows it inherits the user's profile access controls. Treat the file as a cred
 control of that editor. MCP read-only and allow-list options restrict that client's calls.</p>
 <p>At most four connections are handled at once, on the editor thread between frames. Requests
 are limited to 64 KiB and replies to 256 KiB. Transport waits expire after five seconds. If an
-edit times out, it may have completed: inspect status and the object before retrying. There is
-no automatic retry or fallback to editing the file when an editor connection fails. After a
-crash a stale connection file can remain; reconnect using the new editor instance's file.</p>
+edit times out, it may have completed: inspect status and the object before retrying. A pinned
+connection (<code>--editor connection.json</code>) never falls back to the files.</p>
+<p>Before it sends the credential or a request, the client sends a random nonce, and the editor must
+answer within one second with an HMAC-SHA256 of it keyed by the credential. A program that took a
+crashed editor's port therefore receives only that nonce. Until that proof, a failure means no
+editor took the call; after it, any failure (a timeout, or a reset after the request went out)
+fails the call. It is never retried elsewhere or applied to the files, because the edit may
+already have happened.</p>
 <h2 id="bounded-results">Bounded results<a class="headerlink" href="#bounded-results" title="Permanent link">&para;</a></h2>
 <p>Each request is at most 64 KiB with at most 16 JSON nesting levels. Ordinary tool text is limited
-to 8 KiB with a truncation notice; narrow the scene list or API query for more detail. Invalid
-arguments return JSON-RPC errors. A valid command that fails returns <code>isError: true</code> with the
-engine's diagnostic.</p>
-<p>Event results also contain <code>structuredContent</code>: <code>events</code>, <code>cursor</code>, <code>dropped</code>, <code>more</code> and
-<code>cursor_ahead</code>. Pass the returned cursor in the next <code>since</code>. Each event's text is capped at 256
-UTF-8 bytes, with <code>truncated</code> when shortened. The cursor belongs to this server process; it is
-not a cursor into an unrelated editor or game (with <code>--editor</code>, it belongs to that editor).
+to 8 KiB with a notice saying it was cut; narrow the scene list (<code>depth</code>, <code>limit</code>, then
+<code>scene_get</code>) or the API query for more detail. Invalid arguments and a valid command that fails
+both return <code>isError: true</code>, with what to change or the engine's diagnostic. Unknown or disabled
+tools are JSON-RPC errors.</p>
+<p>Event text starts with <code>cursor=N</code>, the value to pass as the next <code>since</code> (followed by <code>more</code>,
+<code>dropped</code> or <code>cursor_ahead</code> when they apply), then one line per event, <code>#id level text</code>:</p>
+<div class="highlight"><pre><span></span><code>cursor=2
+#2 error scripts/coin.rb:12: Coin#update on 'Coin1': undefined method 'positon=' for Transform (NoMethodError)
+</code></pre></div>
+<p>Each event is its message's first line, led by the place in the game's files its backtrace names,
+with the game's folder left out of paths. Each event's text is capped at 256 UTF-8 bytes and ends
+with <code>...</code> when shortened. The cursor belongs to this server process; it is not a cursor into an
+unrelated editor or game (with <code>--editor</code>, it belongs to that editor).
 Events include engine log messages, not raw
 standard output. Process history is bounded, so <code>dropped</code> identifies overwritten messages.</p>
 <p>Requests run one at a time. A cancellation notification cannot interrupt a native command already

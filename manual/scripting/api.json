@@ -5,6 +5,9 @@
   "internal_classes": [
     "Behaviour::Timer",
     "Behaviour::Tween",
+    "Camera::Follow",
+    "Camera::Rig",
+    "Camera::Shake",
     "GameMenu::BindingNames",
     "GameMenu::ControlsPage",
     "GameMenu::ControlsPage::Row",
@@ -178,6 +181,19 @@
         {
           "name": "id",
           "about": "its number in the running game"
+        },
+        {
+          "name": "stable_id",
+          "about": "its persistent scene-file identity as a String; nil for runtime copies"
+        },
+        {
+          "name": "capture_state",
+          "about": "a versioned checkpoint of local pose, tint and visibility, suitable for Save"
+        },
+        {
+          "name": "restore_state",
+          "args": "state",
+          "about": "validates a checkpoint then restores pose and appearance; teleports physical descendants and returns self"
         },
         {
           "name": "tag",
@@ -567,6 +583,12 @@
           "about": "the object called name, or nil"
         },
         {
+          "name": "find_by_id",
+          "static": true,
+          "args": "identity",
+          "about": "the current scene object with that persistent String/Symbol identity, or nil"
+        },
+        {
           "name": "find!",
           "static": true,
           "args": "name",
@@ -867,6 +889,11 @@
           "name": "delta",
           "static": true,
           "about": "seconds since the last frame"
+        },
+        {
+          "name": "unscaled_delta",
+          "static": true,
+          "about": "seconds since the last frame, whatever Time.scale (also while paused)"
         },
         {
           "name": "fixed_delta",
@@ -1192,7 +1219,7 @@
     },
     {
       "name": "Camera",
-      "about": "The camera the game is seen through.",
+      "about": "The camera the game is seen through, and what it does on its own: follow, orbit, shake.",
       "methods": [
         {
           "name": "main",
@@ -1204,6 +1231,13 @@
           "static": true,
           "args": "x, y",
           "about": "[origin, direction] through a pixel of the screen"
+        },
+        {
+          "name": "world_to_screen",
+          "static": true,
+          "args": "point",
+          "about": "[x, y]: where a Vector3 (or an object) is on the screen, in the pixels UI draws in; nil behind the camera",
+          "example": "x, y = Camera.world_to_screen(enemy.transform.position + Vector3.up * 2)"
         },
         {
           "name": "fov",
@@ -1226,8 +1260,88 @@
           "static": true,
           "args": "amount",
           "about": "sets it"
+        },
+        {
+          "name": "follow",
+          "static": true,
+          "args": "target, offset: [0, 3, 6], relative: false, smoothing: 0.15, look_at: true, look_height: 1.0, avoid_walls: true, dead_zone: 0, snap: true",
+          "about": "follows an object from now on: offset in meters (relative: in its own axes), smoothing in seconds to close half the way, in front of walls between; snap: false flies there",
+          "example": "Camera.follow(Scene.find(\"Player\"), offset: Vector3.new(0, 3, 6), smoothing: 0.15)"
+        },
+        {
+          "name": "orbit",
+          "static": true,
+          "args": "target, distance: 6, yaw: 0, pitch: 20, distances: 1..30, pitches: -80..80, smoothing: 0.08, input: true, height: 1.0, avoid_walls: true",
+          "about": "orbits an object or a point, looking at it, turned by dragging with the right mouse button or the right stick and zoomed by the wheel, also while paused; returns a Camera::Orbit"
+        },
+        {
+          "name": "stop_following",
+          "static": true,
+          "about": "stops following or orbiting; the camera stays where it is"
+        },
+        {
+          "name": "following?",
+          "static": true,
+          "about": "whether it follows or orbits something (an object destroyed is let go)"
+        },
+        {
+          "name": "shake",
+          "static": true,
+          "args": "strength, duration: 0.5",
+          "about": "shakes what it shows (never the camera object): strength (0 to 1) adds to its trauma, held at 1, fading over duration seconds",
+          "example": "Camera.shake(0.5, duration: 0.4)"
+        },
+        {
+          "name": "trauma",
+          "static": true,
+          "about": "how much it shakes now, 0 to 1"
+        },
+        {
+          "name": "stop_shaking",
+          "static": true,
+          "about": "stops the shake at once"
         }
-      ]
+      ],
+      "guide": "gameplay.md#follow-orbit-and-shake-the-camera"
+    },
+    {
+      "name": "Camera::Orbit",
+      "about": "What Camera.orbit returns: the camera's angles and distance around what it orbits, for scripts to read and change.",
+      "methods": [
+        {
+          "name": "yaw",
+          "about": "degrees around it, -180 to 180: 0 behind it (its +Z side), 90 on its right"
+        },
+        {
+          "name": "pitch",
+          "about": "degrees above it"
+        },
+        {
+          "name": "distance",
+          "about": "meters from it"
+        },
+        {
+          "name": "target",
+          "about": "the object or point it orbits"
+        },
+        {
+          "name": "turn",
+          "args": "yaw, pitch",
+          "about": "turns by degrees (the yaw wraps round, eased the short way), the pitch kept within its range"
+        },
+        {
+          "name": "zoom",
+          "args": "meters",
+          "about": "comes nearer (negative) or goes further, within its range"
+        }
+      ],
+      "internal": [
+        "direction",
+        "lost?",
+        "update",
+        "wrap"
+      ],
+      "guide": "gameplay.md#follow-orbit-and-shake-the-camera"
     },
     {
       "name": "Light",
@@ -1628,7 +1742,7 @@
     },
     {
       "name": "Debug",
-      "about": "Messages to the console (and to redgem run).",
+      "about": "Developer diagnostics: console messages, frame timings and immediate world drawing.",
       "methods": [
         {
           "name": "log",
@@ -1647,8 +1761,53 @@
           "static": true,
           "args": "message",
           "about": "reports an error"
+        },
+        {
+          "name": "profiling?",
+          "static": true,
+          "about": "whether foreground frame timings are being collected"
+        },
+        {
+          "name": "profiling=",
+          "static": true,
+          "args": "enabled",
+          "about": "starts a fresh profile window when enabled; disabling retains the last summary"
+        },
+        {
+          "name": "stats_visible?",
+          "static": true,
+          "about": "whether the developer statistics overlay was requested"
+        },
+        {
+          "name": "stats_visible=",
+          "static": true,
+          "args": "visible",
+          "about": "shows frame timings and FPS; showing also enables profiling, hiding leaves collection running"
+        },
+        {
+          "name": "frame_stats",
+          "static": true,
+          "about": "a snapshot with samples, fps and latest/mean/peak timings in milliseconds"
+        },
+        {
+          "name": "reset_frame_stats",
+          "static": true,
+          "about": "clears statistics and discards any unfinished measurement"
+        },
+        {
+          "name": "line",
+          "static": true,
+          "args": "from, to, color: :green, alpha: 255, depth_test: true",
+          "about": "draws a world-space line for this frame; returns whether it was accepted"
+        },
+        {
+          "name": "box",
+          "static": true,
+          "args": "center, size, color: :green, alpha: 255, depth_test: true",
+          "about": "draws an axis-aligned wire box with full nonnegative size for this frame; returns whether it was accepted"
         }
-      ]
+      ],
+      "notes": "Profiling is off by default. The overlay uses the shared game HUD, including editor Play and recordings; it is hidden when profiling is off. Timings use the real steady clock, independently of Time.scale or fixed-step replay. The most recent 120 completed frames form the window; reads during a frame expose only completed frames. FPS uses completion-to-completion intervals, and is zero until an interval is available. `latest`, `mean` and `peak` contain `frame_ms`, `interval_ms`, `has_interval`, and `input_ms`, `network_ms`, `http_ms`, `update_ms`, `physics_ms`, `presentation_ms`, `scene_ms`. Input includes pending script startup; network and HTTP include their callbacks; update includes animations, scripts, particles, loading UI and physics. Physics includes fixed-update callbacks, body synchronization and contacts, so its time overlaps update. Presentation includes uploads, drawing and any frame-cap or synchronization waits. Scene includes request polling, synchronous reads and activation; the asynchronous worker is not instrumented, while offline fixed-step waits count as scene wall time. These are foreground wall times, not GPU timers or CPU utilization. Phase times are inclusive and must not be summed as a partition. Overlay timings and captures are nondeterministic; leave the overlay off for reproducible pictures. Debug.line and Debug.box use world coordinates and live for one frame: submit from ready/update/fixed_update. At most 4096 commands are accepted per frame; later calls return false. They are local-only and return false without a presenter, while still validating arguments. depth_test: false draws through objects. Shape frames use unjittered rendering and reset temporal history; normal temporal sampling resumes afterwards. Native windows allocate one cached color/depth target only when shapes are requested; editor, scaled and recorded views reuse their target. If that extra native target is unavailable, the game still draws with a warning and the shapes are omitted."
     },
     {
       "name": "Game",
@@ -1659,6 +1818,38 @@
           "static": true,
           "args": "name",
           "about": "switches to scenes/<name>.glb (\"main\" is scene.glb); Ruby globals survive"
+        },
+        {
+          "name": "load_scene_async",
+          "static": true,
+          "args": "name",
+          "about": "queues a background scene read; the old world survives failed reads and cancellation"
+        },
+        {
+          "name": "loading?",
+          "static": true,
+          "about": "a scene request is queued or being read"
+        },
+        {
+          "name": "loading_scene",
+          "static": true,
+          "about": "the requested scene name, or nil"
+        },
+        {
+          "name": "loading_error",
+          "static": true,
+          "about": "the last asynchronous read error, or nil; cleared by the next load request"
+        },
+        {
+          "name": "cancel_scene_load",
+          "static": true,
+          "about": "cancels a pending asynchronous request; returns whether one was pending"
+        },
+        {
+          "name": "on_loading",
+          "static": true,
+          "args": "&block",
+          "about": "draws the loading screen each frame with unscaled delta; no block restores the default"
         },
         {
           "name": "scene_name",
@@ -1685,7 +1876,9 @@
           "static": true,
           "about": "the version in game.json (\"1.2.0\"), or nil"
         }
-      ]
+      ],
+      "notes": "While an asynchronous read is pending, physics, animations and normal behaviour callbacks pause.\nInput, networking, HTTP callbacks, audio and presentation continue. The loading callback can use\n`UI`, handle cancel buttons and animate using its unscaled delta; `Time.delta` is zero during\nloading. The pointer is released while the screen is shown. The default screen draws a translated\nloading label over the old world. A callback error is reported once and disables it for that load.\n\nUnsafe names are rejected immediately; missing or unreadable files are reported through\n`Game.loading_error` after the request runs. The old world stays intact if reading fails or is cancelled. The most recent request wins;\n`Game.load_scene` also supersedes an asynchronous request. Globals survive successful activation,\nbut the old scene's loading callback is removed before the next scene's setup runs. Errors are\nreported through `Game.loading_error` and the event log. At most eight background requests/results can be\noutstanding across the process, using one shared reader; a full queue fails without changing the\nworld. Cancelling an active read discards its result; it does not interrupt the file parser.\n\nOnly file reading and glTF parsing happen on the worker. Physics creation, script setup, texture\ndecoding and GPU upload still happen on the owning thread and may hitch during activation. The\nold and incoming scene coexist in memory during reading. Fixed-step offline runs (including\nrecordings and scripted replays) wait for the reader before advancing, then show exactly one\nloading frame before activation so completion does not depend on thread scheduling. Networked runs and dedicated-server rooms keep the\nbackground reader even in fixed-step mode; activation still runs on the server loop and can stall\nother rooms sharing that loop. Closing the process waits for an active parser to return.",
+      "guide": "gameplay.md#a-loading-screen"
     },
     {
       "name": "Settings",
@@ -2068,10 +2261,26 @@
           "name": "keys",
           "static": true,
           "about": "every key"
+        },
+        {
+          "name": "slot",
+          "static": true,
+          "about": "the selected save slot name; default keeps the existing save file"
+        },
+        {
+          "name": "slot=",
+          "static": true,
+          "args": "name",
+          "about": "selects a named slot for this engine; default restores the original store"
+        },
+        {
+          "name": "slots",
+          "static": true,
+          "about": "sorted names of persisted slots and slots opened in this run, including default"
         }
       ],
       "guide": "online-services.md#saving-on-a-server",
-      "notes": "Values are numbers, texts, true/false, `Vector3`, and arrays and hashes of those; hashes come back with string keys."
+      "notes": "Values are numbers, texts, true/false, `Vector3`, and arrays and hashes of those; hashes come back with string keys. Named slots start on default for every engine and keep their selection across scenes. Selection is local to each engine, including shared-database server rooms. Names are 1–48 lowercase ASCII letters/digits, hyphens or underscores, starting with a letter/digit. At most 64 named stores may be opened per run/local backend and 4096 names listed; invalid names or unavailable backends leave selection unchanged and raise a Ruby error. The existing default file/table is preserved. Named files use their own atomic writes/backups; SQLite uses separate slot tables. Save.update writes to its entry store even if its block selects another slot. Slots keep values, not object-state snapshots or migration metadata."
     },
     {
       "name": "HTTP",

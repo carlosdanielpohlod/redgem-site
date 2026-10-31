@@ -34,6 +34,7 @@ A game is a folder:
 | `scenes/*.glb` | More levels |
 | `scripts/*.rb` | Ruby behaviours and scene scripts |
 | `models/*.glb` | Models you can drop into a level |
+| `prefabs/*.glb` | [Reusable object files](prefabs.md), loaded through scene references |
 | `sounds/` | `.wav`, `.ogg`, `.mp3` or `.flac` files |
 | `images/` | Pictures for menus and the HUD (`.png`, `.jpg`) |
 | `locales/` | The texts players read, one translation file per language: `en.json`, `pt.json`... (see [Texts in several languages](scripting/i18n.md)) |
@@ -129,7 +130,7 @@ minutes.
 *Platformer* under *New game*, give it a name, and the editor opens with a level you can play
 right away: press the Play button, move with WASD, jump with Space.
 
-`./build/src/redgem --version` says which version you have (`RedGem 0.4.0`, say): give it when
+`./build/src/redgem --version` says which version you have (`RedGem 0.5.0`, say): give it when
 you report a problem. (`redgem --help` lists everything else the command line does.)
 
 ## Blender (optional)
@@ -271,9 +272,14 @@ icons):
   files.
 * **Console**: engine and Ruby output (filter by level), including script errors with backtraces.
 * **Scripts**: each open Ruby file gets its own tab next to the Scene. Drag tabs to split the view
-  anywhere (or press *Split right*), like a code editor's editor groups. Ctrl+S saves and checks
+  anywhere (or press *Split right*), like a code editor's editor groups. The code is colored as
+  you type: keywords, strings, symbols, comments, numbers, constants and `@variables` each have a
+  color of the editor's theme. Ctrl+S saves and checks
   the syntax (errors show the line); *Open externally* uses your default editor. Play saves all
   open scripts and reloads them.
+* **Agent**: a chat with a coding agent (Claude Code, Codex or one of your own), in a tab beside
+  the Inspector. It works in the game's folder and sees and changes the open scene through the
+  editor's tools; see [The Agent panel](assistants.md#the-agent-panel).
 * **View menu**: hide the Hierarchy (Ctrl+B), the Inspector (Ctrl+Alt+B) or the bottom panels
   (Ctrl+J) to give the scene or the code more room; the toolbar's outer buttons toggle the sides.
 * **Play / Pause / Stop** (Ctrl+P, Esc): runs the game inside the Scene view with the current edits
@@ -361,6 +367,67 @@ The game always starts on `main` (`scene.glb`); scripts move to the others with
 The window title and the status bar name the open scene, and the editor follows that scene's file
 for changes made outside. Built games carry every scene: Build copies the whole game folder,
 `scenes/` included.
+
+## Building
+
+**Build** (in the toolbar, or File > Build Game) asks which system to build for, saves the open
+scene and the scripts, and builds the game into a folder beside it: `<game>-build` for the system
+the editor runs on, `<game>-build-<system>` for another one (see
+[Building and sharing](shipping.md)). The build
+runs in the background, so the editor keeps working while it does: a box in the Scene view's
+bottom-right corner shows what is being built, for how long it has been, and the step it is at
+(copying the game's files, packing the app, signing it). When it ends, the box says how it went:
+the folder it filled, with **Open folder**, or what went wrong. The Console keeps the same lines.
+
+One build runs at a time: Build is greyed out until the running one ends. The build reads the
+game's files from disk, never the scene open in the editor, so you can keep editing while it runs;
+what you save meanwhile is only sure to be in the next build. Closing the editor while a build
+runs waits for it, saying so, then closes as usual, asking first about anything edited and not
+saved (**Keep the editor open** stays instead).
+A build is not stopped halfway: the tools it runs would leave half-written files behind.
+
+---
+
+Page: https://carlosdanielpohlod.github.io/redgem-site/manual/prefabs/
+
+# Prefab files
+
+A scene can refer to a reusable object stored in `prefabs/crate.glb` inside the game
+folder. Keep exactly one root in that file. On an empty scene object, set the string
+custom property `prefab_file` to `prefabs/crate.glb`. Paths are relative to the game
+folder, including references inside another prefab. Symbolic links and paths outside
+the game are refused.
+
+Loading replaces the empty object's content with the prefab root's content. The
+placement keeps its name, identity and parent. Its transform combines with the
+source root's transform. Its custom properties override the source root's properties;
+its existing children remain. Descendants come from the file. Geometry, materials
+and images are shared by repeated instances of the same file.
+
+A source root marked `prefab = true` becomes live when placed. Mark the reference
+itself `prefab = true` to keep an inert template for `Scene.spawn` instead. Each scene
+load reads the current files; changing a prefab does not update a running scene.
+
+Descendant identities are deterministic for the source file path, placement identity
+and source node identity. Renaming a source node preserves an explicit identity;
+renaming the prefab file changes the generated descendant identities. Root placement
+identities remain unchanged.
+
+Animate descendants rather than the source root. Imported clips are named
+`prefabs/crate.glb::Idle`, for example. Repeated instances share that clip's name;
+per-object animation playback still affects only that object's hierarchy. Animated
+placements require an identity transform on the source root.
+
+Cycles and oversized expansions fail the load before replacing the running scene.
+Defaults allow 64 source files, eight nested references, 4,096 instances and 100,000
+expanded nodes, with 256 MiB of source GLB files and 512 MiB of estimated expanded
+content. The GLB reader also checks a tighter memory budget before reading buffers.
+
+This first implementation supports runtime loading, editor Play and project checks.
+The editing viewport still shows the authored reference node. Creating prefab files,
+placing them through the editor and previewing inherited children are separate editor
+work; save the source file through your modeling tool for now. Built games include
+regular files in `prefabs/` along with the other game assets.
 
 ---
 
@@ -631,6 +698,7 @@ regenerates a whole level from code; `tools/blender/scene_kit.py` has helpers to
 | `tag`      | string                                         | Used by `Scene.find_all(tag)` and `game_object.tag?` |
 | `visible`  | `false`                                        | Hide the mesh (the object still exists) |
 | `prefab`   | `true`                                         | A template: hidden and inert in the game, copied by `Scene.spawn` |
+| `prefab_file` | `prefabs/crate.glb` | An empty object loads a [reusable object file](prefabs.md) at its placement |
 | `visible_from`, `visible_to` | meters                          | The object is drawn only while that far from the camera: give a model a detailed version up close and a light one far away |
 | `tint`     | `"#rrggbb"`                                    | Multiplies the colors of this object's mesh (copies sharing a mesh can differ) |
 | `cast_shadow` | `false`                                     | Keeps the object out of the sun's shadows (a sky dome) |
@@ -932,8 +1000,13 @@ Page: https://carlosdanielpohlod.github.io/redgem-site/manual/assistants/
 
 # Making games with an AI assistant
 
-For an MCP client, [the stdio server](mcp.md) exposes the same developer commands through
-eight tools, with a read-only mode, an allow list and cursor-based process events.
+For an MCP client, [the stdio server](mcp.md) exposes the same developer commands through ten
+tools (eleven with an editor), with a read-only mode, an allow list and cursor-based process
+events. Register it once per game; `--editor auto` makes it use the open editor when there is one:
+
+```sh
+claude mcp add redgem -- redgem mcp /path/to/game --editor auto
+```
 
 A coding assistant that works in a terminal (one that reads files and runs commands) can make a
 RedGem game with you: write behaviours, place objects in a level, play the game and read what went
@@ -994,6 +1067,20 @@ ran main for 30 frames (0.5 s): 1 errors, 0 warnings
 4. A system test in `tests/` (see [Testing your game](testing.md)) keeps it working:
    `redgem check . --run-tests`.
 5. Open the editor (`redgem .`) to see and play it yourself.
+
+## The same loop over MCP
+
+| Need | Tool call |
+|------|-----------|
+| What is in a level | `scene_list` (50 lines unless `limit` says otherwise), then `scene_get` |
+| Move, tune, attach, copy | `scene_edit` with `assignments`, and `from` to copy an object with its mesh |
+| Does it play | `game_run`; `print` and `assert` read the game, e.g. `Scene.find('Coin6').transform.position` |
+| Why does it fall through the floor | `game_query` `raycast` or `inspect` (velocity, grounded) |
+| What it looks like | `game_shot` (512x288), or `editor` `capture` for the editor's view |
+| What went wrong since last time | `events` with the last `cursor` |
+
+A tool error says what to change (`frames: must be at most 600, not 601`), and a script that calls
+`puts` is told to use `Debug.log`: scripts have no standard output.
 
 ## Keeping it cheap
 
@@ -1074,6 +1161,71 @@ Before editing a scene, keep a copy of its `.glb`. Afterwards, use
 It reports object additions, removals and changed fields without writing either file. `--scene`
 chooses another scene and `--limit` caps the details; see [the command line](command-line.md).
 
+## The Agent panel
+
+The editor has a chat with a coding agent: the **Agent** tab beside the Inspector (View > Agent
+shows or hides it). You talk to the agent there as you would in its own terminal chat. It works in
+the game's folder, and it gets the editor's MCP tools ([MCP tools](mcp.md#live-editor)), so it can
+list, select, move, add and remove objects in the open scene, play and stop the game, read the
+editor's events and errors, and look at the viewport.
+
+The editor speaks the [Agent Client Protocol](https://agentclientprotocol.com) (ACP) to agents. Each
+agent is its own program, an open-source adapter that the editor starts:
+
+| Agent | Adapter | Install |
+|-------|---------|---------|
+| Claude Code | `claude-agent-acp` | `npm i -g @agentclientprotocol/claude-agent-acp` |
+| Codex | `codex-acp` | `npm i -g @agentclientprotocol/codex-acp` |
+
+Both need [Node.js](https://nodejs.org). If the adapter is not installed but `npx` is, the editor
+runs it with `npx --yes <package>`, which downloads it the first time. If neither is there, the
+panel says what to install.
+
+The adapters log in the way their own command line tools do, and the editor never asks for a
+password. Log in once in a terminal (`claude`, then `/login`; or `codex login`, or an
+`OPENAI_API_KEY`), then start a new session in the panel. If an agent asks for a login, the panel
+shows its message and how to log in.
+
+### Using it
+
+1. Pick an agent at the top of the panel. Your first message starts a session (the **+** button
+   starts a new one).
+2. Write in the box at the bottom. **Enter** sends, **Shift+Enter** starts a new line.
+3. The answer streams in as markdown. Code blocks have a **Copy** button. Thinking is folded under
+   *Thinking*, and each tool call is a card with its status; open it to see its input, its output
+   and file changes as `-`/`+` lines. The agent's plan shows as a checklist.
+4. Before the agent acts, it may ask: the question shows its options (allow once, allow always,
+   reject). **Stop** ends the turn and answers any open question "cancelled".
+5. The paperclip attaches the selected objects to your next message, as `redgem scene get`
+   describes them, so you can ask about "these" without naming them.
+
+The agent reads and writes files through the editor only inside the game's folder. Paths that
+leave it are refused, and so are paths through symbolic links. Its first session turns on the
+editor's local bridge ([MCP tools](mcp.md#live-editor)) and hands the agent
+`redgem mcp <game> --editor <connection>` as its MCP server. Its edits to the scene are undo steps
+like yours, and they stay unsaved until you or the agent save.
+
+### Past conversations
+
+A conversation is not lost when the editor closes. The editor remembers each game's last 20
+conversations: which agent each was had with, its first message as a title, and when it was last
+used. When the editor opens the game again, the last conversation comes back as it was left. The
+clock button beside **+** lists the others, and picking one reopens it with its agent.
+
+The agent keeps the conversation itself. Reopening one asks the agent to replay it (ACP's
+`session/load`, which both Claude Code's and Codex's adapters support), and the transcript is
+rebuilt from that replay. An agent that cannot replay conversations starts a new one, and the panel
+says so; the list stays. The list is kept in `agent-sessions.json` in your RedGem settings folder,
+not in the game's folder, so it is not shared with the game.
+
+### Your own agents
+
+The gear button opens the list of agents. Each one has a name, a command, arguments (one per line)
+and environment variables (`NAME=value`). Any program that speaks ACP over its standard streams can
+be added. The list is kept in `agents.json` in your RedGem settings folder (`~/.config/redgem/` on
+Linux). Variables are stored there as plain text, so an API key there can be read by anyone who can
+read that file. **Restore** brings back the Claude Code and Codex presets.
+
 ---
 
 Page: https://carlosdanielpohlod.github.io/redgem-site/manual/mcp/
@@ -1092,8 +1244,8 @@ output. Native library output goes to standard error. Closing input stops the se
 By default it opens no listening socket and works on files. Add `--editor` to connect to an
 editor that explicitly enabled its local bridge (see below).
 
-The server supports the MCP `2026-07-28` per-request metadata protocol and the `2025-11-25`
-initialization handshake. Modern clients can discover capabilities with `server/discover` and
+The server supports the MCP `2026-07-28` per-request metadata protocol and the `2025-11-25`,
+`2025-06-18` and `2025-03-26` initialization handshakes (a client asking for one of them gets it). Modern clients can discover capabilities with `server/discover` and
 must supply their protocol version and client capabilities in each request's `params._meta`.
 Legacy clients send `initialize`, then `notifications/initialized`, before using tools.
 
@@ -1101,16 +1253,52 @@ Legacy clients send `initialize`, then `notifications/initialized`, before using
 
 | Tool | What it does |
 |------|--------------|
-| `scene_list` | Lists objects, taking optional `scene`, `limit` and `depth`. |
+| `scene_list` | Lists objects, taking optional `scene`, `limit` (default 50, `0` for all) and `depth`. |
 | `scene_get` | Reads one `object` by persistent `#id`, unique name or hierarchy path. |
 | `scene_edit` | Takes `action` (`set`, `add`, `remove`), `object` and optional `assignments` (`key=value` strings), `from`, `parent`, `scene`. Removal requires `confirm: true`. Saves the scene file. |
 | `scene_diff` | Compares with an earlier scene file named by `against`, inside the game. |
 | `game_run` | Plays headlessly with `frames` (default 60, maximum 600), `seed`, `input`, `assert`, `until`, `print`, `every`, `scene`. |
 | `game_check` | Checks scripts, scenes and assets; does not run the game's test files. |
+| `game_shot` | Returns a PNG picture of the saved game at `at` seconds (default 1), `width` pixels wide (default 512, 16:9), optionally through another `camera`. |
+| `game_query` | Asks the playing game: `inspect` an `object`, `raycast` `from` one point `to` another, or `overlap` a sphere `at` a point with a `radius`. |
 | `api` | Reads the API index, a `class`, or a `search`. |
 | `events` | Reads this server's log history with `since`, `limit` (default 20, maximum 32), `level`. |
 
-`--read-only` exposes only `scene_list`, `scene_get`, `scene_diff`, `api` and `events`. It also
+`game_run` expressions run in the game after each frame and can use anything scripts can, for
+example `print: "Scene.find('Player').transform.position"` or
+`assert: "Physics.raycast(Vector3.new(0, 5, 0), Vector3.down)"`.
+
+`game_query` answers in short lines with rounded numbers. `inspect` gives the object's world
+position and rotation, its body, velocity and whether a character is grounded, and only those
+props that scripts changed since the scene loaded. Points are `x,y,z` strings in meters. Without
+an editor in Play, it plays the saved game for `frames` (default 60) first, as `game_run` does:
+
+```json
+{"action": "inspect", "object": "Player"}
+{"action": "raycast", "from": "0,5,0", "to": "0,-5,0"}
+{"action": "overlap", "at": "4,1,-3", "radius": 1.5}
+```
+
+```text
+after 60 frames: #5 Player pos=0,0.8,0 body=character vel=0,-0.33,0 grounded
+after 60 frames: 2 hits, nearest first:
+#5 Player at 0,1.62,0 normal=0,1,0 dist=3.38
+#0 Ground at 0,0,0 normal=0,1,0 dist=5
+```
+
+`game_shot` draws in a separate `redgem shot` process with a hidden window. A graphics driver
+that crashes takes only that process down, and the call reports it. It needs a display. Without one (no `DISPLAY` on Linux)
+it returns a tool error that says so, and the server keeps answering. Some MCP clients start
+servers with only a few environment variables; pass `DISPLAY` in the server's configuration
+if pictures are wanted. Prefer `game_run` to find out whether something works and use pictures
+for how it looks.
+
+Invalid arguments come back as tool errors (`isError: true`) naming the argument and what it
+accepts, such as `frames: must be at most 600, not 601`, so the model can correct the call.
+Unknown or disabled tools remain JSON-RPC errors.
+
+`--read-only` exposes only `scene_list`, `scene_get`, `scene_diff`, `api` and `events`; the
+`game_*` tools execute the game's scripts and are disabled. It also
 rejects calls to disabled tools, even if the client remembers an earlier tool list. For a smaller
 surface, add an exact comma-separated allow list:
 
@@ -1127,6 +1315,7 @@ links. These restrictions protect tooling paths; they do not sandbox native game
 Without `--editor`, edits go through the file-based scene commands. Close the editor while
 editing its files this way. Keep an earlier save and inspect `scene_diff` after an edit.
 `from` is available only in file mode; `parent` also works when adding a live empty object.
+With `--editor auto`, check `editor` `status` to know whether calls reach an editor.
 
 ## Live editor
 
@@ -1137,11 +1326,29 @@ redgem /path/to/game --editor-bridge
 ```
 
 The terminal prints the path of a private `connection.json` in the user's RedGem data folder.
-Pass that file to the MCP server for the same game:
+Let the MCP server find it on every call, so one client configuration survives editor restarts:
+
+```sh
+redgem mcp /path/to/game --editor auto
+```
+
+With `auto`, each call uses the newest running editor of that game. When none answers, the
+scene tools, `game_query` and `events` work on the saved files and this server instead, and
+their answer starts with `(no editor is running: answered from the saved files)`; the `editor`
+tool returns an error saying how to start an editor with its bridge. A connection file whose
+port refuses connections belongs to an editor that is gone and is deleted. A listener that does
+not prove itself (below) is skipped for a minute, so it delays at most one call a minute by about
+a second. To pin one editor instance, pass its file:
 
 ```sh
 redgem mcp /path/to/game --editor /path/to/connection.json
 ```
+
+If that editor exits, calls fail with an error that says how to restart it. A pinned editor
+always answers scene edits live, so its `scene_edit` schema leaves out `from`.
+
+With `auto`, an `events` cursor belongs to whichever process answered: the editor, or this server
+when no editor is open. After an editor opens or closes, start again from `since: 0`.
 
 Scene listing, object details and scene comparison now read the editor's unsaved document.
 `scene_edit` supports `set`, `add` and `remove`. `add` creates an empty object, optionally under
@@ -1156,15 +1363,17 @@ The `editor` tool takes these actions:
 |--------|--------|
 | `status` | Scene, play state, dirty flag, selection, undo/redo and external-conflict state. |
 | `select` | Select the requested `object`. |
+| `frame` | Point the editor camera at `object` (selecting it), or at the selection. |
 | `undo`, `redo`, `save` | Apply the corresponding editor command. Saving is explicit. |
 | `play`, `pause`, `resume`, `stop` | Control the editor's game, using its normal input, audio and viewport. |
 | `step` | Advance a paused game by exactly one fixed frame, keeping it paused. |
 | `capture` | Return the last completed viewport as an MCP PNG image, without writing a file. |
 
 `capture` accepts `max_size` (default 512, range 128–1024), the longest output side. Images are
-reduced further when necessary to stay below 128 KiB before base64 encoding. Only the scene
+reduced further when necessary for the reply, with the PNG as base64 text, to stay within the
+bridge's 256 KiB limit (about 188 KiB of PNG). Only the scene
 viewport is captured, never the desktop or other applications. `object` is accepted only by
-`select`; `max_size` only by `capture`. Read-only mode permits `status` and `capture` only.
+`select` and `frame`; `max_size` only by `capture`. Read-only mode permits `status` and `capture` only.
 
 Edits and document commands are refused while playing, during gestures/dialogs, or with an
 external file conflict pending. Play starts a copy of the unsaved scene; Stop discards that
@@ -1172,9 +1381,12 @@ runtime and restores the edited document. Pause/resume/stop/step control that ru
 file. Read operations still describe the edited document, not runtime-mutated objects. An
 explicit `scene` must match the open scene; requests never switch or discard scenes.
 
-`events` reads the editor's log history. `api`, `game_run` and `game_check` remain ordinary CLI
-tools: runs/checks read saved files rather than the unsaved editor scene. Runtime object
-inspection and arbitrary live eval are not exposed by this release.
+`events` reads the editor's log history. `game_query` asks the game the editor is playing (the
+runtime, not the edited document); it refuses `frames` there, so pause and `step` to advance.
+While editing, it reports that the editor is not playing; it does not fall back to the saved
+files, which may differ from the open document. `api`, `game_run`, `game_check` and
+`game_shot` remain ordinary CLI tools: they read saved files rather than the unsaved editor scene.
+Arbitrary live eval is not exposed.
 
 The bridge binds only to IPv4 loopback and requires a random credential on every request, with
 the game directory checked at both ends. Its connection file stays outside the repository and
@@ -1184,21 +1396,36 @@ control of that editor. MCP read-only and allow-list options restrict that clien
 
 At most four connections are handled at once, on the editor thread between frames. Requests
 are limited to 64 KiB and replies to 256 KiB. Transport waits expire after five seconds. If an
-edit times out, it may have completed: inspect status and the object before retrying. There is
-no automatic retry or fallback to editing the file when an editor connection fails. After a
-crash a stale connection file can remain; reconnect using the new editor instance's file.
+edit times out, it may have completed: inspect status and the object before retrying. A pinned
+connection (`--editor connection.json`) never falls back to the files.
+
+Before it sends the credential or a request, the client sends a random nonce, and the editor must
+answer within one second with an HMAC-SHA256 of it keyed by the credential. A program that took a
+crashed editor's port therefore receives only that nonce. Until that proof, a failure means no
+editor took the call; after it, any failure (a timeout, or a reset after the request went out)
+fails the call. It is never retried elsewhere or applied to the files, because the edit may
+already have happened.
 
 ## Bounded results
 
 Each request is at most 64 KiB with at most 16 JSON nesting levels. Ordinary tool text is limited
-to 8 KiB with a truncation notice; narrow the scene list or API query for more detail. Invalid
-arguments return JSON-RPC errors. A valid command that fails returns `isError: true` with the
-engine's diagnostic.
+to 8 KiB with a notice saying it was cut; narrow the scene list (`depth`, `limit`, then
+`scene_get`) or the API query for more detail. Invalid arguments and a valid command that fails
+both return `isError: true`, with what to change or the engine's diagnostic. Unknown or disabled
+tools are JSON-RPC errors.
 
-Event results also contain `structuredContent`: `events`, `cursor`, `dropped`, `more` and
-`cursor_ahead`. Pass the returned cursor in the next `since`. Each event's text is capped at 256
-UTF-8 bytes, with `truncated` when shortened. The cursor belongs to this server process; it is
-not a cursor into an unrelated editor or game (with `--editor`, it belongs to that editor).
+Event text starts with `cursor=N`, the value to pass as the next `since` (followed by `more`,
+`dropped` or `cursor_ahead` when they apply), then one line per event, `#id level text`:
+
+```text
+cursor=2
+#2 error scripts/coin.rb:12: Coin#update on 'Coin1': undefined method 'positon=' for Transform (NoMethodError)
+```
+
+Each event is its message's first line, led by the place in the game's files its backtrace names,
+with the game's folder left out of paths. Each event's text is capped at 256 UTF-8 bytes and ends
+with `...` when shortened. The cursor belongs to this server process; it is not a cursor into an
+unrelated editor or game (with `--editor`, it belongs to that editor).
 Events include engine log messages, not raw
 standard output. Process history is bounded, so `dropped` identifies overwritten messages.
 
@@ -1731,6 +1958,82 @@ end
 `box_cast`, `capsule_cast`, `overlap_box` and `overlap_capsule` work the same way. Hits come
 nearest first, each object once, at most 64.
 
+## Follow, orbit and shake the camera
+
+The camera follows, orbits and shakes on its own once told to: no script of its own has to move it
+every frame.
+
+**A third-person camera** follows an object at an offset, smoothed (`smoothing` is the seconds it
+takes to close half the way, the same at any frame rate), looking at it, and comes in front of any
+wall that would hide it (a `Physics.raycast` from the object to the camera):
+
+```ruby
+class Hero < Behaviour
+  def start
+    Camera.follow(game_object, offset: Vector3.new(0, 2.5, 5), smoothing: 0.12)
+  end
+end
+```
+
+`relative: true` takes the offset in the object's own axes (its +Z is behind it), so the camera
+swings round as it turns; `dead_zone: 0.5` lets it move half a meter before the camera goes after
+it; `look_at: false` leaves the camera's turn alone. It starts in its place; `snap: false` flies
+there from where the camera is. What the object carries (its children) is never taken for a wall.
+
+**An orbit viewer** looks at an object or a point from around it: the player turns it by dragging
+with the right mouse button or with the right stick, and zooms with the wheel, within limits:
+
+```ruby
+class Viewer < Behaviour
+  def start
+    @orbit = Camera.orbit(Scene.find("Statue"), distance: 8, pitch: 25, distances: 3..15, pitches: -10..70)
+  end
+
+  def update(dt) = @orbit.turn(10 * dt, 0) # a script turns it too: a slow turntable
+end
+```
+
+The player turns it also while the game is paused or slowed (`Time.unscaled_delta`); its yaw stays
+within -180..180 and eases the short way round. `input: false` leaves it to the script alone. `Camera.stop_following` stops either; an object
+followed or orbited that is destroyed is let go, and the camera stays where it was.
+
+**A hit shakes the camera.** Each shake adds its strength to the camera's trauma (never past 1),
+which fades out over its duration; what the camera shows moves and turns by the square of it,
+along smooth noise, on top of a follow or an orbit. The camera object itself never moves, so a
+script of your own that moves or turns it keeps exactly its own pose:
+
+```ruby
+def on_collision_enter(other)
+  Camera.shake(0.4, duration: 0.3) if other.tag?(:enemy)
+end
+```
+
+A camera with a parent (on a vehicle, a dolly) works too: the helpers place it in the world.
+
+## Mark things on the screen
+
+`Camera.world_to_screen` says where a point of the world is on the screen, in the pixels `UI`
+draws in, at any window size and render scale: a health bar over an enemy, an arrow over a coin.
+It is nil when the point is behind the camera; a point beside the view comes back off the screen.
+
+```ruby
+class HealthBar < Behaviour
+  WIDTH = 60
+
+  def update(_dt)
+    x, y = Camera.world_to_screen(transform.position + Vector3.up * 2.2)
+    return unless x
+
+    UI.rect(x: x - WIDTH / 2, y: y, width: WIDTH, height: 8, color: :black)
+    UI.rect(x: x - WIDTH / 2, y: y, width: WIDTH * @health / 100.0, height: 8, color: :red)
+  end
+end
+```
+
+It sees from where the picture is drawn from, shake included. A behaviour added after the first
+`Camera.follow` (or orbit, or shake) sees the camera where this frame draws it; one that was there
+before sees where it was a frame ago. `Camera.screen_ray` goes the other way.
+
 ## Show text on screen
 
 Call it every frame from `update`:
@@ -1811,6 +2114,22 @@ menu.screens[:pause].add_option("Credits", index: 1) { menu.show(:credits) }
 subclass of `GameMenu::Screen` (`draw`, `space_above`, `opened`, `closed`, `typing?`, and `rows`
 for widgets of its own that take the focus before its buttons, with `focus`): the
 platformer's multiplayer screen, `games/platformer/scripts/multiplayer_screen.rb`, is one.
+
+### A loading screen
+
+```ruby
+Game.on_loading do |delta|
+  UI.text("Loading #{Game.loading_scene}...", x: 24, y: 24, size: 28)
+  Game.cancel_scene_load if UI.button("Cancel", x: 24, y: 80, width: 160, height: 48)
+end
+Game.load_scene_async("level2")
+```
+
+Normal simulation pauses while the file is read; the loading screen, audio and network continue.
+Failure or cancellation preserves the current scene. Check `Game.loading_error` after the load
+ends to report a failure or retry. Successful activation removes the old loading callback.
+Physics, texture decoding and GPU upload can still cause an activation hitch; see
+[the API's loading limits](api.md#game). Use `Game.load_scene` for the existing synchronous switch.
 
 ## A settings screen
 
@@ -2072,6 +2391,151 @@ GameManager.instance.collect_coin
 ## Time
 
 `Time.elapsed` is seconds since the game started, `Time.delta` the length of the last frame.
+
+## Measure frame times
+
+```ruby
+Debug.stats_visible = true           # also starts profiling; shows the developer panel
+Debug.frame_stats[:mean][:update_ms] # average foreground update time, in milliseconds
+Debug.frame_stats[:peak][:scene_ms]  # largest foreground scene operation in the window
+Debug.stats_visible = false          # hides the panel while keeping collection active
+Debug.profiling = false              # stops collection; keeps the last summary
+Debug.reset_frame_stats              # clears the window and any unfinished measurement
+```
+
+The panel works in the player, editor Play and recordings. Collection is off by default and
+keeps at most 120 completed frames. Timings use the steady clock, so pausing or slowing the game
+does not change what is measured. Physics is included in update, and presentation includes any
+upload, frame cap or synchronization wait: these are inclusive foreground wall times, not GPU
+timers or a per-function sampling profiler. Leave the panel off for reproducible pictures.
+
+
+## Draw world diagnostics
+
+```ruby
+def update(_delta)
+  origin = transform.position
+  Debug.line(origin, origin + Vector3.up, color: :green)
+  Debug.box(origin, Vector3.new(1, 2, 1), color: :yellow, depth_test: false)
+end
+```
+
+Lines and axis-aligned wire boxes use world coordinates and are submitted every frame. Box size
+is its full nonnegative width, height and depth. They create no objects and are local to the
+presenter; a dedicated server validates arguments and returns `false` without collecting commands.
+Calls return `true` when accepted and `false` after the shared limit of 4096 commands per frame.
+The next frame starts with an empty buffer. Invalid vectors, box bounds or color channels are rejected before reaching the renderer. Use `UI.text` for a screen-space label.
+
+`depth_test: true` hides shapes behind opaque geometry; `false` draws through it. Transparent
+surfaces use the renderer's normal depth, so this is an opaque-scene diagnostic. Frames with shapes
+use an unjittered camera and restart temporal history; normal temporal sampling resumes when no
+shapes are submitted. Editor, scaled and recorded views reuse their color/depth target. Native
+windows allocate one cached target on demand; if allocation fails, the game still draws, reports
+a warning and omits the shapes. Changing the window size allows another allocation attempt.
+
+
+## Keep separate progress in save slots
+
+```ruby
+Save.slot = 'profile-1'
+Save[:coins] = 12
+Save.slot = 'profile-2'
+Save[:coins]                         # nil: another slot
+Save.slot = 'profile-1'
+Save[:coins]                         # 12
+Save.slots                          # sorted String names, including 'default'
+Save.slot = 'default'                # the original save, with its existing data
+```
+
+Every engine starts on `default`. Selection lasts across scene changes and is independent for
+server rooms, even when their database is shared. `get`, `set`, `update`, `keys`, `delete` and
+`clear` use the selected slot; clearing one does not erase the others. An `update` block writes
+back to the store selected at entry, even if the block selects another slot. The block's other
+side effects are not rolled back when it raises.
+
+Names contain 1–48 lowercase ASCII letters/digits, hyphens or underscores and start with a letter
+or digit. Symbols are accepted on assignment; the getter and list return Strings. Invalid names
+raise `ArgumentError`; a failed selection leaves the previous slot and its data selected. At
+most 64 named slots can be opened per engine/run (and per shared local-file backend); listing is
+bounded to 4096 names. Unsupported custom backends or exceeded limits raise `RuntimeError`.
+
+The default file is neither renamed nor migrated. Named files live beside it in
+`<save-file>.slots/slot-<name>.json` and use the same atomic writes, backups and damaged-file
+recovery. Existing symbolic links at slot folders/files/backups are refused. Files are cached
+by the backend, so returning to an opened slot does not create stale copies of its values.
+Local-file stores retain their existing single-threaded, one-process contract; shared server
+rooms use SQLite. Named SQLite data has separate tables and the original default table remains
+unchanged. Storage operations still run synchronously.
+
+`Save.slots` includes persisted names plus slots opened during this run. A file slot is only
+persisted after a write; the database remembers named slots when they are opened. A supplied
+custom `SaveStore` keeps its original behavior and must implement the optional slot factory to
+support named selection. Game tests isolate slot files too: fresh runs clear live data/backups,
+restart runs copy them, and damaged evidence is retained rather than copied into another test.
+This API stores values; it does not automatically serialize scene objects or migrate game data.
+
+### Keeping references to scene objects
+
+A loaded object's `stable_id` is its identity in the scene file, independent of its name or
+runtime `id`. Use `Scene.find_by_id(identity)` to look it up in the current scene; it accepts a
+String or Symbol and returns `nil` when the original is gone or the identity is unknown.
+
+```ruby
+Save[:selected_object] = {
+  "scene" => Game.scene_name,
+  "id" => Scene.find!("Door").stable_id
+}
+selection = Save[:selected_object]
+if selection && selection["scene"] == Game.scene_name
+  door = Scene.find_by_id(selection["id"])
+end
+```
+
+Identities are scoped to one scene: save the scene name with the identity. The raw String has
+no `#` prefix (the command-line selector adds that prefix). Old files receive deterministic
+identities on read; a scene must be saved by the editor or command-line tools to persist them
+before an external tool reorders its nodes. See [scene editing](../command-line.md).
+
+Runtime copies have `nil` identities, including their descendants and copies of copies. A copy
+never resolves as its source, even after an object is destroyed or a runtime slot is reused.
+An old object reference remains stale after a scene switch; look up the saved identity again.
+An object whose in-memory source supplies no identity also returns `nil`. This lookup does not
+serialize transforms, behaviours or spawned instances; object checkpoints are a separate API.
+
+### Object checkpoints
+
+`GameObject.capture_state` returns a versioned Hash of the object's local position, quaternion
+rotation, scale, tint and visibility. Keep that Hash unchanged in `Save`, beside the object's
+identity. On a fresh run or after loading the matching scene, resolve the identity and restore it:
+
+```ruby
+hero = Scene.find!("Hero")
+Save[:hero] = { "id" => hero.stable_id, "state" => hero.capture_state }
+# Later, in the same scene (for example its SceneScript#setup):
+saved = Save[:hero]
+hero = saved && Scene.find_by_id(saved["id"])
+hero.restore_state(saved["state"]) if hero
+```
+
+Restoration validates the complete payload and resulting hierarchy before changing anything.
+The scene name, source node, original/copy kind, parent source and current physics body must
+match. Malformed, incompatible or oversized data raises `ArgumentError`; a destroyed or pending
+object raises `RuntimeError`. A stale reference never restores a new object that reused its slot.
+A hierarchy pending destruction is refused. In-memory sources need explicit scene-file identities.
+
+The pose is local to the current parent. Physical bodies in the moved hierarchy are teleported
+immediately and stop moving; velocities are not saved. Existing colliders cannot change scale:
+a checkpoint that would rescale a physical hierarchy is refused. Render-only hierarchies can
+restore scale. Local components and resulting world components are bounded to one million in
+magnitude, and at most 4096 objects can move in one restoration.
+
+A checkpoint also works on an explicitly chosen runtime copy of the same source and parent;
+it cannot silently select a copy or overwrite its original. The game creates any needed copies
+first. This API neither spawns nor resurrects objects, changes parents, nor restores descendants'
+individual local poses or appearance. Save each object's checkpoint if those values matter.
+Animations, behaviours, joints, forces and game time remain active. Health, inventory and other
+script-owned values must be saved explicitly beside the checkpoint; this is not a whole-game
+snapshot. Checkpoints follow scene-file identity rules described above.
 
 ---
 
@@ -2733,7 +3197,8 @@ The scripting API of RedGem games: the classes and methods scripts use. Generate
 | [`CharacterController`](#charactercontroller) | The body of an object with body = "character": walks, jumps, climbs steps. |
 | [`Rigidbody`](#rigidbody) | The body of an object with body = "dynamic" or "kinematic" (or a vehicle's chassis). |
 | [`Vehicle`](#vehicle) | The body of an object with body = "vehicle" and wheels. |
-| [`Camera`](#camera) | The camera the game is seen through. |
+| [`Camera`](#camera) | The camera the game is seen through, and what it does on its own: follow, orbit, shake. |
+| [`Camera::Orbit`](#cameraorbit) | What Camera.orbit returns: the camera's angles and distance around what it orbits, for scripts to read and change. |
 | [`Light`](#light) | game_object.light: the light an object shines with. |
 | [`Animation`](#animation) | The scene's own animations (exported from Blender), by name. |
 | [`Animator`](#animator) | game_object.animation (animation in a behaviour): an object's own clips. |
@@ -2741,7 +3206,7 @@ The scripting API of RedGem games: the classes and methods scripts use. Generate
 | [`Audio`](#audio) | Sounds and music from the game's sounds/ folder. |
 | [`UI`](#ui) | What a script draws over the game this frame: texts, rectangles, pictures, buttons. |
 | [`UI::Focus`](#uifocus) | Which widget of a screen the keyboard and a gamepad work: up and down move it, wrapping. |
-| [`Debug`](#debug) | Messages to the console (and to redgem run). |
+| [`Debug`](#debug) | Developer diagnostics: console messages, frame timings and immediate world drawing. |
 | [`Game`](#game) | The game itself. |
 | [`Settings`](#settings) | How the player chose the game to be shown and heard; a change takes effect at once. |
 | [`GameMenu`](#gamemenu) | A behaviour: title screen, pause menu, end screen and settings screen with its controls page; arrows or the D-pad move the focus, Enter or A picks. |
@@ -2794,6 +3259,9 @@ An object of the scene, as scripts see it. See [behaviours.md](behaviours.md).
 
 - `name`: its name
 - `id`: its number in the running game
+- `stable_id`: its persistent scene-file identity as a String; nil for runtime copies
+- `capture_state`: a versioned checkpoint of local pose, tint and visibility, suitable for Save
+- `restore_state(state)`: validates a checkpoint then restores pose and appearance; teleports physical descendants and returns self
 - `tag`: its tag property
 - `tag?(value)`: whether its tag is value
 - `props`: its custom properties
@@ -2885,6 +3353,7 @@ A point or a direction in meters: x, y, z.
 The objects of the running scene. See [gameplay.md](gameplay.md).
 
 - `Scene.find(name)`: the object called name, or nil
+- `Scene.find_by_id(identity)`: the current scene object with that persistent String/Symbol identity, or nil
 - `Scene.find!(name)`: find that stops with a clear error when the object is missing
 - `Scene.find_all(tag)`: every object with that tag
 - `Scene.objects`: every object
@@ -2951,6 +3420,7 @@ Every action, axis, binding and gamepad call takes `pad:` (0 to 3: the player; 0
 The game's clock (added to Ruby's Time).
 
 - `Time.delta`: seconds since the last frame
+- `Time.unscaled_delta`: seconds since the last frame, whatever Time.scale (also while paused)
 - `Time.fixed_delta`: seconds of a physics step (1/60)
 - `Time.elapsed`: seconds since the game started
 - `Time.frame`: how many frames have run
@@ -3044,14 +3514,33 @@ Wheel meshes must have their rotation applied (the axle along X). `drive`'s inpu
 
 ## Camera
 
-The camera the game is seen through.
+The camera the game is seen through, and what it does on its own: follow, orbit, shake. See [gameplay.md#follow-orbit-and-shake-the-camera](gameplay.md#follow-orbit-and-shake-the-camera).
 
 - `Camera.main`: the object holding the camera
 - `Camera.screen_ray(x, y)`: [origin, direction] through a pixel of the screen
+- `Camera.world_to_screen(point)`: [x, y]: where a Vector3 (or an object) is on the screen, in the pixels UI draws in; nil behind the camera
 - `Camera.fov`: its vertical field of view, in degrees
 - `Camera.fov = degrees`: sets the field of view
 - `Camera.motion_blur`: how much the picture streaks with speed, 0 to 1
 - `Camera.motion_blur = amount`: sets it
+- `Camera.follow(target, offset: [0, 3, 6], relative: false, smoothing: 0.15, look_at: true, look_height: 1.0, avoid_walls: true, dead_zone: 0, snap: true)`: follows an object from now on: offset in meters (relative: in its own axes), smoothing in seconds to close half the way, in front of walls between; snap: false flies there
+- `Camera.orbit(target, distance: 6, yaw: 0, pitch: 20, distances: 1..30, pitches: -80..80, smoothing: 0.08, input: true, height: 1.0, avoid_walls: true)`: orbits an object or a point, looking at it, turned by dragging with the right mouse button or the right stick and zoomed by the wheel, also while paused; returns a Camera::Orbit
+- `Camera.stop_following`: stops following or orbiting; the camera stays where it is
+- `Camera.following?`: whether it follows or orbits something (an object destroyed is let go)
+- `Camera.shake(strength, duration: 0.5)`: shakes what it shows (never the camera object): strength (0 to 1) adds to its trauma, held at 1, fading over duration seconds
+- `Camera.trauma`: how much it shakes now, 0 to 1
+- `Camera.stop_shaking`: stops the shake at once
+
+## Camera::Orbit
+
+What Camera.orbit returns: the camera's angles and distance around what it orbits, for scripts to read and change. See [gameplay.md#follow-orbit-and-shake-the-camera](gameplay.md#follow-orbit-and-shake-the-camera).
+
+- `yaw`: degrees around it, -180 to 180: 0 behind it (its +Z side), 90 on its right
+- `pitch`: degrees above it
+- `distance`: meters from it
+- `target`: the object or point it orbits
+- `turn(yaw, pitch)`: turns by degrees (the yaw wraps round, eased the short way), the pitch kept within its range
+- `zoom(meters)`: comes nearer (negative) or goes further, within its range
 
 ## Light
 
@@ -3153,22 +3642,60 @@ Which widget of a screen the keyboard and a gamepad work: up and down move it, w
 
 ## Debug
 
-Messages to the console (and to redgem run).
+Developer diagnostics: console messages, frame timings and immediate world drawing.
 
 - `Debug.log(message)`: says something
 - `Debug.warn(message)`: warns
 - `Debug.error(message)`: reports an error
+- `Debug.profiling?`: whether foreground frame timings are being collected
+- `Debug.profiling = enabled`: starts a fresh profile window when enabled; disabling retains the last summary
+- `Debug.stats_visible?`: whether the developer statistics overlay was requested
+- `Debug.stats_visible = visible`: shows frame timings and FPS; showing also enables profiling, hiding leaves collection running
+- `Debug.frame_stats`: a snapshot with samples, fps and latest/mean/peak timings in milliseconds
+- `Debug.reset_frame_stats`: clears statistics and discards any unfinished measurement
+- `Debug.line(from, to, color: :green, alpha: 255, depth_test: true)`: draws a world-space line for this frame; returns whether it was accepted
+- `Debug.box(center, size, color: :green, alpha: 255, depth_test: true)`: draws an axis-aligned wire box with full nonnegative size for this frame; returns whether it was accepted
+
+Profiling is off by default. The overlay uses the shared game HUD, including editor Play and recordings; it is hidden when profiling is off. Timings use the real steady clock, independently of Time.scale or fixed-step replay. The most recent 120 completed frames form the window; reads during a frame expose only completed frames. FPS uses completion-to-completion intervals, and is zero until an interval is available. `latest`, `mean` and `peak` contain `frame_ms`, `interval_ms`, `has_interval`, and `input_ms`, `network_ms`, `http_ms`, `update_ms`, `physics_ms`, `presentation_ms`, `scene_ms`. Input includes pending script startup; network and HTTP include their callbacks; update includes animations, scripts, particles, loading UI and physics. Physics includes fixed-update callbacks, body synchronization and contacts, so its time overlaps update. Presentation includes uploads, drawing and any frame-cap or synchronization waits. Scene includes request polling, synchronous reads and activation; the asynchronous worker is not instrumented, while offline fixed-step waits count as scene wall time. These are foreground wall times, not GPU timers or CPU utilization. Phase times are inclusive and must not be summed as a partition. Overlay timings and captures are nondeterministic; leave the overlay off for reproducible pictures. Debug.line and Debug.box use world coordinates and live for one frame: submit from ready/update/fixed_update. At most 4096 commands are accepted per frame; later calls return false. They are local-only and return false without a presenter, while still validating arguments. depth_test: false draws through objects. Shape frames use unjittered rendering and reset temporal history; normal temporal sampling resumes afterwards. Native windows allocate one cached color/depth target only when shapes are requested; editor, scaled and recorded views reuse their target. If that extra native target is unavailable, the game still draws with a warning and the shapes are omitted.
 
 ## Game
 
-The game itself.
+The game itself. See [gameplay.md#a-loading-screen](gameplay.md#a-loading-screen).
 
 - `Game.load_scene(name)`: switches to scenes/<name>.glb ("main" is scene.glb); Ruby globals survive
+- `Game.load_scene_async(name)`: queues a background scene read; the old world survives failed reads and cancellation
+- `Game.loading?`: a scene request is queued or being read
+- `Game.loading_scene`: the requested scene name, or nil
+- `Game.loading_error`: the last asynchronous read error, or nil; cleared by the next load request
+- `Game.cancel_scene_load`: cancels a pending asynchronous request; returns whether one was pending
+- `Game.on_loading(&block)`: draws the loading screen each frame with unscaled delta; no block restores the default
 - `Game.scene_name`: the scene running
 - `Game.title`: the game's title
 - `Game.quit`: ends the game
 - `Game.stop_recording`: ends a video recorded with --record; the game goes on
 - `Game.version`: the version in game.json ("1.2.0"), or nil
+
+While an asynchronous read is pending, physics, animations and normal behaviour callbacks pause.
+Input, networking, HTTP callbacks, audio and presentation continue. The loading callback can use
+`UI`, handle cancel buttons and animate using its unscaled delta; `Time.delta` is zero during
+loading. The pointer is released while the screen is shown. The default screen draws a translated
+loading label over the old world. A callback error is reported once and disables it for that load.
+
+Unsafe names are rejected immediately; missing or unreadable files are reported through
+`Game.loading_error` after the request runs. The old world stays intact if reading fails or is cancelled. The most recent request wins;
+`Game.load_scene` also supersedes an asynchronous request. Globals survive successful activation,
+but the old scene's loading callback is removed before the next scene's setup runs. Errors are
+reported through `Game.loading_error` and the event log. At most eight background requests/results can be
+outstanding across the process, using one shared reader; a full queue fails without changing the
+world. Cancelling an active read discards its result; it does not interrupt the file parser.
+
+Only file reading and glTF parsing happen on the worker. Physics creation, script setup, texture
+decoding and GPU upload still happen on the owning thread and may hitch during activation. The
+old and incoming scene coexist in memory during reading. Fixed-step offline runs (including
+recordings and scripted replays) wait for the reader before advancing, then show exactly one
+loading frame before activation so completion does not depend on thread scheduling. Networked runs and dedicated-server rooms keep the
+background reader even in fixed-step mode; activation still runs on the server loop and can stall
+other rooms sharing that loop. Closing the process waits for an active parser to return.
 
 ## Settings
 
@@ -3271,8 +3798,11 @@ What the game keeps between runs. See [online-services.md#saving-on-a-server](on
 - `Save.delete(key)`: removes a key
 - `Save.clear`: removes everything
 - `Save.keys`: every key
+- `Save.slot`: the selected save slot name; default keeps the existing save file
+- `Save.slot = name`: selects a named slot for this engine; default restores the original store
+- `Save.slots`: sorted names of persisted slots and slots opened in this run, including default
 
-Values are numbers, texts, true/false, `Vector3`, and arrays and hashes of those; hashes come back with string keys.
+Values are numbers, texts, true/false, `Vector3`, and arrays and hashes of those; hashes come back with string keys. Named slots start on default for every engine and keep their selection across scenes. Selection is local to each engine, including shared-database server rooms. Names are 1–48 lowercase ASCII letters/digits, hyphens or underscores, starting with a letter/digit. At most 64 named stores may be opened per run/local backend and 4096 names listed; invalid names or unavailable backends leave selection unchanged and raise a Ruby error. The existing default file/table is preserved. Named files use their own atomic writes/backups; SQLite uses separate slot tables. Save.update writes to its entry store even if its block selects another slot. Slots keep values, not object-state snapshots or migration metadata.
 
 ## HTTP
 

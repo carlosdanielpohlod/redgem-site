@@ -16,7 +16,7 @@
         <link rel="prev" href="../first-game/">
       
       
-        <link rel="next" href="../levels/">
+        <link rel="next" href="../prefabs/">
       
       
         
@@ -490,10 +490,49 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#building" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Building
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../prefabs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Prefab files
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -1101,6 +1140,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#building" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Building
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1159,9 +1209,14 @@ icons):</p>
   files.</li>
 <li><strong>Console</strong>: engine and Ruby output (filter by level), including script errors with backtraces.</li>
 <li><strong>Scripts</strong>: each open Ruby file gets its own tab next to the Scene. Drag tabs to split the view
-  anywhere (or press <em>Split right</em>), like a code editor's editor groups. Ctrl+S saves and checks
+  anywhere (or press <em>Split right</em>), like a code editor's editor groups. The code is colored as
+  you type: keywords, strings, symbols, comments, numbers, constants and <code>@variables</code> each have a
+  color of the editor's theme. Ctrl+S saves and checks
   the syntax (errors show the line); <em>Open externally</em> uses your default editor. Play saves all
   open scripts and reloads them.</li>
+<li><strong>Agent</strong>: a chat with a coding agent (Claude Code, Codex or one of your own), in a tab beside
+  the Inspector. It works in the game's folder and sees and changes the open scene through the
+  editor's tools; see <a href="../assistants/#the-agent-panel">The Agent panel</a>.</li>
 <li><strong>View menu</strong>: hide the Hierarchy (Ctrl+B), the Inspector (Ctrl+Alt+B) or the bottom panels
   (Ctrl+J) to give the scene or the code more room; the toolbar's outer buttons toggle the sides.</li>
 <li><strong>Play / Pause / Stop</strong> (Ctrl+P, Esc): runs the game inside the Scene view with the current edits
@@ -1255,6 +1310,21 @@ a script loads it with:</p>
 <p>The window title and the status bar name the open scene, and the editor follows that scene's file
 for changes made outside. Built games carry every scene: Build copies the whole game folder,
 <code>scenes/</code> included.</p>
+<h2 id="building">Building<a class="headerlink" href="#building" title="Permanent link">&para;</a></h2>
+<p><strong>Build</strong> (in the toolbar, or File &gt; Build Game) asks which system to build for, saves the open
+scene and the scripts, and builds the game into a folder beside it: <code>&lt;game&gt;-build</code> for the system
+the editor runs on, <code>&lt;game&gt;-build-&lt;system&gt;</code> for another one (see
+<a href="../shipping/">Building and sharing</a>). The build
+runs in the background, so the editor keeps working while it does: a box in the Scene view's
+bottom-right corner shows what is being built, for how long it has been, and the step it is at
+(copying the game's files, packing the app, signing it). When it ends, the box says how it went:
+the folder it filled, with <strong>Open folder</strong>, or what went wrong. The Console keeps the same lines.</p>
+<p>One build runs at a time: Build is greyed out until the running one ends. The build reads the
+game's files from disk, never the scene open in the editor, so you can keep editing while it runs;
+what you save meanwhile is only sure to be in the next build. Closing the editor while a build
+runs waits for it, saying so, then closes as usual, asking first about anything edited and not
+saved (<strong>Keep the editor open</strong> stays instead).
+A build is not stopped halfway: the tools it runs would leave half-written files behind.</p>
 
 
 
@@ -1304,13 +1374,13 @@ for changes made outside. Built games carry every scene: Build copies the whole 
         
         
           
-          <a href="../levels/" class="md-footer__link md-footer__link--next" aria-label="Next: Levels, lighting and Blender">
+          <a href="../prefabs/" class="md-footer__link md-footer__link--next" aria-label="Next: Prefab files">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Levels, lighting and Blender
+                Prefab files
               </div>
             </div>
             <div class="md-footer__button md-icon">

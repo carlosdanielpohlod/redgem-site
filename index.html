@@ -115,6 +115,10 @@
   .shots figcaption { padding: 12px 16px 14px; color: var(--muted); font-size: 14.5px; line-height: 1.5; }
   .shots figcaption b { color: var(--paper); }
 
+  .feature-shot { margin: 32px 0 36px; border-radius: 14px; overflow: hidden; border: 1px solid var(--line); background: var(--panel); box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35); }
+  .feature-shot img { display: block; width: 100%; height: auto; }
+  .feature-shot figcaption { padding: 12px 16px 14px; color: var(--muted); font-size: 14.5px; line-height: 1.5; }
+
   .steps { counter-reset: step; display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; margin-top: 36px; }
   .steps div { counter-increment: step; padding: 24px; border-radius: 16px; border: 1px solid var(--line); background: var(--panel); }
   .steps div::before { content: "0" counter(step); display: block; margin-bottom: 10px; color: var(--ruby); font-family: var(--mono); font-size: 14px; }
@@ -160,7 +164,7 @@
   </header>
 
   <div class="hero">
-    <p class="eyebrow"><a href="#mcp">New in 0.4.1 · Built-in MCP tools</a></p>
+    <p class="eyebrow"><a href="#agent">New in 0.5.0 · An AI agent in the editor</a></p>
     <h1>Build 3D games in <em>Ruby</em>.</h1>
     <p class="claim">With Ruby, <b>the most human-friendly language</b>.</p>
     <p>RedGem is a game engine with its own editor. Build your levels, write the gameplay in Ruby, press Play, ship it for Linux, Windows and Android.</p>
@@ -197,28 +201,33 @@
     </p>
   </div>
 
-  <section id="mcp">
-    <p class="eyebrow">New in 0.4.1 · Built-in MCP</p>
-    <h2>Your tools can work inside the editor.</h2>
+  <section id="agent">
+    <p class="eyebrow">New in 0.5.0 · Agent panel and MCP</p>
+    <h2>A coding agent inside the editor.</h2>
+    <p class="lead">Chat with Claude Code or Codex in the editor's Agent panel. The agent works in your game's folder and drives the editor through its built-in MCP tools: it lists and moves objects, presses Play, reads the errors and looks at the viewport.</p>
+    <figure class="feature-shot">
+      <img src="assets/shot-agent.webp" alt="The RedGem editor with the Agent panel open beside a coastal scene: Claude Code turned a treasure chest with the editor's MCP tools and checked it with a picture of the game" width="1600" height="873">
+      <figcaption>Claude Code in the Agent panel, turning a chest with <code>scene_edit</code> and checking it with <code>game_shot</code>. Scene: <a href="https://polyhaven.com/a/treasure_chest">Treasure Chest</a> by Rico Cilliers, the coast scan and the sky from <a href="https://polyhaven.com">Poly Haven</a> (CC0).</figcaption>
+    </figure>
     <div class="split">
       <div>
-        <p class="lead">Connect an MCP client to RedGem without an editor plugin. Inspect the scene, create and change objects, run checks, control Play and see the game viewport.</p>
         <ul class="points">
-          <li><b>Edits you can undo:</b> each batch is one undo step, with changes visible immediately and saving kept explicit.</li>
-          <li><b>Reproducible play:</b> fixed-step headless runs with a seed, scripted input and assertions. Pause and single-step the editor's game.</li>
-          <li><b>Useful feedback:</b> stable object identities, scene diffs, errors since a cursor and small viewport images.</li>
-          <li><b>Access you choose:</b> an opt-in local editor bridge, read-only mode and an exact tool allow list.</li>
+          <li><b>Agents you already use:</b> Claude Code and Codex come as presets over the Agent Client Protocol, or add your own.</li>
+          <li><b>See what it does:</b> answers stream in with tool calls and their diffs, the agent's plan, permission questions and a Stop button.</li>
+          <li><b>Live editor tools:</b> scene edits are undo steps, Play and single frames are a call away, and <code>game_query</code> reads the running game.</li>
+          <li><b>Conversations kept:</b> each game lists its past sessions, and the last one comes back when you open the game again.</li>
+          <li><b>Any MCP client:</b> <code>redgem mcp</code> gives the same tools to other clients, with read-only mode and an exact tool allow list.</li>
         </ul>
-        <p><a class="button primary" href="manual/mcp/">Set up MCP</a> <a class="button" href="#start">Get 0.4.1</a></p>
+        <p><a class="button primary" href="manual/assistants/#the-agent-panel">Use the Agent panel</a> <a class="button" href="manual/mcp/">Set up MCP</a> <a class="button" href="#start">Get 0.5.0</a></p>
       </div>
-<pre><span class="m"># Start the editor with its local bridge</span>
-redgem my-game --editor-bridge
+<pre><span class="m"># Open the game: the Agent tab sits beside the Inspector</span>
+redgem my-game
 
-<span class="m"># Configure your MCP client to launch this server,</span>
-<span class="m"># using the connection file the editor prints</span>
-redgem mcp my-game --editor /path/to/connection.json
+<span class="m"># Or give another MCP client the same tools:</span>
+<span class="m"># the open editor when there is one, the files otherwise</span>
+redgem mcp my-game --editor auto
 
-<span class="m"># Or inspect saved files without an editor</span>
+<span class="m"># Inspect saved files without an editor</span>
 redgem mcp my-game --read-only</pre>
     </div>
   </section>
@@ -372,11 +381,11 @@ redgem mcp my-game --read-only</pre>
   <section id="start">
     <p class="eyebrow">How to install</p>
     <h2>Download, unpack, run.</h2>
-    <p class="lead">Version 0.4.1. Nothing to install. RedGem is experimental and free, under the MIT license. <a href="https://github.com/carlosdanielpohlod/redgem/releases/tag/v0.4.1">What is new</a>.</p>
+    <p class="lead">Version 0.5.0. Nothing to install. RedGem is experimental and free, under the MIT license. <a href="https://github.com/carlosdanielpohlod/redgem/releases/tag/v0.5.0">What is new</a>.</p>
     <div class="grid">
-      <div class="card"><h3>Linux</h3><p>x86_64, OpenGL 3.3, Ubuntu 24.04 or newer. The tested one: builds games for Linux, Windows and Android.</p><p><a class="button primary" href="https://github.com/carlosdanielpohlod/redgem/releases/download/v0.4.1/redgem-linux-x86_64.tar.gz">Download for Linux</a></p></div>
-      <div class="card"><h3>Windows</h3><p>x86_64. Compiled from Linux and only tried under Wine so far: tell us what breaks. Builds games for Windows.</p><p><a class="button" href="https://github.com/carlosdanielpohlod/redgem/releases/download/v0.4.1/redgem-windows-x86_64.zip">Download for Windows</a></p></div>
-      <div class="card"><h3>macOS</h3><p>macOS 11 or newer. Tested on GitHub's Macs, not yet on a real one: tell us what breaks. Not signed by Apple: right-click the app and choose Open the first time.</p><p><a class="button" href="https://github.com/carlosdanielpohlod/redgem/releases/download/v0.4.1/redgem-macos-arm64.zip">Apple Silicon</a> <a class="button" href="https://github.com/carlosdanielpohlod/redgem/releases/download/v0.4.1/redgem-macos-x86_64.zip">Intel</a></p></div>
+      <div class="card"><h3>Linux</h3><p>x86_64, OpenGL 3.3, Ubuntu 24.04 or newer. The tested one: builds games for Linux, Windows and Android.</p><p><a class="button primary" href="https://github.com/carlosdanielpohlod/redgem/releases/download/v0.5.0/redgem-linux-x86_64.tar.gz">Download for Linux</a></p></div>
+      <div class="card"><h3>Windows</h3><p>x86_64. Compiled from Linux and only tried under Wine so far: tell us what breaks. Builds games for Windows.</p><p><a class="button" href="https://github.com/carlosdanielpohlod/redgem/releases/download/v0.5.0/redgem-windows-x86_64.zip">Download for Windows</a></p></div>
+      <div class="card"><h3>macOS</h3><p>macOS 11 or newer. Tested on GitHub's Macs, not yet on a real one: tell us what breaks. Not signed by Apple: right-click the app and choose Open the first time.</p><p><a class="button" href="https://github.com/carlosdanielpohlod/redgem/releases/download/v0.5.0/redgem-macos-arm64.zip">Apple Silicon</a> <a class="button" href="https://github.com/carlosdanielpohlod/redgem/releases/download/v0.5.0/redgem-macos-x86_64.zip">Intel</a></p></div>
     </div>
     <div class="steps">
       <div><h3>1. Unpack</h3><p>Anywhere you like. To remove RedGem, delete the folder.</p></div>
